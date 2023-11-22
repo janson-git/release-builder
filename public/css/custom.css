@@ -1,0 +1,450 @@
+/***************************/
+/***** LAYOUT **************/
+body {
+    color: #777;
+}
+
+#main {
+    background-color: #f1f5f9;
+    min-height: 100vh;
+}
+
+.right {
+    float: right;
+}
+.left {
+    float: left;
+}
+
+.pure-table {
+    background-color: #fff;
+}
+.pure-table td span {
+    display: block;
+}
+.pure-table td {
+    vertical-align: top;
+}
+.pure-table hr {
+    border: 0;border-bottom: 1px solid #eee;
+}
+
+.text-success {
+    color: #2b4;
+}
+.text-warning {
+    color: #d71;
+}
+.text-danger,
+.text-error {
+    color: #c44;
+}
+
+/*** MAIN MENU ******/
+.pure-menu ul li i {
+    width: 1.2em;
+    font-size: 15px;
+}
+
+
+#logs-toggle-button {
+    cursor: pointer;
+    color: #000;
+    background-color: #ddd;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border: #666 dashed 1px;
+}
+
+#logs-container {
+    display: none;
+    background-color: #ddd;
+    border: #666 dashed 1px;
+    padding: 5px 10px;
+}
+
+#doneLog {
+    white-space: pre-wrap;
+}
+
+.header {
+    margin: 0;
+    color: #333;
+    text-align: center;
+    padding: 1em 2em 1em;
+    font-weight: 300;
+}
+.header h1 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    text-align: start;
+    margin: 0.2em 0;
+    font-size: 2.5em;
+}
+.header h2 {
+    color: #999;
+    padding: 0;
+}
+
+.top-page-nav {
+    padding-bottom: 1em;
+}
+
+.shadowed {
+    box-shadow: 0 9px 15px rgba(0,0,0,0.2);
+}
+.line-separated {
+    margin: 20px 0;
+}
+
+/*** AWESOME FONT ICONS MARGINS ***/
+.header h1 i {
+    margin-right: 0.4em;
+}
+h1 i,
+.pure-button i,
+.pack-link i {
+    margin-right: 0.2em;
+}
+.text-overflow-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/***************************/
+/******** CONTENT **********/
+.content {
+    color:#111111;
+    margin: 0 auto 50px auto;
+    padding: 0 2em;
+    line-height: 1.6em;
+}
+.content-subhead {
+    margin: 50px 0 20px 0;
+    font-weight: 300;
+    color: #888;
+}
+.description {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.badge {
+    position: relative;
+}
+.badge div {
+    position: absolute;
+    color: #0a0;
+    border: 1px solid #0a0;
+    border-radius: 5px;
+    padding: 4px;
+    font-size: 11px;
+    line-height: 1;
+    display: inline-block;
+    right: -5px;
+    top: -3px;
+}
+
+/***************************/
+/***** ANIMATIONS **********/
+
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 1s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blinker;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+/******** SPINNER *********/
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}
+.spinner {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 7px;
+    margin-left: 3px;
+}
+.spinner:before {
+    display: block;
+    content: '';
+    box-sizing: border-box;
+    position: relative;
+    align-content: center;
+    top: -50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-top: 2px solid #000;
+    border-right: 2px solid transparent;
+    animation: spinner .6s linear infinite;
+}
+/******** END OF SPINNER ************/
+
+/*******************/
+/*** BREADCRUMBS ***/
+
+.breadcrumbs-placeholder {
+    height: 60px;
+}
+.breadcrumbs {
+    background: white;
+    border-bottom: 1px solid #bbb;
+    height: 47px;
+    position:fixed;
+    left: 150px; /** menu block width */
+    right: 0;
+    box-shadow: 0 5px 3px rgba(100,100,100, 0.2);
+    z-index: 10;
+}
+.breadcrumbs ul,
+.breadcrumbs ul li a,
+.breadcrumbs ul li span {
+    display: flex;
+}
+.breadcrumbs ul {
+    height: 100%;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.breadcrumbs ul li {
+    margin-right: 30px;
+    position: relative;
+    list-style: none;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.breadcrumbs ul li:before {
+    content: ">";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -20px;
+    color: #666;
+}
+.breadcrumbs ul li:last-child:before {
+    display: none;
+}
+.breadcrumbs ul li a,
+.breadcrumbs ul li span {
+    align-items: baseline;
+    color: #666;
+    text-decoration: none;
+}
+.breadcrumbs ul li a .icon,
+.breadcrumbs ul li span .icon
+{
+    margin-right: 5px;
+}
+.breadcrumbs ul li a p,
+.breadcrumbs ul li span p
+{
+    font-size: 16px;
+}
+.breadcrumbs ul li a p
+{
+    color: #1a0dab;
+}
+.breadcrumbs ul li.active a,
+.breadcrumbs ul li.active span
+{
+    color: #ff5e5e;
+}
+
+/********************/
+/*** CARDS ***/
+
+.card {
+    background-color: #fff;
+    border-top: 5px solid #07e;
+    border-radius: 0 0 10px 10px;
+    padding: 15px;
+    margin: 10px auto 25px;
+    box-shadow: 0 9px 15px rgba(0,0,0,0.2);
+}
+.project-card {
+    width: 90%;
+    border-top: 5px solid #0a0;
+}
+.pack-card {
+    width: 90%;
+    border-top: 5px solid #07e;
+}
+.build-card {
+    position: relative;
+    border-top: 5px solid #99a;
+    margin: 5px 10px;
+    background-color: lightgrey;
+}
+.build-card.active {
+    background-color: #fff;
+}
+.build-card.active .build-card-content:after {
+    content: 'LAST BUILD';
+    font-size: 11px;
+    line-height: 1;
+    position: absolute;
+    bottom: 7px;
+    right: 8px;
+    margin: 0;
+    border-radius: 4px;
+    padding: 4px;
+    border: 1px solid #1CB841;
+    color: #1CB841;
+}
+.build-card-content .build-relative-date {
+    font-size: 11px;
+    position: absolute;
+    top: -3px;
+    right: 11px;
+    color: #999;
+}
+.project-card h1,
+.pack-card h1 {
+    margin-top: 0.2em;
+    padding-bottom: 0.6em;
+    margin-bottom: 0.3em;
+    border-bottom: 1px solid #ccc;
+    font-size: 1.4em;
+}
+.project-card .empty,
+.pack-card .empty {
+    color: #999;
+    font-style: italic;
+}
+
+.pack-card .branch-list {
+    overflow: scroll;
+    border: 1px solid #111111;
+    padding: 0.5em 0.5em;
+}
+
+.dataset-item {
+    padding: 0.3em;
+}
+.dataset-item a {
+    margin-right: 0.5em;
+}
+
+.pack-link {
+    color: #07e;
+    margin-right: 0.5em;
+    text-decoration: none;
+}
+.pack-link:hover {
+    color: #346;
+    text-decoration: underline;
+}
+
+/********************************/
+/*** TOOLTIPS    ****************/
+
+/*== start of code for tooltips ==*/
+.tool {
+    cursor: help;
+    position: relative;
+    color: #666;
+}
+/*== common styles for both parts of tool tip ==*/
+.tool::before,
+.tool::after {
+    left: 50%;
+    opacity: 0;
+    position: absolute;
+    z-index: -100;
+}
+
+.tool:hover::before,
+.tool:focus::before,
+.tool:hover::after,
+.tool:focus::after {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    z-index: 100;
+}
+
+.tool::after {
+    content: "";
+    margin-left: -0.5em;
+    height: 0;
+    width: 0;
+    color: #edeff0;
+    position: absolute;
+    bottom: 9px;
+    border-color: transparent transparent #edeff0 #edeff0;
+    border: 0.8em solid;
+    box-sizing: border-box;
+    box-shadow: -7px 7px 6px 0 rgba(0, 0, 0, 0.2);
+    transform-origin: 0 0;
+    transform: rotate(-45deg) !important;
+}
+/*== pointer tip ==*/
+
+.tool:hover::after,
+.tool:focus::after {
+    transition: all .15s cubic-bezier(.84,-0.18,.31,1.26);
+}
+
+
+/*== speech bubble ==*/
+.tool::before {
+    background: #edeff0;
+    border-radius: 5px;
+    bottom: 180%;
+    color: #3e474f;
+    content: attr(data-tip);
+    margin-left: -3em;
+    padding: 1em;
+    transition: all .35s cubic-bezier(.84,-0.18,.31,1.26) .2s;
+    transform: scale(.6) translateY(50%);
+    width: fit-content;
+    white-space: pre;
+    overflow: hidden;
+    box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.2);
+}
+
+.tool:hover::before,
+.tool:focus::before  {
+    transition: all .15s cubic-bezier(.84,-0.18,.31,1.26);
+}
+
+
+/***********************************************/
+/***** FORMS ***********************************/
+input.error {
+    border-color: #f00 !important;
+}

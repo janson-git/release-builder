@@ -1,0 +1,14 @@
+.idea/
+/logs/*
+/builds
+/ssh_keys
+data/
+locks/
+/docker-compose.override.yml
+.bash_history
+.env
+/.ssh/*
+/.ssh/readme.md
+/storage/cache/compiles/*
+/storage/repos/*
+/storage/sandbox/*
