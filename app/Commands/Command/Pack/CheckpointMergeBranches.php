@@ -13,16 +13,16 @@ class CheckpointMergeBranches extends CommandProto
         $pack           = $this->context->getPack();
         $checkpointName = $this->context->getCheckpoint()->getName();
         $branches       = $pack->getBranches();
-        
-        array_unshift($branches, 'master'); // всегда подтягиваем последний мастер
-        
+
+        array_unshift($branches, 'master', 'main'); // всегда подтягиваем последний мастер
+
         foreach ($pack->getRepos() as $id => $repo) {
             $repo->fetch();
             $repo->fullReset();
             $repo->checkout($checkpointName);
             $this->_mergeBranches($repo, $branches);
         }
-        
+
         return $this->runtime;
     }
     
@@ -53,7 +53,7 @@ class CheckpointMergeBranches extends CommandProto
                 $unmerged[] = $branch;
             }
         }
-        
+
         $this->runtime->log($results, $repo->getPath());
         
         $mergedCount && $loop < 5 && $this->_mergeBranches($repo, $unmerged, ++$loop);

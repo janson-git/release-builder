@@ -13,12 +13,11 @@ This is a tool to make release branches management simple and convenient.
 - Git
 - Docker and docker-compose
 
-[Terms used in this app](./docs/terms.md)
-
 ### Get Started
 
-I recommend start with this document:
-[How to start and workflow example](./docs/example_flow_with_public_repo.md)
+I recommend to start with this document:
+[How to start, workflow example](./docs/example_flow_with_public_repo.md)
+[Terms used in this app](./docs/terms.md)
 
 All information below is based on it and possible to read after to extend knowledge of app.
 

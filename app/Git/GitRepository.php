@@ -78,7 +78,9 @@ class GitRepository
      */
     private function setMainBranch(): void
     {
-        $remoteBranches = $this->getRemoteBranches() ?? [];
+        $remoteBranches = $this->extractFromCommand('git branch -r', function ($value) {
+            return trim(str_replace('origin/', '', $value));
+        });
 
         foreach ($remoteBranches as $branchName) {
             if (!in_array($branchName,  ['master', 'main']) && !empty($this->mainBranch)) {
@@ -277,7 +279,7 @@ class GitRepository
                 return trim(str_replace('origin/', '', $value));
             });
         }
-        
+
         return $this->remoteBranches;
     }
 
@@ -681,7 +683,7 @@ class GitRepository
             
             $output = $newArray;
         }
-        
+
         if (!isset($output[0])) { // empty array
             return null;
         }

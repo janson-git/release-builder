@@ -115,7 +115,7 @@ class BranchesController  extends AbstractController
     /**
      * Сохранение выбора
      */
-    public function savePack(int $projectId)
+    public function savePack(int $projectId): ResponseInterface
     {
         $action = $this->p('action');
         $packId = $this->p('packId');

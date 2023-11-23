@@ -194,14 +194,14 @@ class Pack
 
         $this->branches = $this->data['branches'] ?: [];
         natsort($this->branches);
-    
+
         $this->name = isset($this->data['name']) && $this->data['name'] ? $this->data['name']
             : $this->id;
 
         if (env('ALLOW_PUSH_ONLY_FOR_RELEASES')) {
             $this->allowPush = 0 === strpos($this->name, 'release_');
         }
-    
+
         $node = $this->project->getNode();
         $node->subLoad();
         $node->loadRepos();
