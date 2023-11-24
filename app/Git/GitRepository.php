@@ -583,8 +583,9 @@ class GitRepository
     public function fetch(): self
     {
         $tokenizedRepoUrl = $this->getTokenizedRemoteUrl($this->accessToken, $this->remoteUrl);
+        $refs = '+refs/heads/*:refs/remotes/origin/*';
 
-        return $this->begin()->run("git fetch -p {$tokenizedRepoUrl}")->end();
+        return $this->begin()->run("git fetch -p {$tokenizedRepoUrl} {$refs}")->end();
     }
 
     /**

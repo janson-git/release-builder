@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Commands\Command\Pack;
 
 use Commands\Command\CommandProto;

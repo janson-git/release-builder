@@ -32,7 +32,6 @@ class PacksController extends AbstractController
             App::i()->log($e->getMessage().' at '.$e->getFile().':'.$e->getLine());
         }
 
-
         $pack->loadCheckpoints();
 
         $dirs = array_intersect_key($node->getDirs(), $node->getRepos());
