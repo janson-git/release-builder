@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Commands;
 
 use Commands\Command\CommandProto;
@@ -44,13 +43,7 @@ class CommandConfig
     /* vars */
     const GLOBAL_WORK_DIR = 'workDir';
     
-    
-    /**
-     * @param $commandId
-     *
-     * @return CommandProto
-     */
-    public static function getCommand($commandId)
+    public static function getCommand(string $commandId): CommandProto
     {
         $class = '\\Commands\\Command\\'.$commandId;
         

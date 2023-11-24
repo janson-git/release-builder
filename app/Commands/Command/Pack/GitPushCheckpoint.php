@@ -32,8 +32,8 @@ class GitPushCheckpoint extends CommandProto
     
         $branches = $this->context->getPack()->getBranches();
         natsort($branches);
-        $msg = '🕺 Ветка '.$checkpoint.' опубликована:'."\n";
-        $msg.= implode("\n", $branches);
+        $msg = "🕺 Branch {$checkpoint} pushed:\n";
+        $msg .= implode("\n", $branches);
     
         $this->runtime->getEventProcessor()->add(trim($msg), EventConfig::EVENT_TYPE_RELEASE_STATUS);
         

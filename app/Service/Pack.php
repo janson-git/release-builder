@@ -5,6 +5,7 @@ namespace Service;
 use Admin\App;
 use Commands\Command\Pack\GitCreateTag;
 use Commands\Command\SlotDeploy;
+use Commands\CommandConfig;
 use Commands\CommandContext;
 use Git\GitRepository;
 use Commands\Command\LocalDeploy;
@@ -84,12 +85,12 @@ class Pack
         return $this->sandboxPath . $projectRelativePath;
     }
     
-    public function prepareCommand (CommandProto $command): CommandProto
+    public function prepareCommand(CommandProto $command): CommandProto
     {
         $context = $command->getContext();
         $context->setPack($this);
         
-        $lastCheckpoint = $this->getLastCheckPoint() ?: null;
+        $lastCheckpoint = $this->getLastCheckpoint() ?: null;
         if ($lastCheckpoint) {
             $context->setCheckpoint($lastCheckpoint);
         }
@@ -104,9 +105,9 @@ class Pack
      *
      * @return CommandProto[]
      */
-    public function prepareCommands(array $commands): array
+    private function prepareCommands(array $commands): array
     {
-        $lastCheckpoint = $this->getLastCheckPoint() ?: null;
+        $lastCheckpoint = $this->getLastCheckpoint() ?: null;
         foreach ($commands as $command) {
             $context = $command->getContext();
             $context->setPack($this);
@@ -118,12 +119,22 @@ class Pack
         
         return $commands; 
     }
-    
+
     /**
-     * @param $command CommandProto
+     * @param array|string[] $commandIds
+     * @return CommandProto[]
      */
-    public function runCommand (CommandProto $command): void
+    private function getPreparedCommands(array $commandIds): array
     {
+        /** @var CommandProto[] $commands */
+        $commands = array_map([CommandConfig::class, 'getCommand'], $commandIds);
+
+        return $this->prepareCommands($commands);
+    }
+    
+    public function createCheckpoint (): void
+    {
+        $command = new CheckpointCreateCommand();
         $command->getContext()->setPack($this);
         $command->prepare();
         $command->run();
@@ -134,35 +145,30 @@ class Pack
      */
     public function getCheckpointCommands(): array
     {
-        /* @var $commands CommandProto[] */
-        $commands = [
-//            new LocalDeploy(),
-            new CheckpointMergeBranches(),
-            new ConflictAnalyzeCommand(),
-            //            new BuildReleaseByDirectories(),
-            new RemoveCheckpoint(),
-        ];
-        
-        return $this->prepareCommands($commands);
+        return $this->getPreparedCommands([
+//            CommandConfig::BUILD_AND_DEPLOY, // @TODO: deprecated?
+            CommandConfig::CHECKPOINT_MERGE_BRANCHES,
+            CommandConfig::PACK_CONFLICT_ANALYZE,
+            CommandConfig::CHECKPOINT_DELETE,
+        ]);
     }
     
     public function getPackCommands(): array
     {
-        /* @var $commands CommandProto[] */
         $commands = [
-            new CheckpointCreateCommand(),
-            new FetchSandbox(),
-            new GitCreateTag(),
+            CommandConfig::CHECKPOINT_CREATE,
+            CommandConfig::PACK_FETCH_PROJECT,
+            CommandConfig::CHECKPOINT_CREATE_TAG,
         ];
-        
-        if ($this->getLastCheckPoint() && $this->allowPush) {
-            $commands[] = new GitPushCheckpoint();
-//            $commands[] = new GitMergeToMaster();
+
+        if ($this->getLastCheckpoint() && $this->allowPush) {
+            $commands[] = CommandConfig::CHECKPOINT_PUSH_TO_ORIGIN;
+//            $commands[] = CommandConfig::CHECKPOINT_MERGE_TO_MASTER;
         }
 
-        $commands[] = new RemovePackWithData();
+        $commands[] = CommandConfig::PACK_CLEAR_DATA;
         
-        return $this->prepareCommands($commands);
+        return $this->getPreparedCommands($commands);
     }
     
     public function getDeployCommands(): array
@@ -277,6 +283,7 @@ class Pack
             $latestBranchDetails = $branchesDetailed[0] ?? [];
         }
 
+        // Create list of existed checkpoints (already exist in file system)
         foreach ($commonLocalBranches as $branch) {
             if (in_array($branch, ['master','main'])) {
                 continue;
@@ -364,17 +371,17 @@ class Pack
     /**
      * @return Checkpoint[]
      */
-    public function getCheckPoints(): array
+    public function getCheckpoints(): array
     {
         return $this->checkPoints;
     }
     
-    public function getLastCheckPoint(): ?Checkpoint
+    public function getLastCheckpoint(): ?Checkpoint
     {
-        return $this->checkPoints ? end($this->checkPoints) : null; 
+        return $this->checkPoints ? end($this->checkPoints) : null;
     }
 
-    public function getCheckPoint($id): ?Checkpoint
+    public function getCheckpoint($id): ?Checkpoint
     {
         return isset($this->checkPoints[$id]) ? $this->checkPoints[$id] : null;
     }

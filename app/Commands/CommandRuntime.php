@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Commands;
-
 
 use Service\Event\TelegramBot;
 use Service\Event\TestingJenkinsCallback;
@@ -10,25 +8,18 @@ use Service\Events;
 
 class CommandRuntime implements \ArrayAccess
 {
-    private $data = [];
+    private array $data = [];
     
-    private $logs        = [];
-    private $currentSection;
-    private $currentSectionStartTime;
-    private $sectionNames;
-    private $coreSection = 0;
-    private $errors      = [];
-    private $exceptions  = [];
-    
-    /**
-     * @var Events
-     */
-    private $eventProcessor;
-    
-    /**
-     * CommandRuntime constructor.
-     *
-     */
+    private array $logs = [];
+    private ?string $currentSection = null;
+    private ?float $currentSectionStartTime = null;
+    private array $sectionNames = [];
+    private int $coreSection = 0;
+    private array $errors      = [];
+    private array $exceptions  = [];
+
+    private Events $eventProcessor;
+
     public function __construct()
     {
         $this->eventProcessor = new Events();
@@ -36,8 +27,7 @@ class CommandRuntime implements \ArrayAccess
         $this->eventProcessor->addProvider(new TestingJenkinsCallback());
     }
     
-    
-    public function startSection($id, $name)
+    public function startSection(string $id, string $name): void
     {
         if ($this->currentSection !== $id && $this->currentSectionStartTime && $this->logs[$this->currentSection]) {
             $time = round(microtime(1) - $this->currentSectionStartTime, 4);
@@ -52,13 +42,14 @@ class CommandRuntime implements \ArrayAccess
         }
     }
     
-    private function _checkSection() {
+    private function _checkSection(): void
+    {
         if (!$this->currentSection) {
             $this->startSection('core_' . (++$this->coreSection), 'Логи ядра #' . $this->coreSection);
         }   
     }
     
-    public function log($data, $key = null)
+    public function log($data, $key = null): void
     {
         $this->_checkSection();
         
@@ -97,7 +88,7 @@ class CommandRuntime implements \ArrayAccess
         }
     }
     
-    public function error($data)
+    public function error($data): void
     {
         $this->_checkSection();
         
@@ -120,32 +111,23 @@ class CommandRuntime implements \ArrayAccess
         $this->exceptions[$this->currentSection][] = $exception;
         $this->log($exception->getMessage());
     }
-    
-    /**
-     * @return array
-     */
-    public function getLogs()
+
+    public function getLogs(): array
     {
         return $this->logs;
     }
  
-    public function getSectionName($id) 
+    public function getSectionName(string $id): string
     {
         return $this->sectionNames[$id];
     }
-    
-    /**
-     * @return array
-     */
-    public function getErrors()
+
+    public function getErrors(): array
     {
         return $this->errors;
     }
-    
-    /**
-     * @return array
-     */
-    public function getExceptions()
+
+    public function getExceptions(): array
     {
         return $this->exceptions;
     }
@@ -156,9 +138,9 @@ class CommandRuntime implements \ArrayAccess
      *
      * @return array
      */
-    public function getData($key, $default = null)
+    public function getData($key, $default = null): array
     {
-        return isseT($this->data[$key]) ? $this->data[$key] : $default;
+        return isset($this->data[$key]) ? $this->data[$key] : $default;
     }
     
     /**
@@ -190,11 +172,8 @@ class CommandRuntime implements \ArrayAccess
     {
         unset($this->data[$this->currentSection][$offset]);
     }
-    
-    /**
-     * @return Events
-     */
-    public function getEventProcessor()
+
+    public function getEventProcessor(): Events
     {
         return $this->eventProcessor;
     }

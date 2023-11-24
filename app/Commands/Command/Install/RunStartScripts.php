@@ -11,12 +11,7 @@ use Service\Util\Fs;
 class RunStartScripts extends CommandProto
 {
     private $upScript = 'start.sh';
-    
-    public function prepare()
-    {
-        // TODO: Implement prepare() method.
-    }
-    
+
     public function run()
     {
         $slot = $this->getSlot();

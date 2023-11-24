@@ -11,6 +11,8 @@ class GitMergeToMaster extends CommandProto
 {
     public function run()
     {
+        throw new \Exception(__CLASS__ . ' implementation need to be double checked!');
+
         $checkpoint = $this->context->getCheckpoint()->getName();
         $sshPrivateKey = SSH_KEYS_DIR . '/' . App::i()->getAuth()->getUserLogin();
         
@@ -25,7 +27,7 @@ class GitMergeToMaster extends CommandProto
             $repo->checkoutToMainBranch();
             $repo->pull();
             
-            $repo->merge($checkpoint, '--no-ff');
+            $repo->merge($checkpoint, ['--no-ff']);
             $repo->pushMainBranchToOrigin();
             
             $repo->setSshKeyPath(null);

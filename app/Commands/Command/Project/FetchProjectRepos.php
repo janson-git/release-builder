@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Commands\Command\Project;
-
 
 use Commands\Command\CommandProto;
 use Commands\CommandConfig;

@@ -23,8 +23,8 @@ class PacksController extends AbstractController
             $pack->loadCheckpoints();
 
 
-            if (!$pack->getCheckPoints()) {
-                $pack->runCommand(new CheckpointCreateCommand());
+            if (!$pack->getCheckpoints()) {
+                $pack->createCheckpoint();
                 $pack->loadCheckpoints();
             }
 

@@ -48,13 +48,13 @@ class LastbuildController extends ApiProto
         
         $pack->loadCheckpoints();
         
-        $checkpoint = $pack->getLastCheckPoint();
+        $checkpoint = $pack->getLastCheckpoint();
         
         if (!$checkpoint) {
             return $this->error('no checkpoints in pack'); 
         }
         
-        $cpName = $pack->getLastCheckPoint()->getName();
+        $cpName = $pack->getLastCheckpoint()->getName();
         
         $command = new MakeBuildForDownload();
         $context = $command->getContext();

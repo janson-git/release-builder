@@ -19,7 +19,7 @@ class GitRepository
     private Fs $fs;
 
     /** @var string|NULL @internal */
-    private $cwd;
+    private ?string $cwd = null;
 
     private array $remoteBranches = [];
 
@@ -162,7 +162,7 @@ class GitRepository
     /**
      * Creates new branch.
      * `git branch <name>`
-     * (optionaly) `git checkout <name>`
+     * (optionally) `git checkout <name>`
      *
      * @throws GitException
      */
@@ -654,7 +654,7 @@ class GitRepository
      * @param string $cmd
      * @param string|Closure|callable $filterCallback
      *
-     * @return NULL|\string[]
+     * @return NULL|string[]
      * @throws GitException
      */
     protected function extractFromCommand(string $cmd, $filterCallback = null)

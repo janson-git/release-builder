@@ -1,20 +1,12 @@
 <?php
 
-
 namespace Commands\Command\Install;
-
 
 use Commands\Command\DeployCommandProto;
 use Commands\CommandConfig;
 
 class DeployBuildLocal extends DeployCommandProto
 {
-    
-    public function prepare()
-    {
-        
-    }
-    
     public function run()
     {
         $sourcePath = $this->getBuildSourcesPath();

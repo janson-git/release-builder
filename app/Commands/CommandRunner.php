@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Commands;
-
 
 use Commands\Command\SlotDeploy;
 use Exception;
@@ -11,27 +9,17 @@ use Service\Util\Lock;
 
 class CommandRunner
 {
-    /**
-     * @var CommandProto[]
-     */
-    private $commands;
+    /** @var CommandProto[] */
+    private array $commands = [];
     
-    /**
-     * @var CommandContext
-     */
+    /** @var CommandContext */
     private $context;
     
-    protected $commandIdsToRun = [];
-    
-    /**
-     * @var CommandRuntime
-     */
-    private $runtime;
-    
-    /**
-     * CommandRunner constructor.
-     *
-     */
+    protected array $commandIdsToRun = [];
+
+    private CommandRuntime $runtime;
+
+
     public function __construct()
     {
         $this->runtime = new CommandRuntime();
@@ -54,7 +42,7 @@ class CommandRunner
         }
     }
     
-    public function runCommand (CommandProto $command) 
+    public function runCommand (CommandProto $command): bool
     {
         try {
             $command->setContext($this->context);
@@ -92,7 +80,7 @@ class CommandRunner
     /**
      * @return Command\CommandProto[]
      */
-    public function getCommands()
+    public function getCommands(): array
     {
         return $this->commands;
     }
@@ -100,31 +88,25 @@ class CommandRunner
     /**
      * @param Command\CommandProto[] $commands
      */
-    public function setCommands($commands)
+    public function setCommands(array $commands): void
     {
         $this->commands = $commands;
     }
-    
-    /**
-     * @return array
-     */
-    public function getCommandIdsToRun()
+
+    public function getCommandIdsToRun(): array
     {
         return $this->commandIdsToRun;
     }
     
     /**
-     * @param array $commandsOrder
+     * @param string[] $commandsOrder
      */
-    public function setCommandIdsToRun($commandsOrder)
+    public function setCommandIdsToRun(array $commandsOrder): void
     {
         $this->commandIdsToRun = $commandsOrder;
     }
-    
-    /**
-     * @return CommandRuntime
-     */
-    public function getRuntime()
+
+    public function getRuntime(): CommandRuntime
     {
         return $this->runtime;
     }
@@ -132,15 +114,12 @@ class CommandRunner
     /**
      * @return CommandContext
      */
-    public function getContext()
+    public function getContext(): CommandContext
     {
         return $this->context;
     }
-    
-    /**
-     * @param CommandContext $context
-     */
-    public function setContext($context)
+
+    public function setContext(CommandContext $context): void
     {
         $this->context = $context;
     }

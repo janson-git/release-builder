@@ -98,9 +98,6 @@ class GitCreateTag extends CommandProto
         return implode('.', $dotParts);
     }
 
-    /**
-     * @return string|null
-     */
     private function getLastTag() : ?string
     {
         $sshPrivateKey = SSH_KEYS_DIR . '/' . App::i()->getAuth()->getUserLogin();

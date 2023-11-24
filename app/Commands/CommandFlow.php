@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Commands;
-
 
 use Commands\Command\Build\BuildReleaseByDirectories;
 use Commands\Command\Build\RunCompile;

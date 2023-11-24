@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Commands\Command\Install;
-
 
 use Commands\Command\DeployCommandProto;
 use Commands\CommandConfig;
@@ -11,12 +9,7 @@ use Service\Util\Fs;
 class RunSetupScripts extends DeployCommandProto
 {
     protected $upScript = 'setup.sh';
-    
-    public function prepare()
-    {
-        
-    }
-    
+
     public function run()
     {
         $slot = $this->getSlot();
