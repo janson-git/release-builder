@@ -8,13 +8,16 @@ use Git\GitRepository;
 
 class CheckpointMergeBranches extends CommandProto
 {
+    private const MERGE_RETRIES_LIMIT = 5;
+
     public function run()
     {
         $pack           = $this->context->getPack();
         $checkpointName = $this->context->getCheckpoint()->getName();
         $branches       = $pack->getBranches();
 
-        array_unshift($branches, 'master', 'main'); // всегда подтягиваем последний мастер
+        // always get latest master, main branches
+        array_unshift($branches, 'master', 'main');
 
         foreach ($pack->getRepos() as $id => $repo) {
             $repo->fetch();
@@ -26,14 +29,7 @@ class CheckpointMergeBranches extends CommandProto
         return $this->runtime;
     }
     
-    /**
-     * @param GitRepository $repo
-     * @param               $branches
-     * @param int           $loop
-     *
-     * @return array|mixed
-     */
-    private function _mergeBranches($repo, $branches, $loop = 1)
+    private function _mergeBranches(GitRepository $repo, array $branches, int $loop = 1): void
     {
         $unmerged    = [];
         $results     = [];
@@ -56,7 +52,9 @@ class CheckpointMergeBranches extends CommandProto
 
         $this->runtime->log($results, $repo->getPath());
         
-        $mergedCount && $loop < 5 && $this->_mergeBranches($repo, $unmerged, ++$loop);
+        if ($mergedCount && $loop < self::MERGE_RETRIES_LIMIT) {
+            $this->_mergeBranches($repo, $unmerged, ++$loop);
+        }
     }
     
     public function getId()

@@ -9,6 +9,17 @@
 @extends('./layout.blade.php')
 
 @section('content')
+    <style>
+        .exception-item {
+            margin-bottom: 20px;
+        }
+        .separator {
+            border-bottom: 1px solid #999;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+
 <div class="pure-g">
     <div class="pure-u-1">
         @if ($context->getProject())
@@ -22,14 +33,15 @@
             </a>
         @endif
     </div>
+
     @if ($exceptionsBySection = $runtime->getExceptions())
         @foreach ($exceptionsBySection as $sectionId => $exceptions)
-            <div class="pure-u-1" style="padding-bottom: 20px; box-sizing: border-box">
+            <div class="pure-u-1 exception-item">
                 <h1>Exceptions at {{ $runtime->getSectionName($sectionId) }}:</h1>
                 @foreach ($exceptions as $exception)
                     <?php /* @var $exception \Exception */ ?>
-                    <div>
-                        {{ $exception->getMessage() }}<br>
+                    <div class="separator">
+                        <pre>{{ $exception->getMessage() }}</pre>
                         <b>File:</b> {{ $exception->getFile() }}:{{ $exception->getLine() }}<br>
                     </div>
                 @endforeach
@@ -39,7 +51,7 @@
 
     @if ($errorsBySection = $runtime->getErrors())
         @foreach ($errorsBySection as $sectionId => $errors)
-            <div class="pure-u-1" style="padding-bottom: 20px; box-sizing: border-box">
+            <div class="pure-u-1 exception-item">
                 <h1>Errors in {{ $runtime->getSectionName($sectionId) }}:</h1>
                 @foreach ($errors as $error)
                     <div class="pure-u-1">
@@ -52,7 +64,7 @@
     
     @foreach ($runtime->getLogs() as $sectionId => $sectionLogs)
         <div class="pure-u-1">
-            <h2>{{ $runtime->getSectionName($sectionId) }}</h2>
+            <h2>Section: {{ $runtime->getSectionName($sectionId) }}</h2>
             <div class="pure-g">
                 @foreach ($sectionLogs as $key => $result)
                     <div class="pure-u-1" style="font-weight: bold">{{ $key }}</div>

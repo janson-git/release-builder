@@ -215,8 +215,9 @@ class App extends SlimApp
      */
     public function terminate(): void
     {
+        $fileName = '/app-' . date('Y-m-d') . '.log';
         file_put_contents(
-            LOGS_DIR . '/app.log',
+            LOGS_DIR . $fileName,
             implode("\n", $this->getLogger()->getLogs()),
             FILE_APPEND
         );
