@@ -22,19 +22,23 @@ $view
 </div>
 
 <div class="pure-g">
-    <div class="pure-u" style="margin-left: auto; margin-right: auto; width: 300px;">
+    <div class="pure-u pure-u-md-1 pure-u-lg-1-2">
 
         <div class="pure-form pure-form-stacked">
-            <fieldset>
+            <fieldset class="pure-group">
                 <div class="pure-control-group">
-                    <label for="repository_path">Repository Path</label>
-                    <span class="pure-help-inline">(HTTPS url or SSH link)</span>
-                    <input required type="text" id="repository_path" name="repository_path" class="pure-input-1"/>
+                    <label for="repository_path">Repository Path (HTTPS url or SSH link)</label>
+                    <input type="text"
+                           id="repository_path"
+                           name="repository_path"
+                           class="pure-input-1"
+                           required />
                 </div>
 
-                <div class="pure-controls">
-                    <button onclick="admin.addRepository(this)" class="pure-button pure-button-primary">{{ __('save') }}</button>
-                </div>
+                <button onclick="admin.addRepository(this);"
+                        class="pure-input-1 pure-button pure-button-primary">
+                    {{ __('save') }}
+                </button>
             </fieldset>
         </div>
 
