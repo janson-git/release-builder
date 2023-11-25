@@ -34,6 +34,7 @@ return [
     'projects' => 'Projects',
     'servers' => 'Servers',
     'deploy' => 'Deploy',
+    'git' => 'Git',
     'delete' => 'Delete',
     'directories' => 'Directories',
     'root_directories' => 'Root directories',

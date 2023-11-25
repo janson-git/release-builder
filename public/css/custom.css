@@ -147,6 +147,11 @@ h1 i,
     right: -5px;
     top: -3px;
 }
+.bottom-badge {
+    color: #0a0;
+    right: -2px !important;
+    bottom: 10px !important;
+}
 
 /***************************/
 /***** ANIMATIONS **********/
@@ -312,19 +317,6 @@ h1 i,
 }
 .build-card.active {
     background-color: #fff;
-}
-.build-card.active .build-card-content:after {
-    content: 'LAST BUILD';
-    font-size: 11px;
-    line-height: 1;
-    position: absolute;
-    bottom: 7px;
-    right: 8px;
-    margin: 0;
-    border-radius: 4px;
-    padding: 4px;
-    border: 1px solid #1CB841;
-    color: #1CB841;
 }
 .build-card-content .build-relative-date {
     font-size: 11px;

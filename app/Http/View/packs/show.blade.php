@@ -73,6 +73,11 @@ $view
                                 <br>
                             @endforeach
                         </div>
+                        @if ($lastCheckpointId === $cpId)
+                        <div class="badge bottom-badge">
+                            <div>ACTIVE BUILD</div>
+                        </div>
+                        @endif
                     </div>
                 @endforeach
             </div>

@@ -9,7 +9,7 @@ class GitController extends AbstractController
 {
     public function index(): Response
     {
-        $this->app->view()->setHeader(__('deploy'));
+        $this->app->view()->setHeader(__('git'));
 
         return $this->view->render('git/index.blade.php', [
             'list' => $this->app->directory()->allData(),
@@ -47,7 +47,7 @@ class GitController extends AbstractController
 
     public function showAddRepositoryForm(): Response
     {
-        $this->setTitle(__('deploy'));
+        $this->setTitle(__('git'));
         $this->setSubTitle(__('add_repository'));
 
         return $this->view->render('git/addRepositoryForm.blade.php');
