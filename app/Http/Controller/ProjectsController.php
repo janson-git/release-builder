@@ -12,11 +12,6 @@ use Service\Data;
 
 class ProjectsController extends AbstractController
 {
-    /**
-     * @var
-     */
-    protected $node;
-    
     public function index(): ResponseInterface
     {
         $this->setTitle( '<i class="fa-solid fa-folder-tree"></i>' . __('projects'));
@@ -116,14 +111,11 @@ class ProjectsController extends AbstractController
      */
     public function fetch(int $id): ResponseInterface
     {
-        $projectsDirs = Data::scope(App::DATA_PROJECTS)->reload()->getAll();
-        $dirs         = $projectsDirs[$id];
+        $project = Project::getById($id);
 
-        $node = new Node();
-        $node->setDirs($dirs);
+        $node = $project->getNode();
         $node->subLoad();
         $node->loadRepos();
-        $node->loadBranches();
 
         $result = [];
 
