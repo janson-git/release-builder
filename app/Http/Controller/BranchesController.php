@@ -146,6 +146,7 @@ class BranchesController  extends AbstractController
         $pack->setName($name)
             ->setProject($this->project)
             ->setBranches($branches)
+            ->setUser($this->app->getAuth()->getUser())
             ->save();
 
         return $pack;

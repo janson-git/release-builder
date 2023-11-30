@@ -42,6 +42,18 @@ class User
 
     public function __construct() {}
 
+    public static function getById(string $id): ?self
+    {
+        $data = Data::scope(App::DATA_USERS)->getWhere('id', $id);
+        if (!$data) {
+            return null;
+        }
+        $userData = array_pop($data);
+
+        $user = new self();
+        return $user->loadBy($userData['login']);
+    }
+
     public static function getByLogin(string $login): ?self
     {
         $user = new self();

@@ -15,6 +15,9 @@ class PacksController extends AbstractController
         $pack->getNode()->loadBranches();
 
         $this->setTitle('<i class="fa-solid fa-file-lines"></i>' . __('pack') . " '{$pack->getName()}'");
+        if ($pack->getUser() !== null) {
+            $this->setSubTitle('owned by @' . $pack->getUser()->getLogin());
+        }
         $node = $pack->getNode();
         $packReposByBranches = $node->getToMasterStatus($pack->getBranches());
 

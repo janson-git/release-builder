@@ -21,41 +21,39 @@ use Commands\Command\Pack\RemovePackWithData;
 
 class Pack
 {
-    /** @var int */
-    private $id;
-    /** @var string */
-    private $name;
-    
+    private ?int $id = null;
+    private ?string $name = null;
+    private ?int $projectId = null;
+    private ?string $userId = null;
+
+    protected Project $project;
+    protected ?User $user = null;
+
     /**
      * @var Node
      */
     protected $node;
-    
+
     protected $sandboxPath;
-    
-    protected $projectId;
-    
+
     protected $dirsToInit = [];
-    
+
     /** @var GitRepository[] */
     protected $repos = [];
-    
+
     protected $mergeResults = [];
-    
+
     private $branches = [];
-    
+
     private $data;
-    
+
     /** @var Checkpoint[] */
     private $checkPoints = [];
-    
+
     protected $error = '';
-    
+
     protected $allowPush = true;
-    
-    /** @var Project */
-    protected $project;
-    
+
     /**
      * Sandbox constructor.
      */
@@ -71,35 +69,35 @@ class Pack
 
         return $pack->init();
     }
-    
+
     public function getPath(): string
     {
         $name = $this->getName();
         if (!$name) {
             throw new \Exception('Call '.__FUNCTION__.' without "name" set');
         }
-        
+
         $projectDir = $this->getProject()->getNameQuoted();
         $projectRelativePath = DIRECTORY_SEPARATOR . $projectDir . DIRECTORY_SEPARATOR . $name;
 
         return $this->sandboxPath . $projectRelativePath;
     }
-    
+
     public function prepareCommand(CommandProto $command): CommandProto
     {
         $context = $command->getContext();
         $context->setPack($this);
-        
+
         $lastCheckpoint = $this->getLastCheckpoint() ?: null;
         if ($lastCheckpoint) {
             $context->setCheckpoint($lastCheckpoint);
         }
-        
+
         $command->setContext($context);
-        
+
         return $command;
     }
-    
+
     /**
      * @param $commands CommandProto[]
      *
@@ -112,12 +110,12 @@ class Pack
             $context = $command->getContext();
             $context->setPack($this);
             if ($lastCheckpoint) {
-                $context->setCheckpoint($lastCheckpoint);    
+                $context->setCheckpoint($lastCheckpoint);
             }
             $command->setContext($context);
         }
-        
-        return $commands; 
+
+        return $commands;
     }
 
     /**
@@ -131,7 +129,7 @@ class Pack
 
         return $this->prepareCommands($commands);
     }
-    
+
     public function createCheckpoint (): void
     {
         $command = new CheckpointCreateCommand();
@@ -139,7 +137,7 @@ class Pack
         $command->prepare();
         $command->run();
     }
-    
+
     /**
      * @return CommandProto[]
      */
@@ -152,7 +150,7 @@ class Pack
             CommandConfig::CHECKPOINT_DELETE,
         ]);
     }
-    
+
     public function getPackCommands(): array
     {
         $commands = [
@@ -167,23 +165,23 @@ class Pack
         }
 
         $commands[] = CommandConfig::PACK_CLEAR_DATA;
-        
+
         return $this->getPreparedCommands($commands);
     }
-    
+
     public function getDeployCommands(): array
     {
         /* @var $commands CommandProto[] */
         $commands = [];
-        
+
         $slots = $this->getProject()->getSlotsPool()->loadProjectSlots()->getSlots();
-        
+
         foreach ($slots as $slot) {
             $command = new SlotDeploy();
             $command->getContext()->setSlot($slot);
             $commands[] = $command;
         }
-        
+
         return $this->prepareCommands($commands);
     }
 
@@ -195,8 +193,10 @@ class Pack
 
         $this->data = Data::scope(App::DATA_PACKS)->getById($this->id);
         $this->projectId = $this->data['project'];
+        $this->userId = $this->data['user'] ?? null;
 
         $this->project = Project::getById($this->projectId);
+        $this->user = $this->userId ? User::getById($this->userId) : null;
 
         $this->branches = $this->data['branches'] ?: [];
         natsort($this->branches);
@@ -213,12 +213,12 @@ class Pack
         $node->loadRepos();
 
         $this->node = $node;
-        
+
         $this->initRepos();
 
         return $this;
     }
-    
+
     private function initRepos(): void
     {
         $path = $this->getPath();
@@ -232,10 +232,10 @@ class Pack
             $msg = 'Cannot create directory ' . $path . ' by user: "' . `whoami` . '" by reason:"' . $e->getMessage();
             throw new \Exception($msg);
         }
-        
+
         $this->loadSandboxRepos();
     }
-    
+
     private function loadSandboxRepos(): void
     {
         $sandboxPath = $this->getPath();
@@ -248,12 +248,12 @@ class Pack
             }
         }
     }
-    
+
     public function loadCheckpoints(): void
     {
         $branchesByProject = [];
         $branchesDetailed = [];
-        
+
         foreach ($this->repos as $repo) {
             $branchesByProject[] = $repo->getBranches();
             $branchesDetailed[] = $repo->getBranchesWithDetails();
@@ -288,14 +288,14 @@ class Pack
             if (in_array($branch, ['master','main'])) {
                 continue;
             }
-            
+
             $cp = new Checkpoint($this, $branch, $latestBranchDetails[$branch]);
             $cp->setCommands($this->getCheckpointCommands());
-            
+
             $this->checkPoints[$branch] = $cp;
         }
     }
-    
+
     public function cloneMissedRepos(): void
     {
         $repos = $this->node->getRepos();
@@ -327,12 +327,12 @@ class Pack
         $this->node = $node;
         return $this;
     }
-    
+
     public function getDirsToInit(): array
     {
         return $this->dirsToInit;
     }
-    
+
     /**
      * @return \Git\GitRepository[]
      */
@@ -340,7 +340,7 @@ class Pack
     {
         return $this->repos;
     }
-    
+
     /**
      * @return array
      */
@@ -348,7 +348,7 @@ class Pack
     {
         return $this->mergeResults;
     }
-    
+
     /**
      * @return string
      */
@@ -356,7 +356,7 @@ class Pack
     {
         return $this->error;
     }
-    
+
     public function getBranches(): array
     {
         return $this->branches;
@@ -367,7 +367,7 @@ class Pack
         $this->branches = $packBranches;
         return $this;
     }
-    
+
     /**
      * @return Checkpoint[]
      */
@@ -375,7 +375,7 @@ class Pack
     {
         return $this->checkPoints;
     }
-    
+
     public function getLastCheckpoint(): ?Checkpoint
     {
         return $this->checkPoints ? end($this->checkPoints) : null;
@@ -385,35 +385,47 @@ class Pack
     {
         return isset($this->checkPoints[$id]) ? $this->checkPoints[$id] : null;
     }
-    
+
     public function setProjectId(int $projectId): self
     {
         $this->projectId = $projectId;
         return $this;
     }
-    
+
     public function getName(): string
     {
         return $this->name;
     }
-    
+
     public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
     }
-    
+
     public function getProject(): Project
     {
         return $this->project;
     }
-    
+
     public function setProject(Project $project): self
     {
         $this->project = $project;
         return $this;
     }
-    
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+        $this->userId = $user->getId();
+        return $this;
+    }
+
     /**
      * @return mixed
      */
@@ -430,6 +442,7 @@ class Pack
             'name' => $this->getName(),
             'project' => $this->project->getId(),
             'branches' => $this->branches,
+            'user' => $this->userId,
         ];
 
         $packId = $this->getId() ?? crc32((string) microtime(true));
