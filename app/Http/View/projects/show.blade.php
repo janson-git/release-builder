@@ -53,7 +53,7 @@ $view
 
                             <!-- Only owned packs allowed to delete -->
                             @if ($pack->getUser() !== null && $pack->getUser()->getId() !== $user->getId())
-                                <span class="right" style="color: #999; font-size: 0.9em">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
+                                <span class="text-gray-small right">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
                             @else
                                 @include('./components/commandButton.blade.php', [
                                     'command' => $pack->prepareCommand(new \Commands\Command\Pack\RemovePackWithData),
