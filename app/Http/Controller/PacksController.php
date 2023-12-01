@@ -40,7 +40,6 @@ class PacksController extends AbstractController
         $dirs = array_intersect_key($node->getDirs(), $node->getRepos());
 
         return $this->view->render('packs/show.blade.php', [
-            'packData'     => $pack->getData(),
             'pId'          => $pack->getProject()->getId(),
             'id'           => $pack->getId(),
             'branches'     => $packReposByBranches,

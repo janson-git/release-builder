@@ -7,7 +7,7 @@ use Commands\CommandConfig;
 
 class CheckpointCreateCommand extends CommandProto
 {
-    private $checkpointName = '';
+    private string $checkpointName = '';
     
     public function prepare()
     {

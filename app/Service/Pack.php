@@ -7,6 +7,8 @@ use Commands\Command\Pack\GitCreateTag;
 use Commands\Command\SlotDeploy;
 use Commands\CommandConfig;
 use Commands\CommandContext;
+use DateTimeImmutable;
+use Exception;
 use Git\GitRepository;
 use Commands\Command\LocalDeploy;
 use Commands\Command\CommandProto;
@@ -28,35 +30,26 @@ class Pack
 
     protected Project $project;
     protected ?User $user = null;
+    protected ?Node $node = null;
 
-    /**
-     * @var Node
-     */
-    protected $node;
+    protected string $sandboxPath;
 
-    protected $sandboxPath;
-
-    protected $dirsToInit = [];
+    /** @var string[]  */
+    protected array $dirsToInit = [];
 
     /** @var GitRepository[] */
-    protected $repos = [];
-
-    protected $mergeResults = [];
-
-    private $branches = [];
-
-    private $data;
+    protected array $repos = [];
+    protected array $mergeResults = [];
+    private array $branches = [];
 
     /** @var Checkpoint[] */
-    private $checkPoints = [];
+    private array $checkPoints = [];
 
     protected $error = '';
 
-    protected $allowPush = true;
+    protected bool $allowPush = true;
 
-    /**
-     * Sandbox constructor.
-     */
+
     public function __construct()
     {
         $this->sandboxPath = SANDBOX_DIR;
@@ -74,7 +67,7 @@ class Pack
     {
         $name = $this->getName();
         if (!$name) {
-            throw new \Exception('Call '.__FUNCTION__.' without "name" set');
+            throw new Exception('Call '.__FUNCTION__.' without "name" set');
         }
 
         $projectDir = $this->getProject()->getNameQuoted();
@@ -188,24 +181,25 @@ class Pack
     private function init(): self
     {
         if ($this->id === null) {
-            throw new \Exception('Pack ID not defined!');
+            throw new Exception('Pack ID not defined!');
         }
 
-        $this->data = Data::scope(App::DATA_PACKS)->getById($this->id);
-        $this->projectId = $this->data['project'];
-        $this->userId = $this->data['user'] ?? null;
+        $packData = Data::scope(App::DATA_PACKS)->getById($this->id);
+        $this->projectId = $packData['project'];
+        $this->userId = $packData['user'] ?? null;
 
         $this->project = Project::getById($this->projectId);
         $this->user = $this->userId ? User::getById($this->userId) : null;
 
-        $this->branches = $this->data['branches'] ?: [];
+        $this->branches = $packData['branches'] ?: [];
         natsort($this->branches);
 
-        $this->name = isset($this->data['name']) && $this->data['name'] ? $this->data['name']
+        $this->name = isset($packData['name']) && $packData['name']
+            ? $packData['name']
             : $this->id;
 
         if (env('ALLOW_PUSH_ONLY_FOR_RELEASES')) {
-            $this->allowPush = 0 === strpos($this->name, 'release_');
+            $this->allowPush = str_starts_with($this->name, 'release_');
         }
 
         $node = $this->project->getNode();
@@ -228,9 +222,9 @@ class Pack
                 mkdir($path, 0774, true);
                 chmod($path, 0774);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $msg = 'Cannot create directory ' . $path . ' by user: "' . `whoami` . '" by reason:"' . $e->getMessage();
-            throw new \Exception($msg);
+            throw new Exception($msg);
         }
 
         $this->loadSandboxRepos();
@@ -270,7 +264,7 @@ class Pack
                 foreach ($branchesDetailed as $data) {
                     $details = $data[$branchName];
 
-                    $branchDate = new \DateTimeImmutable($details['date']);
+                    $branchDate = new DateTimeImmutable($details['date']);
                     if ($latestDate !== null && $latestDate > $branchDate) {
                         continue;
                     }
@@ -334,7 +328,7 @@ class Pack
     }
 
     /**
-     * @return \Git\GitRepository[]
+     * @return GitRepository[]
      */
     public function getRepos(): array
     {
@@ -349,10 +343,7 @@ class Pack
         return $this->mergeResults;
     }
 
-    /**
-     * @return string
-     */
-    public function getError()
+    public function getError(): string
     {
         return $this->error;
     }
@@ -383,7 +374,7 @@ class Pack
 
     public function getCheckpoint($id): ?Checkpoint
     {
-        return isset($this->checkPoints[$id]) ? $this->checkPoints[$id] : null;
+        return $this->checkPoints[$id] ?? null;
     }
 
     public function setProjectId(int $projectId): self
@@ -424,14 +415,6 @@ class Pack
         $this->user = $user;
         $this->userId = $user->getId();
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getData()
-    {
-        return $this->data;
     }
 
     public function save(): void

@@ -6,6 +6,7 @@ use Admin\App;
 use Commands\Command\Project\FetchProjectRepos;
 use Commands\CommandContext;
 use Psr\Http\Message\ResponseInterface;
+use Service\Pack;
 use Service\Project;
 use Service\Node;
 use Service\Data;
@@ -19,14 +20,14 @@ class ProjectsController extends AbstractController
         $projects = Data::scope(App::DATA_PROJECTS)->getAll();
         $packsData = Data::scope(App::DATA_PACKS)->getAll();
 
-        $sets = [];
+        $packsByProjects = [];
         foreach ($packsData as $id => $data) {
-            $sets[$data['project']][$id] = $data;
+            $packsByProjects[$data['project']][$id] = Pack::getById($id);
         }
 
         return $this->view->render('projects/index.blade.php', [
             'projects' => $projects,
-            'branchSets' => $sets,
+            'packsByProjects' => $packsByProjects,
             'hasRepos' => !empty($this->app->directory()->allData()),
         ]);
     }
