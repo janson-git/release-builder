@@ -3,9 +3,12 @@
 namespace Service;
 
 use Admin\App;
+use Service\Auth\HasAccess;
 
 class User
 {
+    use HasAccess;
+
     // map to Data scope fields
     protected const F_ID = 'id';
     protected const F_NAME = 'name';
@@ -41,6 +44,18 @@ class User
     private ?string $accessTokenExpirationDate = null;
 
     public function __construct() {}
+
+    public static function getById(string $id): ?self
+    {
+        $data = Data::scope(App::DATA_USERS)->getWhere('id', $id);
+        if (!$data) {
+            return null;
+        }
+        $userData = array_pop($data);
+
+        $user = new self();
+        return $user->loadBy($userData['login']);
+    }
 
     public static function getByLogin(string $login): ?self
     {

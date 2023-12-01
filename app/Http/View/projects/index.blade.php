@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $view \Admin\View
- * @var $branchSets
+ * @var $packsByProjects array
  */
 
 use Service\Breadcrumbs\BreadcrumbsFactory;
@@ -32,40 +32,49 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
     <div class="pure-u-md-1-2 pure-u-xl-2-3">
     @foreach ($projects as $id => $dirs)
         <div class="pure-u-1 card project-card">
-                <?php
-                $dirs = $dirs ?: [];
-                array_walk($dirs, function (&$val) {
-                    $val = trim($val, '/');
-                });
-                ?>
-                <h1><i class="fa-solid fa-folder"></i> <a href="/projects/{{ $id }}">{{ implode(', ', $dirs) }}</a></h1>
+            <?php
+            $dirs = $dirs ?: [];
+            array_walk($dirs, function (&$val) {
+                $val = trim($val, '/');
+            });
+            ?>
+            <h1><i class="fa-solid fa-folder"></i> <a href="/projects/{{ $id }}">{{ implode(', ', $dirs) }}</a></h1>
 
-                <div class="pure-g">
-                @if (isset($branchSets[$id]))
-                    <div class="pure-u-1">Packs:</div>
+            <div class="pure-g">
+            @if (isset($packsByProjects[$id]))
+                <div class="pure-u-1">Packs:</div>
 
-                    @foreach ($branchSets[$id] as $packId => $branchData)
-                    <div class="pure-u-1 dataset-item">
-                        <div>
+                @foreach ($packsByProjects[$id] as $packId => $pack)
+                <div class="pure-u-1 dataset-item">
+                    <div class="pure-g">
+                        <div class="pure-u-2-3">
                             <a href="/packs/{{ $packId }}" class="pack-link">
-                                <span class="icon-border"><i class="fa-regular fa-file-lines"></i></span> {{ $branchData['name'] ?? $packId }}
+                                <span class="icon-border"><i class="fa-regular fa-file-lines"></i></span> {{ $pack->getName() }}
                             </a>
 
-                            <?php $count = count($branchData['branches'] ?? []); ?>
-
+                            <?php
+                                $count = count($pack->getBranches());
+                            ?>
                             @if($count > 0)
-                            <span class="tool" data-tip="{!! @implode("\n", @$branchData['branches']) !!}">
+                            <span class="tool" data-tip="{!! implode("\n", $pack->getBranches()) !!}">
                                 Branches ({{ $count }}) <i class="fa-solid fa-info-circle"></i>
                             </span>
                             @else
                             <span class="empty"><i>No branches added</i></span>
                             @endif
                         </div>
+                        <div class="pure-u-1-3">
+                            <!-- Here a place to show pack owner name -->
+                            @if ($pack->getUser() && !$user->owned($pack))
+                                <span class="text-gray-small right">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
+                            @endif
+                        </div>
                     </div>
-                    @endforeach
-
-                @endif
                 </div>
+                @endforeach
+
+            @endif
+            </div>
         </div>
     @endforeach
     </div>

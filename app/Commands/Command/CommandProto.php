@@ -112,4 +112,9 @@ abstract class CommandProto
     {
         return false;
     }
+
+    public function isDisabled(): bool
+    {
+        return false;
+    }
 }

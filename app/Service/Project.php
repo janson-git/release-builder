@@ -7,22 +7,14 @@ use Exceptions\NotFoundException;
 
 class Project
 {
-    /** @var int  */
-    private $id;
-    /** @var string */
-    private $name;
+    private ?int $id = null;
+    private ?string $name = null;
 
     /** @var string[] */
-    private $projectRootDirs;
+    private array $projectRootDirs = [];
 
-    /** @var string[] */
-    private $dirSets = [];
-    
-    /** @var Node */
-    private $node;
-    
-    /** @var SlotsPool */
-    private $slotsPool;
+    private ?Node $node = null;
+    private ?SlotsPool $slotsPool = null;
 
     public function __construct() {}
 
@@ -42,21 +34,17 @@ class Project
             throw new NotFoundException('Project #' . $this->id . ' not found');
         }
         
-        /* get project data */
         $this->projectRootDirs = $projectData;
-
-        /* boot node */
-        $this->node = new Node();
-        $this->node->setDirs($this->projectRootDirs);
-    
-        $this->slotsPool = new SlotsPool();
-        $this->slotsPool->setProjectId($this->id);
 
         return $this;
     }
 
-    public function getNode(): ?Node
+    public function getNode(): Node
     {
+        if ($this->node === null) {
+            $this->node = new Node();
+            $this->node->setDirs($this->projectRootDirs);
+        }
         return $this->node;
     }
 
@@ -71,11 +59,6 @@ class Project
         return $this;
     }
 
-    public function getDirSets(): array
-    {
-        return $this->dirSets;
-    }
-
     public function getProjectRootDirs(): ?array
     {
         return $this->projectRootDirs;
@@ -87,7 +70,7 @@ class Project
         return $this;
     }
 
-    public function getPaths()
+    public function getPaths(): array
     {
         return $this->projectRootDirs;
     }
@@ -129,6 +112,10 @@ class Project
 
     public function getSlotsPool(): SlotsPool
     {
+        if ($this->slotsPool === null) {
+            $this->slotsPool = new SlotsPool();
+            $this->slotsPool->setProjectId($this->id);
+        }
         return $this->slotsPool;
     }
 

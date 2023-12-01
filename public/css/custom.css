@@ -39,7 +39,13 @@ body {
 .text-error {
     color: #c44;
 }
-
+.text-gray {
+    color: #999;
+}
+.text-gray-small {
+    color: #999;
+    font-size: 0.9em;
+}
 /*** MAIN MENU ******/
 .pure-menu ul li i {
     width: 1.2em;

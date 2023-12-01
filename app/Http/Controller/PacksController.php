@@ -15,6 +15,9 @@ class PacksController extends AbstractController
         $pack->getNode()->loadBranches();
 
         $this->setTitle('<i class="fa-solid fa-file-lines"></i>' . __('pack') . " '{$pack->getName()}'");
+        if ($pack->getUser() !== null) {
+            $this->setSubTitle('owned by @' . $pack->getUser()->getLogin());
+        }
         $node = $pack->getNode();
         $packReposByBranches = $node->getToMasterStatus($pack->getBranches());
 
@@ -37,7 +40,6 @@ class PacksController extends AbstractController
         $dirs = array_intersect_key($node->getDirs(), $node->getRepos());
 
         return $this->view->render('packs/show.blade.php', [
-            'packData'     => $pack->getData(),
             'pId'          => $pack->getProject()->getId(),
             'id'           => $pack->getId(),
             'branches'     => $packReposByBranches,

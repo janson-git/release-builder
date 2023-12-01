@@ -4,6 +4,7 @@
  * @var $fetchCommand \Commands\Command\Project\FetchProjectRepos
  * @var $packs \Service\Pack[]
  * @var $view \Admin\View
+ * @var \Service\User $user
  */
 
 use Service\Breadcrumbs\BreadcrumbsFactory;
@@ -50,10 +51,15 @@ $view
                                 <i class="fa-regular fa-file-lines"></i> {{ $pack->getName() }}
                             </a>
 
-                            @include('./components/commandButton.blade.php', [
-                                'command' => $pack->prepareCommand(new \Commands\Command\Pack\RemovePackWithData),
-                                'classes' => 'btn-s right btn-danger-outline',
-                            ])
+                            <!-- Only owned packs allowed to delete -->
+                            @if ($pack->getUser() && !$user->owned($pack))
+                                <span class="text-gray-small right">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
+                            @else
+                                @include('./components/commandButton.blade.php', [
+                                    'command' => $pack->prepareCommand(new \Commands\Command\Pack\RemovePackWithData),
+                                    'classes' => 'btn-s right btn-danger-outline',
+                                ])
+                            @endif
                         </div>
                         <ul class="branch-list">
                             @if (!empty($branches))
