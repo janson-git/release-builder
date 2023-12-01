@@ -52,7 +52,7 @@ $view
                             </a>
 
                             <!-- Only owned packs allowed to delete -->
-                            @if ($pack->getUser() !== null && $pack->getUser()->getId() !== $user->getId())
+                            @if ($pack->getUser() && !$user->owned($pack))
                                 <span class="text-gray-small right">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
                             @else
                                 @include('./components/commandButton.blade.php', [

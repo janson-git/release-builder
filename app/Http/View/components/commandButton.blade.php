@@ -11,7 +11,7 @@ if (isset($classes)) {
     $classString .= ' ' . $classes;
 }
 
-$disabled = $disabled ?? false;
+$disabled = $disabled ?? $command->isDisabled();
 ?>
 @if ($disabled)
     <span class="{{ $classString }}" disabled="disabled">{{ $command->getHumanName() }}</span>

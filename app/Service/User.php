@@ -3,9 +3,12 @@
 namespace Service;
 
 use Admin\App;
+use Service\Auth\HasAccess;
 
 class User
 {
+    use HasAccess;
+
     // map to Data scope fields
     protected const F_ID = 'id';
     protected const F_NAME = 'name';

@@ -6,6 +6,7 @@
  * @var $pId
  * @var $pack \Service\Pack
  * @var $view \Admin\View
+ * @var $user \Service\User
  */
 
 use Service\Breadcrumbs\BreadcrumbsFactory;
@@ -56,7 +57,7 @@ $view
             <div class="pure-g">
 
                 @php($lastCheckpointId = $pack->getLastCheckpoint()->getName())
-
+                @php($disabled = !$user->owned($pack))
                 @foreach ($pack->getCheckpoints() as $cpId => $checkPoint)
                     @php( $className = ($lastCheckpointId === $cpId ? ' active ' : ''))
                     <div class="pure-u-1 pure-u-lg-1-2 pure-u-xl-1-3 card build-card {{ $className }}">
@@ -69,6 +70,7 @@ $view
                             @foreach ($checkPoint->getCommands() as $command)
                                 @include('./components/commandButton.blade.php', [
                                     'command' => $command,
+                                    'disabled' => $disabled
                                 ])
                                 <br>
                             @endforeach
@@ -101,9 +103,15 @@ $view
         <div class="pure-u-1 pure-u-md-2-3 bset">
             <h3>{{ __('branches_in_pack') }} ({{ count($branches) }})</h3>
 
-            <a href="/branches/add/{{ $pId }}/{{ $id }}" class="pure-button btn-primary">Add branches</a>
-            <a href="/branches/remove/{{ $pId }}/{{ $id }}" class="pure-button ">Remove branches</a>
-            <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="pure-button ">Fork pack</a>
+            @if($user->owned($pack))
+                <a href="/branches/add/{{ $pId }}/{{ $id }}" class="pure-button btn-primary">Add branches</a>
+                <a href="/branches/remove/{{ $pId }}/{{ $id }}" class="pure-button ">Remove branches</a>
+                <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="pure-button ">Fork pack</a>
+            @else
+                <span disabled="disabled" class="pure-button btn-primary">Add branches</span>
+                <span disabled="disabled" class="pure-button ">Remove branches</span>
+                <span disabled="disabled" class="pure-button ">Fork pack</span>
+            @endif
             <ul>
                 @foreach ($branches as $branchName => $repos)
                     <li class="{{ !$repos ? 'inactive' : '' }}">{{ $branchName }}
@@ -124,12 +132,13 @@ $view
 
         <div class="pure-u-1 pure-u-md-1-3 bset">
             <h3>{{ __('pack_controls') }}</h3>
+            @php($disabled = !$user->owned($pack))
             @foreach ($pack->getPackCommands() as $command)
                 <div>
                     @if($command->hasQuestion())
-                        @include('./components/commandButtonWithQuestion.blade.php', ['command' => $command])
+                        @include('./components/commandButtonWithQuestion.blade.php', ['command' => $command, 'disabled' => $disabled])
                     @else
-                        @include('./components/commandButton.blade.php', ['command' => $command])
+                        @include('./components/commandButton.blade.php', ['command' => $command, 'disabled' => $disabled])
                     @endif
                 </div>
             @endforeach
