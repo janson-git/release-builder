@@ -106,12 +106,12 @@ $view
             @if($user->owned($pack))
                 <a href="/branches/add/{{ $pId }}/{{ $id }}" class="pure-button btn-primary">Add branches</a>
                 <a href="/branches/remove/{{ $pId }}/{{ $id }}" class="pure-button ">Remove branches</a>
-                <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="pure-button ">Fork pack</a>
             @else
                 <span disabled="disabled" class="pure-button btn-primary">Add branches</span>
                 <span disabled="disabled" class="pure-button ">Remove branches</span>
-                <span disabled="disabled" class="pure-button ">Fork pack</span>
             @endif
+            <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="pure-button ">Fork pack</a>
+
             <ul>
                 @foreach ($branches as $branchName => $repos)
                     <li class="{{ !$repos ? 'inactive' : '' }}">{{ $branchName }}
