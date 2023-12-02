@@ -77,10 +77,12 @@
         </div>
     @endforeach
 
+    @if (!$isPackDeleted && $context->getPack())
     <div class="pure-u-1">
         <a href="/web/pack/{{ $packId }}" class="pure-button btn-primary-outline btn-s">
             <i class="fa-solid fa-arrow-left"></i> {{ __('back_to_pack') }}
         </a>
     </div>
+    @endif
 </div>
 @endsection

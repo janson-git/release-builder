@@ -39,14 +39,14 @@ class BranchesController  extends AbstractController
 
         $this->node = $node;
         // pack ID could be missed if it is action 'CREATE PACK'
-        // in other actions: add/remove branches, fork pack - Pack ID should be presents
+        // in other actions: add/remove branches, fork pack - Pack ID should be presented
         if ($packId) {
             $this->pack = Pack::getById($packId);
             $this->packBranches = $this->pack->getBranches();
         }
     }
 
-    public function addBranches(int $projectId, int $packId)
+    public function addBranchesForm(int $projectId, int $packId)
     {
         $this->prepare($projectId, $packId);
 
@@ -56,7 +56,7 @@ class BranchesController  extends AbstractController
         ]);
     }
 
-    public function removeBranches(int $projectId, int $packId)
+    public function removeBranchesForm(int $projectId, int $packId)
     {
         $this->prepare($projectId, $packId);
 
@@ -67,7 +67,7 @@ class BranchesController  extends AbstractController
         ]);
     }
 
-    public function forkPack(int $projectId, int $packId)
+    public function forkPackForm(int $projectId, int $packId)
     {
         $this->prepare($projectId, $packId);
 
@@ -78,7 +78,7 @@ class BranchesController  extends AbstractController
         ]);
     }
 
-    public function createPack(int $projectId)
+    public function createPackForm(int $projectId)
     {
         $this->prepare($projectId);
 
@@ -112,9 +112,6 @@ class BranchesController  extends AbstractController
             ]);
     }
 
-    /**
-     * Сохранение выбора
-     */
     public function savePack(int $projectId): ResponseInterface
     {
         $action = $this->p('action');

@@ -40,10 +40,10 @@ $app->group('', function(\Admin\App $app) {
     $app->get('/git/add-repository[/]', [GitController::class, 'showAddRepositoryForm']);
     $app->post('/git/add-repository[/]', [GitController::class, 'addRepository']);
 
-    $app->get('/branches/add/{projectId:[0-9]+}/{packId:[0-9]+}[/]', [BranchesController::class, 'addBranches']);
-    $app->get('/branches/remove/{projectId:[0-9]+}/{packId:[0-9]+}[/]', [BranchesController::class, 'removeBranches']);
-    $app->get('/branches/fork-pack/{projectId:[0-9]+}/{packId:[0-9]+}[/]', [BranchesController::class, 'forkPack']);
-    $app->get('/branches/create-pack/{projectId:[0-9]+}[/]', [BranchesController::class, 'createPack']);
+    $app->get('/branches/add/{projectId:[0-9]+}/{packId:[0-9]+}[/]', [BranchesController::class, 'addBranchesForm']);
+    $app->get('/branches/remove/{projectId:[0-9]+}/{packId:[0-9]+}[/]', [BranchesController::class, 'removeBranchesForm']);
+    $app->get('/branches/fork-pack/{projectId:[0-9]+}/{packId:[0-9]+}[/]', [BranchesController::class, 'forkPackForm']);
+    $app->get('/branches/create-pack/{projectId:[0-9]+}[/]', [BranchesController::class, 'createPackForm']);
     $app->post('/branches/save/{projectId:[0-9]+}[/]', [BranchesController::class, 'savePack']);
 
     $app->get('/config[/]', [ConfigController::class, 'index']);
