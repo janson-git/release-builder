@@ -20,11 +20,13 @@ class ErrorHandler
 
     public function __invoke(Request $request, Response $response, \Throwable $exception)
     {
+        $code = $exception->getCode() > 0 ? $exception->getCode() : 500;
+
         if ($request->isXhr()) {
             return $response
-                ->withStatus(500)
+                ->withStatus($code)
                 ->withJson([
-                    'code' => 500,
+                    'code' => $code,
                     'reason' => 'Internal Server Error',
                     'message' => $exception->getMessage(),
                     'file' => $exception->getFile(),
@@ -37,13 +39,13 @@ class ErrorHandler
         $renderer = $this->container->get('blade');
 
         $output = $renderer->run('./error.blade.php', [
-            'code' => 500,
+            'code' => $code,
             'reason' => 'Internal Server Error',
             'exception' => $exception,
         ]);
 
         return $response
-            ->withStatus(500)
+            ->withStatus($code)
             ->write($output);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controller;
 
 use Admin\App;
 use Admin\View;
+use Exceptions\AccessForbiddenException;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -48,5 +49,16 @@ abstract class AbstractController
     public function setSubTitle(string $subTitle): void
     {
         $this->view->setTitle($subTitle);
+    }
+
+    /**
+     * @throws AccessForbiddenException
+     */
+    public function authorize(object $entity): void
+    {
+        if (!$this->app->getAuth()->getUser()->owned($entity)) {
+            throw new AccessForbiddenException('You are not the owner of pack');
+        }
+
     }
 }

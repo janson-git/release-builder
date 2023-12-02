@@ -49,6 +49,7 @@ class BranchesController  extends AbstractController
     public function addBranchesForm(int $projectId, int $packId)
     {
         $this->prepare($projectId, $packId);
+        $this->authorize($this->pack);
 
         return $this->renderList([
             'title' => __('add_branches'),
@@ -59,6 +60,7 @@ class BranchesController  extends AbstractController
     public function removeBranchesForm(int $projectId, int $packId)
     {
         $this->prepare($projectId, $packId);
+        $this->authorize($this->pack);
 
         return $this->renderList([
             'title' => __('remove_branches_from_pack'),
@@ -123,8 +125,10 @@ class BranchesController  extends AbstractController
         if ($action === self::ACTION_PACK_CREATE || $action === self::ACTION_PACK_FORK) {
             $pack = $this->_createPack($branches);
         } elseif ($action === self::ACTION_PACK_ADD_BRANCH) {
+            $this->authorize($this->pack);
             $pack = $this->_updatePack((int) $packId, $branches);
         } elseif ($action === self::ACTION_PACK_CHANGE_BRANCHES) {
+            $this->authorize($this->pack);
             $pack = $this->_changePack((int) $packId, $branches);
         }
 

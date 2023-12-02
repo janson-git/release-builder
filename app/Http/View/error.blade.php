@@ -33,13 +33,17 @@
     </div>
     <div class="content">
         <h3>{{ $exception->getMessage() }}</h3>
-        <p>
-            <b>in {{ $exception->getFile() }} on {{ $exception->getLine() }}</b>
-        </p>
-        <p>Stack trace:</p>
-        <div style="font-family: monospace">
-            {!! str_replace("\n", '<br>', $exception->getTraceAsString()) !!}
-        </div>
+
+        @if(DEBUG_MODE)
+            <p>
+                <b>in {{ $exception->getFile() }} on {{ $exception->getLine() }}</b>
+            </p>
+
+            <p>Stack trace:</p>
+            <div style="font-family: monospace">
+                {!! str_replace("\n", '<br>', $exception->getTraceAsString()) !!}
+            </div>
+        @endif
     </div>
 </body>
 </html>
