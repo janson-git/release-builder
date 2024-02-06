@@ -141,7 +141,7 @@ class BranchesController  extends AbstractController
     private function _createPack(array $branches): Pack
     {
         $name = $this->p('name', '');
-        $name = preg_replace('/\W+/', '_', $name);
+        $name = preg_replace('/[^\w\-]+/', '_', $name);
 
         $pack = new Pack();
         $pack->setName($name)
