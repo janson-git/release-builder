@@ -48,7 +48,7 @@ class UsersController extends AbstractController
             $name = $this->p('name');
             $email = $this->p('email');
 
-            $pattern = "#[^a-zA-Z0-9@\s]*#";
+            $pattern = "#[^a-zA-Z0-9@\.\s]*#";
             $name = preg_filter($pattern, '', $name);
             $email = preg_filter($pattern, '', $email);
 
