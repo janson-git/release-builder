@@ -15,8 +15,10 @@ class ProjectsController extends AbstractController
 {
     public function index(): ResponseInterface
     {
-        $this->setTitle( '<i class="fa-solid fa-folder-tree"></i>' . __('projects'));
-        
+        $this->setTitle( __('projects'));
+        ($hasRepos = !empty($this->app->directory()->allData()))
+            && $this->setAction("/projects/create-new", __('create_project'));
+
         $projects = Data::scope(App::DATA_PROJECTS)->getAll();
         $packsData = Data::scope(App::DATA_PACKS)->getAll();
 
@@ -25,11 +27,7 @@ class ProjectsController extends AbstractController
             $packsByProjects[$data['project']][$id] = Pack::getById($id);
         }
 
-        return $this->view->render('projects/index.blade.php', [
-            'projects' => $projects,
-            'packsByProjects' => $packsByProjects,
-            'hasRepos' => !empty($this->app->directory()->allData()),
-        ]);
+        return $this->view->render('projects/index.blade.php', compact('projects', 'packsByProjects', 'hasRepos'));
     }
 
     public function show($id): ResponseInterface

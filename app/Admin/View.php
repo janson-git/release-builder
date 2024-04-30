@@ -104,6 +104,13 @@ class View
         return $this;
     }
 
+    public function setAction(string $path, string $caption): self
+    {
+        $this->data['action'] = ['path' => $path, 'caption' => $caption];
+
+        return $this;
+    }
+
     public function render($template, $data = null): Response
     {
         $container = $this->app->getContainer();

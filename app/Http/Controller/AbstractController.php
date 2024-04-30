@@ -51,6 +51,11 @@ abstract class AbstractController
         $this->view->setTitle($subTitle);
     }
 
+    public function setAction($path, $caption): void
+    {
+        $this->view->setAction($path, $caption);
+    }
+
     /**
      * @throws AccessForbiddenException
      */

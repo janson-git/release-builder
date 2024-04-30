@@ -14,104 +14,50 @@ $currentPath = \request()->getUri()->getPath();
     <link href="/fontawesome/css/regular.css" rel="stylesheet">
     <link href="/fontawesome/css/solid.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/pure-min.css">
-    <link rel="stylesheet" href="/css/side-menu.css">
-    <link rel="stylesheet" href="/css/girds-min.css">
-    <link rel="stylesheet" href="/css/custom.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+{{--    <link rel="stylesheet" href="/css/pure-min.css">--}}
+{{--    <link rel="stylesheet" href="/css/side-menu.css">--}}
+{{--    <link rel="stylesheet" href="/css/girds-min.css">--}}
+{{--    <link rel="stylesheet" href="/css/custom.css">--}}
+    <link rel="stylesheet" href="/css/new.css">
     <link rel="stylesheet" href="/css/custom-buttons.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/rocket_32.png">
     <script src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
-<body>
-<div id="layout">
-    <!-- Menu toggle -->
-    <a href="#menu" id="menuLink" class="menu-link">
-        <!-- Hamburger icon -->
-        <span></span>
-    </a>
-    <div id="menu">
-        <div class="pure-menu pure-menu-open">
-            <a class="pure-menu-heading" href="/user">{{ $user?->getLogin() }}</a>
-            <ul>
-                @foreach ( $mainMenu as $menuItem)
-                <?php /** @var $menuItem \Service\Menu\MenuItem */ ?>
-                <li {!! $menuItem->isSelected() ? 'class="pure-menu-selected"' : '' !!}>
-                    <a href="{{$menuItem->route }}">
-                        @if ($menuItem->iconClass)
-                            <i class="{{ $menuItem->iconClass }} icon"></i>
-                        @else
-                            <i class="fa-solid icon"></i>
-                        @endif
-                        <span>{{$menuItem->title }}</span>
-                    </a>
-                </li>
-                @endforeach
-            </ul>
-        </div>
+<body class="flex justify-around">
+<div class="w-1/2">
+    @include('layout.navigation', ['mainMenu' => $mainMenu])
+
+{{--        @include('layout.breadcrumbs', ['view' => $view])--}}
+
+    <div class="mt-6 flex justify-between items-center">
+        @include('layout.heading', ['header' => $header, 'title' => $title])
+        @if (isset($action))
+            <a class="block px-4 py-2 rounded bg-gray-100 hover:bg-gray-200" href="{{ $action['path'] }}">{{ $action['caption'] }}</a>
+        @endif
     </div>
 
-    <div id="main">
+    <div class="mt-4">
+        @yield('content')
 
-        <div class="breadcrumbs pure-g">
-            @if ( $view->hasBreadcrumbs() )
-            <div class="pure-u-4-5">
-                <ul>
-                    @foreach ($view->getBreadcrumbs() as $item)
-                    <?php /** @var $item \Service\Breadcrumbs\Breadcrumb */ ?>
-                    <li>
-                        <?php $isActiveBreadcrumb = $item->url !== null && $item->url !== \request()->getUri()->getPath() ?>
-                        {!! $isActiveBreadcrumb ? "<a href=\"$item->url\">" : '<span>' !!}
-                            @if ($item->iconClass)
-                            <i class="{{ $item->iconClass }} icon"></i>
-                            @endif
-                            <p>{{ $item->title }}</p>
-                        {!! $isActiveBreadcrumb ? '</a>' : '<span>' !!}
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
+{{--        --}}{{-- todo move it somewhere--}}
+{{--        @if (isset($_logs))--}}
+{{--            <button id="logs-toggle-button">--}}
+{{--                Show Debug Logs--}}
+{{--            </button>--}}
+{{--            <div class="pure-g logs-cont" id="logs-container">--}}
+{{--                @foreach ($_logs as $info)--}}
+{{--                    <div class="pure-u-1">--}}
+{{--                        <div style="word-break: break-all; padding: 0.3em">--}}
+{{--                            {{ $info }}--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                @endforeach--}}
+{{--            </div>--}}
+{{--        @endif--}}
 
-            <div class="pure-u">
-                <div id="loader"></div>
-            </div>
-        </div>
-        <div class="breadcrumbs-placeholder pure-u-1"></div>
-
-        @if ( $header ||  $title)
-        <div class="header">
-            @if ( $header)
-                <h1>{!! $header !!}</h1>
-            @endif
-            @if ( $title )
-                <h2>{!! $title !!}</h2>
-            @endif
-        </div>
-        @else
-            <br/>
-        @endif
-
-        <div class="content">
-
-            @yield('content')
-
-            @if (isset($_logs))
-                <button id="logs-toggle-button">
-                    Show Debug Logs
-                </button>
-                <div class="pure-g logs-cont" id="logs-container">
-                    @foreach ($_logs as $info)
-                        <div class="pure-u-1">
-                            <div style="word-break: break-all; padding: 0.3em">
-                                {{ $info }}
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
-        </div>
     </div>
 </div>
 

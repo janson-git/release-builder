@@ -12,42 +12,33 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
 @extends('./layout.blade.php')
 
 @section('content')
-<div class="pure-g">
+<div>
+    @if (!$hasRepos)
+        <div class="flex justify-start items-center">
+            <a href="/git/add-repository" class="px-4 py-2 rounded bg-gray-100 hover:bg-gray-200">{{ __('add_repository') }}</a>
+            <h3 class="ml-4 text-warning"><i class="fa-solid fa-exclamation-circle"></i> Add repository before creating project</h3>
+        </div>
+    @endif
 
-
-@if (!$hasRepos)
-    <div class="pure-u-1">
-        <span class="pure-button btn-primary" disabled>{{ __('create_project') }}</span>
-    </div>
-    <div class="pure-u-1">
-        <h3 class="text-warning"><i class="fa-solid fa-exclamation-circle"></i> Add repository before creating project</h3>
-        <a href="/git/add-repository" class="pure-button btn-secondary">{{ __('add_repository') }}</a>
-    </div>
-@else
-    <div class="pure-u-1">
-        <a href="/projects/create-new" class="pure-button btn-primary-outline">{{ __('create_project') }}</a>
-    </div>
-@endif
-
-    <div class="pure-u-md-1-2 pure-u-xl-2-3">
     @foreach ($projects as $id => $dirs)
-        <div class="pure-u-1 card project-card">
+        <div class="w-full mt-8 card project-card">
             <?php
             $dirs = $dirs ?: [];
             array_walk($dirs, function (&$val) {
                 $val = trim($val, '/');
             });
             ?>
-            <h1><i class="fa-solid fa-folder"></i> <a href="/projects/{{ $id }}">{{ implode(', ', $dirs) }}</a></h1>
+            <div class="text-lg">
+                <i class="text-gray-800 fa-solid fa-folder"></i>
+                <a class="ml-2" href="/projects/{{ $id }}">{{ implode(', ', $dirs) }}</a>
+            </div>
 
-            <div class="pure-g">
             @if (isset($packsByProjects[$id]))
-                <div class="pure-u-1">Packs:</div>
-
+                <div class="mt-1">
                 @foreach ($packsByProjects[$id] as $packId => $pack)
-                <div class="pure-u-1 dataset-item">
+                <div class="mt-1">
                     <div class="pure-g">
-                        <div class="pure-u-2-3">
+                        <div class="group/item pure-u-2-3">
                             <a href="/packs/{{ $packId }}" class="pack-link">
                                 <span class="icon-border"><i class="fa-regular fa-file-lines"></i></span> {{ $pack->getName() }}
                             </a>
@@ -72,9 +63,8 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
                     </div>
                 </div>
                 @endforeach
-
+                </div>
             @endif
-            </div>
         </div>
     @endforeach
     </div>
