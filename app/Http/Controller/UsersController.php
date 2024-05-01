@@ -43,6 +43,7 @@ class UsersController extends AbstractController
     public function committerInfo(): Response
     {
         $this->setTitle(__('set_committer'));
+        $this->setAction('/user', 'Back to profile');
 
         if ($this->request->isPost()) {
             $name = $this->p('name');
@@ -67,6 +68,7 @@ class UsersController extends AbstractController
     public function accessToken(): Response
     {
         $this->setTitle(__('set_pat'));
+        $this->setAction('/user', 'Back to profile');
 
         $text = __('pat_token_page_description');
 
@@ -91,15 +93,16 @@ class UsersController extends AbstractController
 
     public function checkToken(): Response
     {
+        // todo fix bug doesn't work as expected if token is invalid
         $token = $this->p('token');
 
-        $guthubResponse = $this->getGithubUserByToken($token);
+        $githubResponse = $this->getGithubUserByToken($token);
 
-        $headers = $this->getHeadersArray($guthubResponse);
+        $headers = $this->getHeadersArray($githubResponse);
         $expirationDate = $headers['github-authentication-token-expiration'];
         $tokenExpirationDate = new \DateTimeImmutable($expirationDate);
 
-        $body = $this->getBody($guthubResponse);
+        $body = $this->getBody($githubResponse);
         $body = json_decode( $body, true);
 
         $githubLogin = $body['login'];

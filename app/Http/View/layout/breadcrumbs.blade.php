@@ -5,7 +5,7 @@
                 @foreach ($view->getBreadcrumbs() as $item)
                         <?php /** @var $item \Service\Breadcrumbs\Breadcrumb */ ?>
                     <li>
-                            <?php $isActiveBreadcrumb = $item->url !== null && $item->url !== \request()->getUri()->getPath() ?>
+                        <?php $isActiveBreadcrumb = $item->url !== null && $item->url !== \request()->getUri()->getPath() ?>
                         {!! $isActiveBreadcrumb ? "<a href=\"$item->url\">" : '<span>' !!}
                         @if ($item->iconClass)
                             <i class="{{ $item->iconClass }} icon"></i>

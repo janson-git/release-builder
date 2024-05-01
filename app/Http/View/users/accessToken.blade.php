@@ -1,52 +1,47 @@
 @extends('./layout.blade.php')
 
 @section('content')
-    <div class="pure-g">
-        <div class="pure-u-1">
-            <section class="top-page-nav">
-                <a href="/user" class="pure-button btn-secondary-outline btn-s">
-                    <i class="fa-solid fa-arrow-left"></i> {{ __('back_to_profile') }}
-                </a>
-            </section>
-        </div>
-    </div>
+    <p class="mt-4">{{ $msg }}</p>
 
-    <div class="pure-g">
-        <div class="pure-u pure-u-md-1 pure-u-lg-1-2">
-            <p>{{ $msg }}</p>
+    @if ($user->getAccessToken())
+        <p class="mt-2 text-warning">Access token is uploaded. It will be replaced on this form submitting</p>
+    @endif
 
-            @if ($user->getAccessToken())
-                <p class="text-warning">Access token is uploaded. It will be replaced on this form submitting</p>
-            @endif
-            <form class="pure-form pure-form-aligned" method="post" autocomplete="off">
-                <fieldset class="pure-group" >
-                    <input autocomplete="false" name="hidden" type="text" style="display:none;">
-                    <input
-                            type="text"
-                            class="pure-input-1 "
-                            placeholder="Pivate Access Token"
-                            name="token"
-                            id="token"
-                            spellcheck="false"
-                            style="font-size: small; font-family: monospace;">
-                    <input type="hidden" id="token-expiration-date" name="expiration_date">
-                    <button onclick="accessTokenHandler.checkToken(this); return false;" class="pure-button pure-input-1 btn-secondary">Check token</button>
-                </fieldset>
-
-                <div id="github-user-info" style="display: none;"></div>
-
-                <button type="submit" class="pure-button pure-input-1 pure-button-primary">{{ __('save') }}</button>
-            </form>
+    <form class="mt-2" method="post" autocomplete="off">
+        <input autocomplete="false" name="hidden" type="text" style="display:none;">
+        <div class="mt-4 flex justify-left items-center">
+            <label for="name">GitHub Token</label>
+            <input
+                type="text"
+                class="ml-4 w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                name="token"
+                id="token"
+                spellcheck="false"
+                style="font-size: small; font-family: monospace;"
+            >
         </div>
 
-        <div class="pure-u-1">
-            <p id="doneLog"></p>
+        <input type="hidden" id="token-expiration-date" name="expiration_date">
+
+        <div id="github-user-info" style="display: none;"></div>
+
+        <div class="flex justify-start mt-4">
+            <button type="submit" class="block px-4 py-2 rounded border border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white">{{ __('save') }}</button>
+            <button onclick="accessTokenHandler.checkToken(this, event); return false;" class="ml-4 inline-block px-4 py-2 rounded border border-green-400 text-green-400 hover:bg-green-400 hover:text-white">Check</button>
         </div>
+{{--            <button type="submit" class="pure-button pure-input-1 pure-button-primary">{{ __('save') }}</button>--}}
+    </form>
+
+    <div class="mt-2">
+        <p id="doneLog"></p>
     </div>
 
     <script>
         const accessTokenHandler = {
-            checkToken: function (btn) {
+            checkToken: function (btn, e) {
+                e.stopPropagation();
+                e.preventDefault();
+                console.log('yes');
                 const $tokenField = $('#token')
                 const token = $tokenField.val()
 
@@ -57,7 +52,7 @@
                 $tokenField.removeClass('error')
 
                 let _this = this
-                spinnerOn(btn)
+                // spinnerOn(btn)
                 $.post(
                     '/user/check-token',
                     {token: token},
@@ -82,7 +77,7 @@
                                 ? jqxhr.responseJSON.error
                                 : (textStatus + ' ' + error)
                         )
-                        spinnerOff(btn)
+                        // spinnerOff(btn)
                     });
 
                 return false

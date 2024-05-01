@@ -21,12 +21,12 @@ $currentPath = \request()->getUri()->getPath();
 {{--    <link rel="stylesheet" href="/css/girds-min.css">--}}
 {{--    <link rel="stylesheet" href="/css/custom.css">--}}
     <link rel="stylesheet" href="/css/new.css">
-    <link rel="stylesheet" href="/css/custom-buttons.css">
+{{--    <link rel="stylesheet" href="/css/custom-buttons.css">--}}
     <link rel="icon" type="image/png" sizes="32x32" href="/rocket_32.png">
     <script src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
-<body class="flex justify-around">
+<body class="bg-gray-50 flex justify-around">
 <div class="w-1/2">
     @include('layout.navigation', ['mainMenu' => $mainMenu])
 
@@ -35,7 +35,7 @@ $currentPath = \request()->getUri()->getPath();
     <div class="mt-6 flex justify-between items-center">
         @include('layout.heading', ['header' => $header, 'title' => $title])
         @if (isset($action))
-            <a class="block px-4 py-2 rounded bg-gray-100 hover:bg-gray-200" href="{{ $action['path'] }}">{{ $action['caption'] }}</a>
+            <a class="text-blue-400 hover:text-blue-800 hover:underline" href="{{ $action['path'] }}">{{ $action['caption'] }}</a>
         @endif
     </div>
 
