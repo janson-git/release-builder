@@ -32,11 +32,8 @@ $currentPath = \request()->getUri()->getPath();
 
 {{--        @include('layout.breadcrumbs', ['view' => $view])--}}
 
-    <div class="mt-6 flex justify-between items-center">
-        @include('layout.heading', ['header' => $header, 'title' => $title])
-        @if (isset($action))
-            <a class="text-blue-400 hover:text-blue-800 hover:underline" href="{{ $action['path'] }}">{{ $action['caption'] }}</a>
-        @endif
+    <div class="mt-6">
+        @include('layout.heading', ['header' => $header, 'title' => $title, 'action' => $action ?? null])
     </div>
 
     <div class="mt-4">

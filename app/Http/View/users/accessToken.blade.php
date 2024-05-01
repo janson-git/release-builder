@@ -29,7 +29,6 @@
             <button type="submit" class="block px-4 py-2 rounded border border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white">{{ __('save') }}</button>
             <button onclick="accessTokenHandler.checkToken(this, event); return false;" class="ml-4 inline-block px-4 py-2 rounded border border-green-400 text-green-400 hover:bg-green-400 hover:text-white">Check</button>
         </div>
-{{--            <button type="submit" class="pure-button pure-input-1 pure-button-primary">{{ __('save') }}</button>--}}
     </form>
 
     <div class="mt-2">

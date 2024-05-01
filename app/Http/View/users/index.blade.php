@@ -77,4 +77,11 @@ $view->addBreadcrumb(new Breadcrumb('Profile', 'fa-solid fa-user'));
 <a class="inline-block mt-4 text-blue-400 hover:text-blue-800 hover:underline" href="/user/addkey">
     {{ $sshKeyUploaded ? __('replace_ssh_key') : __('add_ssh_key') }}
 </a>
+
+<br>
+
+<a class="mt-8 inline-block px-4 py-2 rounded border border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white"
+   href="/auth/logout"
+>Log out</a>
 @endsection
+

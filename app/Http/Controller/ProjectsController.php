@@ -34,7 +34,10 @@ class ProjectsController extends AbstractController
     {
         $project = Project::getById($id);
 
-        $this->setTitle('<i class="fa-solid fa-folder-open"></i>' . $project->getName());
+        $this->setTitle('Project');
+        $this->setSubTitle($project->getName());
+//        $this->setAction('/projects', __('back_to_project_list'));
+        $this->setAction('/branches/create-pack/' . $id, __('create_pack'));
         $project->getSlotsPool()->loadProjectSlots();
 
         $fetchCommand = new FetchProjectRepos();

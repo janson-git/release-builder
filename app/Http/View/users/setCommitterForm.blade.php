@@ -12,8 +12,8 @@
         Set username and email which will displayed as commit owner info for pushed release branches
     </div>
 
-    <form class="pure-form pure-form-aligned" method="post">
-        <div class="mt-4 flex justify-left">
+    <form class="mt-6 card bg-white p-8" method="post">
+        <div class="flex justify-left">
             <label for="name" class="w-40">Committer name</label>
             <input class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none" id="name" name="name" type="text" value="{{ $user->getCommitAuthorName() }}">
         </div>

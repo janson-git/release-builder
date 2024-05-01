@@ -75,12 +75,7 @@ class View
                 '#/user#',
             ]);
             $itemProfile->setIconClass('fa-solid fa-user');
-
-            $itemLogout = new MenuItem(__('logout'), '/auth/logout');
-            $itemLogout->setIconClass('fa-solid fa-right-from-bracket');
-
             array_unshift($menu, $itemProfile);
-            array_push($menu, $itemLogout);
         } else {
             $itemLogin = new MenuItem(__('login'), '/auth/login');
             $itemLogin->setIconClass('fa-solid fa-right-to-bracket');
