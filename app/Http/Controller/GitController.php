@@ -10,7 +10,7 @@ class GitController extends AbstractController
     public function index(): Response
     {
         $this->app->view()->setHeader(__('git'));
-
+        $this->app->view()->setAction("/git/add-repository", __('add_repository'));
         return $this->view->render('git/index.blade.php', [
             'list' => $this->app->directory()->allData(),
         ]);

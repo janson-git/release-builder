@@ -21,9 +21,13 @@ $currentPath = \request()->getUri()->getPath();
 {{--    <link rel="stylesheet" href="/css/girds-min.css">--}}
 {{--    <link rel="stylesheet" href="/css/custom.css">--}}
     <link rel="stylesheet" href="/css/new.css">
-{{--    <link rel="stylesheet" href="/css/custom-buttons.css">--}}
+    <link rel="stylesheet" href="/css/custom-buttons.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/rocket_32.png">
     <script src="/js/jquery-2.1.1.min.js"></script>
+    <script>
+        var spinnerOn = function () {}
+        var spinnerOff = function () {}
+    </script>
 </head>
 
 <body class="bg-gray-50 flex justify-around">
@@ -36,7 +40,7 @@ $currentPath = \request()->getUri()->getPath();
         @include('layout.heading', ['header' => $header, 'title' => $title, 'action' => $action ?? null])
     </div>
 
-    <div class="mt-4">
+    <div class="mt-8">
         @yield('content')
 
 {{--        --}}{{-- todo move it somewhere--}}

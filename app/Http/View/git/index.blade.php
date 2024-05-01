@@ -10,74 +10,62 @@ $view->addBreadcrumb(
 @extends('./layout.blade.php')
 
 @section('content')
-<div class="pure-g">
-    <div class="pure-u-1">
-        <section class="top-page-nav">
-            <a href="/git/add-repository" class="pure-button btn-primary-outline">{{ __('add_repository') }}</a>
-        </section>
-    </div>
-</div>
+    @foreach ($list as $dir => $data)
+        <div class="card mb-6">
+            <div class="flex justify-start items-center">
+                <p class="font-bold text-lg">{{ $dir }}</p>
+                <span class="ml-4 inline-block px-1 bg-gray-200 text-xs text-gray-500 rounded">
+                    {{ $data['type'] }}
+                </span>
+            </div>
 
-<div class="pure-g">
-    <div class="pure-u-1">
-        <table class="pure-table pure-table-bordered shadowed">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>update</th>
-                <th>reset/checkout</th>
-            </tr>
-            </thead>
+            <div class="text-sm">
+                <i class="text-xs fa-solid fa-external-link"></i>
+                <a href="https://github.com/{{ $data['repoName'] }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
+                    {{ $data['repoName'] }}
+                </a>
+            </div>
 
-            <tbody>
-            @foreach ($list as $dir => $data)
-                <tr>
-                    <td>
-                        <div class="badge">
-                            <div>{{ strtoupper( $data['type'] ) }}</div>
-                        </div>
+            <div class="text-sm">
+                <i class="text-xs fa-solid fa-refresh"></i>
+                <span class="ml-1">
+                    {{ $data['time']['back'] }} {{ $data['time']['date'] }}
+                </span>
+            </div>
 
-                        <p style="font-weight: bold; white-space: nowrap">{{ $dir }}</p>
-                        <p style="white-space: nowrap; color: #666;">
-                            <small>{{ $data['repoName'] }}</small>
-                        </p>
-                        <small>
-                            {{ __('last_update_at') }}:<br/>
-                            {{ $data['time']['back'] }}<br/>
-                            {{ $data['time']['date'] }}
-                        </small>
-                    </td>
+            <pre class="mt-6 text-xs font-mono py-4 pl-2 bg-gray-100 border border-gray-600">
+                {!! implode("\n", $data['com']) !!}
+            </pre>
 
-                    <td>
-                        <a class="pure-button" onclick='admin.update("{{ $dir }}", this)'>update</a>
-                        <hr/>
-                        {!! implode(" <br> ", $data['com']) !!}
-                    </td>
-                    <td>
-                        <a class="pure-button" onclick='admin.fixGit("{{ $dir }}", this)'>reset branch </a>
-                        <hr/>
-                        <select>
-                            @foreach ($data['branch'] as $branch)
-                                <option {{ str_starts_with($branch, '*') ? 'selected' : '' }} value="{{ trim($branch, '* ') }}"
-                                        title="{{ htmlentities($branch) }}">{{ substr($branch,0, 40) }}</option>
-                            @endforeach
-                        </select>
-                        <a class="pure-button"
-                           onclick='admin.checkout("{{ $dir }}", this, $(this).parent().find("select").val())'>checkout
-                            branch</a>
-                        <hr/>
-                        <a onclick="$('.dev-tools-{{ crc32($dir) }}').toggle()">dev tools</a>
-                        <div class="dev-tools-{{ crc32($dir) }}" style="display: none">
-                            <a class="pure-button" onclick='admin.fixGit("{{ $dir }}", this, 1)'>reset and delete files</a>
-                        </div>
-                        <hr/>
-                        <small>{!! implode(" <br> ", $data['remote']) !!}</small>
-                    </td>
-                </tr>
+            <div class="mt-6">
+                <div class="flex justify-start">
+                    <select class="border-b border-black focus:outline-none">
+                        @foreach ($data['branch'] as $branch)
+                            <option {{ str_starts_with($branch, '*') ? 'selected' : '' }} value="{{ trim($branch, '* ') }}"
+                                    title="{{ htmlentities($branch) }}">{{ substr($branch,0, 40) }}</option>
+                        @endforeach
+                    </select>
+                    <button class="ml-4 bg-gray-100 border border-gray-200 hover:bg-gray-200 text-xs px-4 py-1 rounded" onclick='admin.checkout("{{ $dir }}", this, $(this).parent().find("select").val())'>
+                        checkout branch
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-4"></div>
+            @foreach ($data["remote"] as $remote)
+                <div class="text-sm">
+                    <i class="ml-1 text-xs fa-solid fa-info"></i>
+                    <span class="ml-2">{{ $remote }}</span>
+                </div>
             @endforeach
-            </tbody>
-        </table>
-    </div>
+
+            <div class="mt-6 flex justify-start">
+                <button class="bg-green-400 text-white hover:bg-green-600 hover:text-white px-4 py-1 rounded" onclick='admin.update("{{ $dir }}", this)'>update</button>
+                <button class="ml-4 bg-gray-400 text-white hover:bg-gray-600 border border-gray-200 hover:bg-gray-200 px-4 py-1 rounded " onclick='admin.fixGit("{{ $dir }}", this)'>reset branch</button>
+                <button class="ml-4 bg-red-400 text-white hover:bg-red-600  px-2 py-1 rounded" onclick='admin.fixGit("{{ $dir }}", this, 1)'>reset and delete files</button>
+            </div>
+        </div>
+    @endforeach
 
     <div class="pure-u-1">
         <p id="doneLog"></p>
@@ -118,17 +106,17 @@ $view->addBreadcrumb(
             let btn = el;
             el = $(el).parent();
             let _this = this;
-            spinnerOn(btn)
+            // spinnerOn(btn)
             $.getJSON('/git/update/', {dir}, function (res) {
                 _this.log(res.data, el);
-                spinnerOff(btn);
+                // spinnerOff(btn);
             }).error(function (res, data, errorThrown) {
                 const json = res.responseJSON;
                 $('#doneLog').html(
                     `<div class="text-error">${json.code} ${json.reason}</div>` +
                     '<span class="text-error">' + json.message + '</span>'
                 );
-                spinnerOff(btn)
+                // spinnerOff(btn)
             });
         },
         log: function (data, el) {
