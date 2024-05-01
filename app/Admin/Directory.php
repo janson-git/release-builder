@@ -29,7 +29,12 @@ class Directory
     {
         $this->sitesDir = $sitesDir;
     }
-    
+
+    public function getSitedDir(): string
+    {
+        return $this->sitesDir;
+    }
+
     public function scanDir(): array
     {
         $data = $this->doScanDir($this->sitesDir);

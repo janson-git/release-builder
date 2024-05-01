@@ -23,11 +23,15 @@ class ProjectsController extends AbstractController
         $packsData = Data::scope(App::DATA_PACKS)->getAll();
 
         $packsByProjects = [];
+
         foreach ($packsData as $id => $data) {
             $packsByProjects[$data['project']][$id] = Pack::getById($id);
         }
 
-        return $this->view->render('projects/index.blade.php', compact('projects', 'packsByProjects', 'hasRepos'));
+        return $this->view->render(
+            'projects/index.blade.php',
+            compact('projects', 'packsByProjects', 'hasRepos')
+        );
     }
 
     public function show($id): ResponseInterface
