@@ -21,7 +21,8 @@ class UsersController extends AbstractController
         $this->setTitle(__('set_ssh_key'));
         
         $text = __('ssh_key_page_description');
-        
+        $this->setAction('/user', 'Back to profile');
+
         if ($this->request->isPost()) {
             $key = $this->p('key');
             $key = str_replace("\r\n", "\n", trim($key)) . "\n";

@@ -60,7 +60,7 @@ class ProjectsController extends AbstractController
     public function showCreateForm(): ResponseInterface
     {
         // SHOW NAVIGATOR FORM TO CREATE PROJECT
-        $this->setTitle(__('repositories_navigation'));
+        $this->setTitle("Create Project");
         $pack = $this->p('pack');
 
         $node = new Node();
