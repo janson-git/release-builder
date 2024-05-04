@@ -27,7 +27,7 @@ $view
         >{{ __('save') }}</button>
     </div>
 
-    <div class="pure-u-1">
+    <div id="doneLog" class="p-4 font-mono text-xs">
         <p id="doneLog"></p>
     </div>
 </div>
