@@ -49,6 +49,7 @@ class GitController extends AbstractController
     {
         $this->setTitle(__('git'));
         $this->setSubTitle(__('add_repository'));
+        $this->view->setAction("/git", "Back");
 
         return $this->view->render('git/addRepositoryForm.blade.php');
     }

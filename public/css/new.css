@@ -16,16 +16,6 @@
     font-size: 0.9em;
 }
 
-#logs-toggle-button {
-    cursor: pointer;
-    color: #000;
-    background-color: #ddd;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    padding: 5px 10px;
-    border: #666 dashed 1px;
-}
-
 #logs-container {
     display: none;
     background-color: #ddd;

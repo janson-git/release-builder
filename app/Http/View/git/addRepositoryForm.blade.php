@@ -11,37 +11,20 @@ $view
 @extends('./layout.blade.php')
 
 @section('content')
-<div class="pure-g">
-    <div class="pure-u-1">
-        <section class="top-page-nav">
-            <a href="/git" class="pure-button btn-secondary-outline btn-s">
-                <i class="fa-solid fa-arrow-left"></i> {{ __('back_to_git') }}
-            </a>
-        </section>
-    </div>
-</div>
+    <div class="card">
 
-<div class="pure-g">
-    <div class="pure-u pure-u-md-1 pure-u-lg-1-2">
-
-        <div class="pure-form pure-form-stacked">
-            <fieldset class="pure-group">
-                <div class="pure-control-group">
-                    <label for="repository_path">Repository Path (HTTPS url or SSH link)</label>
-                    <input type="text"
-                           id="repository_path"
-                           name="repository_path"
-                           class="pure-input-1"
-                           required />
-                </div>
-
-                <button onclick="admin.addRepository(this);"
-                        class="pure-input-1 pure-button pure-button-primary">
-                    {{ __('save') }}
-                </button>
-            </fieldset>
+        <div class="mt-4 flex justify-start items-center">
+            <div for="repository_path">Repository Path </div>
+            <input type="text" id="repository_path" name="repository_path" required autocomplete="off"
+                   class="ml-4 w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                   placeholder="git@github.com:janson-git/deploy.git"
+            />
         </div>
 
+        <button
+                onclick="admin.addRepository(this);"
+                class="mt-4 block px-4 py-2 rounded border bg-green-400 text-white hover:bg-green-600 hover:text-white"
+        >{{ __('save') }}</button>
     </div>
 
     <div class="pure-u-1">

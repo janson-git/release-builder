@@ -43,14 +43,14 @@
     </div>
     
     <div style="display: none" id="items-template">
-            <div class="pure-u-1-2 pure-config-row">
-                <input type="text" placeholder="Marker" value="" class="config-input"
-                       name="data_key[]"/>
-            </div>
-            <div class="pure-u-1-2 pure-config-row">
-                <input type="text" placeholder="Value" value="" class="config-input"
-                       name="data_value[]"/>
-            </div>
+        <div class="pure-u-1-2 pure-config-row">
+            <input type="text" placeholder="Marker" value="" class="config-input"
+                   name="data_key[]"/>
+        </div>
+        <div class="pure-u-1-2 pure-config-row">
+            <input type="text" placeholder="Value" value="" class="config-input"
+                   name="data_value[]"/>
+        </div>
     </div>
     
     <script type="text/javascript">

@@ -42,7 +42,8 @@ $view->addBreadcrumb(
             <select class="border-b border-black focus:outline-none">
                 @foreach ($data['branch'] as $branch)
                     <option {{ str_starts_with($branch, '*') ? 'selected' : '' }} value="{{ trim($branch, '* ') }}"
-                            title="{{ htmlentities($branch) }}">{{ substr($branch,0, 40) }}</option>
+                            title="{{ htmlentities($branch) }}"
+                    >{{ substr($branch,0, 40) }}</option>
                 @endforeach
             </select>
             <button class="ml-4 bg-gray-100 border border-gray-200 hover:bg-gray-200 text-xs px-4 py-1 rounded" onclick='admin.checkout("{{ $dir }}", this, $(this).parent().find("select").val())'>
@@ -104,17 +105,17 @@ $view->addBreadcrumb(
             let btn = el;
             el = $(el).parent();
             let _this = this;
-            // spinnerOn(btn)
+            spinnerOn(btn)
             $.getJSON('/git/update/', {dir}, function (res) {
                 _this.log(res.data, el);
-                // spinnerOff(btn);
+                spinnerOff(btn);
             }).error(function (res, data, errorThrown) {
                 const json = res.responseJSON;
                 $('#doneLog').html(
                     `<div class="text-red-900">${json.code} ${json.reason}</div>` +
                     '<span class="text-red-900">' + json.message + '</span>'
                 );
-                // spinnerOff(btn)
+                spinnerOff(btn)
             });
         },
         log: function (data, el) {

@@ -3,8 +3,7 @@
     var layout   = document.getElementById('layout'),
         menu     = document.getElementById('menu'),
         logsToggleButton= document.getElementById('logs-toggle-button'),
-        logsContainer= document.getElementById('logs-container'),
-        menuLink = document.getElementById('menuLink');
+        logsContainer= document.getElementById('logs-container');
 
     function toggleClass(element, className) {
         var classes = element.className.split(/\s+/),
@@ -25,15 +24,6 @@
         element.className = classes.join(' ');
     }
 
-    menuLink.onclick = function (e) {
-        var active = 'active';
-
-        e.preventDefault();
-        toggleClass(layout, active);
-        toggleClass(menu, active);
-        toggleClass(menuLink, active);
-    };
-
     logsToggleButton.onclick = function (e) {
         const $container = $(logsContainer);
         $container.toggle()
@@ -46,8 +36,6 @@
     };
 
     window.spinnerOn = function(btn) {
-        $('#mainTitle').addClass('blink_me');
-        $('#menuLink').addClass('blink_me');
         $('#loader').show();
         if (btn) {
             $(btn).addClass('btn-in-action')
@@ -55,8 +43,6 @@
     };
 
     window.spinnerOff = function(btn) {
-        $('#mainTitle').removeClass('blink_me');
-        $('#menuLink').removeClass('blink_me');
         $('#loader').hide();
         if (btn) {
             setTimeout(
@@ -69,6 +55,7 @@
     };
 
     window.$('.btn-actionable').on('click', function(el) {
+        $('#loader').removeClass("hidden");
         // $(el.target).addClass('btn-in-action');
         window.spinnerOn(el.target);
     });

@@ -53,7 +53,7 @@
                 $tokenField.removeClass('error')
 
                 let _this = this
-                // spinnerOn(btn)
+                spinnerOn(btn)
                 $.post(
                     '/user/check-token',
                     {token: token},
