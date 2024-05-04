@@ -15,28 +15,33 @@ class ProjectsController extends AbstractController
 {
     public function index(): ResponseInterface
     {
-        $this->setTitle( '<i class="fa-solid fa-folder-tree"></i>' . __('projects'));
-        
+        $this->setTitle( __('projects'));
+        ($hasRepos = !empty($this->app->directory()->allData()))
+            && $this->setAction("/projects/create-new", __('create_project'));
+
         $projects = Data::scope(App::DATA_PROJECTS)->getAll();
         $packsData = Data::scope(App::DATA_PACKS)->getAll();
 
         $packsByProjects = [];
+
         foreach ($packsData as $id => $data) {
             $packsByProjects[$data['project']][$id] = Pack::getById($id);
         }
 
-        return $this->view->render('projects/index.blade.php', [
-            'projects' => $projects,
-            'packsByProjects' => $packsByProjects,
-            'hasRepos' => !empty($this->app->directory()->allData()),
-        ]);
+        return $this->view->render(
+            'projects/index.blade.php',
+            compact('projects', 'packsByProjects', 'hasRepos')
+        );
     }
 
     public function show($id): ResponseInterface
     {
         $project = Project::getById($id);
 
-        $this->setTitle('<i class="fa-solid fa-folder-open"></i>' . $project->getName());
+        $this->setTitle('Project');
+        $this->setSubTitle($project->getName());
+//        $this->setAction('/projects', __('back_to_project_list'));
+        $this->setAction('/branches/create-pack/' . $id, __('create_pack'));
         $project->getSlotsPool()->loadProjectSlots();
 
         $fetchCommand = new FetchProjectRepos();
@@ -55,7 +60,7 @@ class ProjectsController extends AbstractController
     public function showCreateForm(): ResponseInterface
     {
         // SHOW NAVIGATOR FORM TO CREATE PROJECT
-        $this->setTitle(__('repositories_navigation'));
+        $this->setTitle("Create Project");
         $pack = $this->p('pack');
 
         $node = new Node();

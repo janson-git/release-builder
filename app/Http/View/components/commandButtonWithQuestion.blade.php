@@ -5,9 +5,9 @@
 
 $question = $command->isQuestion();
 
-$classString = "pure-button ";
+$classString = "inline-block text-white px-4 py-1 rounded ";
 //$classString .= $command->isPrimary() ? 'btn-primary': '';
-$classString .= $command->isDanger() ? 'btn-danger': '';
+$classString .= $command->isDanger() ? 'bg-red-400 hover:bg-red-600' : 'bg-orange-400 hover:bg-orange-600';
 
 if (isset($classes)) {
     $classString .= ' ' . $classes;
@@ -29,12 +29,12 @@ $disabled = $disabled ?? $command->isDisabled();
 
         @if ($command->isConfirmRequired())
             <button onclick="confirmed=confirm('Are you sure to run {{ strtolower($command->getHumanName()) }} ?'); if (!confirmed) return false; window.spinnerOn(this);"
-                    class="pure-button {{ $command->isDanger() ? 'btn-danger' : '' }}"
+                    class="text-white px-4 py-1 rounded {{ $command->isDanger() ? 'bg-red-400 hover:bg-red-600' : 'bg-orange-400 hover:bg-orange-600' }}"
             >
                 {{ $command->getHumanName() }}
             </button>
         @else
-            <button class="pure-button {{ $command->isDanger() ? 'btn-danger' : '' }}"
+            <button class="text-white px-4 py-1 rounded {{ $command->isDanger() ? 'bg-red-400 hover:bg-red-600' : 'bg-orange-400 hover:bg-orange-600' }}"
                     @if (!empty($question['field']) && !empty($question['question']))
                         onclick="answer=prompt('{{ $question['question'] ?? '' }}', '{{ $question['placeholder'] ?? '' }}'); if (!answer) return false; window.spinnerOn(this); document.getElementsByClassName('js-question-{{ $question['field'] }}')[0].value=answer"
                     @else

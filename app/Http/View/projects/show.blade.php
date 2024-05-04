@@ -19,75 +19,58 @@ $view
 @section('content')
 <div class="pure-g">
     <div class="pure-u-1">
-        <section class="top-page-nav">
-            <a href="/projects" class="pure-button btn-secondary-outline btn-s">
-                <i class="fa-solid fa-arrow-left"></i> {{ __('back_to_project_list') }}
-            </a>
-        </section>
-    </div>
-
-    <div class="pure-u-1">
-        <a href="/branches/create-pack/{{ $id }}" class="pure-button btn-primary">{{ __('create_pack') }}</a>
-        <a href="/commands/apply?command={{ $fetchCommand->getId() }}&context={{ $fetchCommand->getContext()->serialize() }}"
-           class="pure-button btn-actionable {{ $fetchCommand->isPrimary() ? 'btn-primary'
-               : '' }}">{{ $fetchCommand->getHumanName() }}
-        </a>
+        <a
+            href="/commands/apply?command={{ $fetchCommand->getId() }}&context={{ $fetchCommand->getContext()->serialize() }}"
+            type="submit" class="inline-block px-2 py-1 rounded border border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white"
+        >{{ $fetchCommand->getHumanName() }}</a>
     </div>
 </div>
 
-<div class="pure-g">
+@foreach ($packs as $pack)
+    <div class="card pack-card mt-6">
+        <div>
+            <?php $branches = $pack->getBranches() ?>
 
-    <div class="pure-u-1">
-        <h3>{{ __('packs') }}</h3>
+            <div class="flex justify-between items-center mb-4">
+                <a href="/packs/{{ $pack->getId() }}" class="pack-link">
+                    <i class="fa-regular fa-file-lines"></i> {{ $pack->getName() }}
+                </a>
 
-        <div class="pure-g">
-            <div class="pure-u-1 pure-u-md-1-2 pure-u-xl-2-3">
-                @foreach ($packs as $pack)
-                    <div class="pure-u-1 card pack-card">
-                        <div>
-                            <?php $branches = $pack->getBranches() ?>
-
-                            <a href="/packs/{{ $pack->getId() }}" class="pack-link">
-                                <i class="fa-regular fa-file-lines"></i> {{ $pack->getName() }}
-                            </a>
-
-                            <!-- Only owned packs allowed to delete -->
-                            @if ($pack->getUser() && !$user->owned($pack))
-                                <span class="text-gray-small right">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
-                            @else
-                                @include('./components/commandButton.blade.php', [
-                                    'command' => $pack->prepareCommand(new \Commands\Command\Pack\RemovePackWithData),
-                                    'classes' => 'btn-s right btn-danger-outline',
-                                ])
-                            @endif
-                        </div>
-                        <ul class="branch-list">
-                            @if (!empty($branches))
-                                @foreach($branches as $branch)
-                                    <li>{{ $branch }}</li>
-                                @endforeach
-                            @else
-                            <li class="empty"><i>No branches added</i></li>
-                            @endif
-                        </ul>
-                    </div>
-                @endforeach
+                <!-- Only owned packs allowed to delete -->
+                @if ($pack->getUser() && !$user->owned($pack))
+                    <span class="text-gray-small right">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
+                @else
+                    @include('./components/commandButton.blade.php', [
+                        'command' => $pack->prepareCommand(new \Commands\Command\Pack\RemovePackWithData),
+                        'classes' => 'btn-s right btn-danger-outline',
+                    ])
+                @endif
             </div>
-
-            @if (env('ENABLE_DEPLOY'))
-            <div class="pure-u-md-1-2 pure-u-xl-1-3 vmenu">
-                <h3>{{ __('servers') }}</h3>
-                <a href="/web/slot/create/?pId={{$id }}" class="pure-button pure-button-primary">{{ __('add_release_server') }}</a>
-                <a href="/web/project/slots/{{$id }}" class="pure-button">{{ __('release_servers_list') }}</a>
-                <ul>
-                    @foreach ($slots as $slot)
-                    <li>{{$slot->getName() }}, {{$slot->getHost().':'.$slot->getPath() }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
         </div>
+
+        <div class="">Branches</div>
+        <ul class="mt-2 branch-list">
+            @if (!empty($branches))
+                @foreach($branches as $branch)
+                    <li>{{ $branch }}</li>
+                @endforeach
+            @else
+            <li class="empty"><i>No branches added</i></li>
+            @endif
+        </ul>
     </div>
+@endforeach
+
+@if (env('ENABLE_DEPLOY'))
+<div class="pure-u-md-1-2 pure-u-xl-1-3 vmenu">
+    <h3>{{ __('servers') }}</h3>
+    <a href="/web/slot/create/?pId={{$id }}" class="pure-button pure-button-primary">{{ __('add_release_server') }}</a>
+    <a href="/web/project/slots/{{$id }}" class="pure-button">{{ __('release_servers_list') }}</a>
+    <ul>
+        @foreach ($slots as $slot)
+        <li>{{$slot->getName() }}, {{$slot->getHost().':'.$slot->getPath() }}</li>
+        @endforeach
+    </ul>
 </div>
+@endif
 @endsection

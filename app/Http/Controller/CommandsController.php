@@ -32,6 +32,10 @@ class CommandsController extends AbstractController
 //            $this->context->setSlot((new SlotStack())->setStack($slots)); 
 //        }
 
+        $this->context->getProject()
+            ? $this->view->setAction("/projects/{$this->context->getProject()->getId()}", __('back_to_project'))
+            : $this->view->setAction("/packs/{$this->context->getPack()->getId()}", __('back_to_pфсл'));
+
         $this->_buildTitle();
         
         $runner = new CommandRunner();

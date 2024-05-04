@@ -1,34 +1,3 @@
-/***************************/
-/***** LAYOUT **************/
-body {
-    color: #777;
-}
-
-#main {
-    background-color: #f1f5f9;
-    min-height: 100vh;
-}
-
-.right {
-    float: right;
-}
-.left {
-    float: left;
-}
-
-.pure-table {
-    background-color: #fff;
-}
-.pure-table td span {
-    display: block;
-}
-.pure-table td {
-    vertical-align: top;
-}
-.pure-table hr {
-    border: 0;border-bottom: 1px solid #eee;
-}
-
 .text-success {
     color: #2b4;
 }
@@ -45,22 +14,6 @@ body {
 .text-gray-small {
     color: #999;
     font-size: 0.9em;
-}
-/*** MAIN MENU ******/
-.pure-menu ul li i {
-    width: 1.2em;
-    font-size: 15px;
-}
-
-
-#logs-toggle-button {
-    cursor: pointer;
-    color: #000;
-    background-color: #ddd;
-    margin-top: 20px;
-    margin-bottom: 5px;
-    padding: 5px 10px;
-    border: #666 dashed 1px;
 }
 
 #logs-container {
@@ -301,19 +254,18 @@ h1 i,
 
 .card {
     background-color: #fff;
-    border-top: 5px solid #07e;
-    border-radius: 0 0 10px 10px;
+    /*border-top: 5px solid #07e;*/
+    /*border-radius: 10px;*/
     padding: 15px;
     margin: 10px auto 25px;
-    box-shadow: 0 9px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 9px 15px rgba(0, 0, 0, 0.05);
 }
 .project-card {
-    width: 90%;
-    border-top: 5px solid #0a0;
+    /*border-top: 5px solid #0a0;*/
 }
 .pack-card {
-    width: 90%;
-    border-top: 5px solid #07e;
+    /*width: 90%;*/
+    /*border-top: 5px solid #07e;*/
 }
 .build-card {
     position: relative;

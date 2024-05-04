@@ -14,10 +14,11 @@ class PacksController extends AbstractController
         $pack = Pack::getById($id);
         $pack->getNode()->loadBranches();
 
-        $this->setTitle('<i class="fa-solid fa-file-lines"></i>' . __('pack') . " '{$pack->getName()}'");
+        $this->setTitle(__('pack') . ' ' , $pack->getName());
         if ($pack->getUser() !== null) {
             $this->setSubTitle('owned by @' . $pack->getUser()->getLogin());
         }
+        $this->view->setAction('/projects/' . $pack->getProject()->getId(), 'Back to project');
         $node = $pack->getNode();
         $packReposByBranches = $node->getToMasterStatus($pack->getBranches());
 

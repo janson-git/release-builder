@@ -14,103 +14,45 @@ $currentPath = \request()->getUri()->getPath();
     <link href="/fontawesome/css/regular.css" rel="stylesheet">
     <link href="/fontawesome/css/solid.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/pure-min.css">
-    <link rel="stylesheet" href="/css/side-menu.css">
-    <link rel="stylesheet" href="/css/girds-min.css">
-    <link rel="stylesheet" href="/css/custom.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="/css/new.css">
     <link rel="stylesheet" href="/css/custom-buttons.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/rocket_32.png">
     <script src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
-<body>
-<div id="layout">
-    <!-- Menu toggle -->
-    <a href="#menu" id="menuLink" class="menu-link">
-        <!-- Hamburger icon -->
-        <span></span>
-    </a>
-    <div id="menu">
-        <div class="pure-menu pure-menu-open">
-            <a class="pure-menu-heading" href="/user">{{ $user?->getLogin() }}</a>
-            <ul>
-                @foreach ( $mainMenu as $menuItem)
-                <?php /** @var $menuItem \Service\Menu\MenuItem */ ?>
-                <li {!! $menuItem->isSelected() ? 'class="pure-menu-selected"' : '' !!}>
-                    <a href="{{$menuItem->route }}">
-                        @if ($menuItem->iconClass)
-                            <i class="{{ $menuItem->iconClass }} icon"></i>
-                        @else
-                            <i class="fa-solid icon"></i>
-                        @endif
-                        <span>{{$menuItem->title }}</span>
-                    </a>
-                </li>
-                @endforeach
-            </ul>
-        </div>
+<body class="bg-gray-50 flex justify-around">
+<div class="w-1/2">
+    @include('layout.navigation', ['mainMenu' => $mainMenu])
+
+{{--        @include('layout.breadcrumbs', ['view' => $view])--}}
+
+    <div class="mt-6">
+        @include('layout.heading', ['header' => $header, 'title' => $title, 'action' => $action ?? null])
     </div>
 
-    <div id="main">
+    <div class="mt-8">
+        @yield('content')
 
-        <div class="breadcrumbs pure-g">
-            @if ( $view->hasBreadcrumbs() )
-            <div class="pure-u-4-5">
-                <ul>
-                    @foreach ($view->getBreadcrumbs() as $item)
-                    <?php /** @var $item \Service\Breadcrumbs\Breadcrumb */ ?>
-                    <li>
-                        <?php $isActiveBreadcrumb = $item->url !== null && $item->url !== \request()->getUri()->getPath() ?>
-                        {!! $isActiveBreadcrumb ? "<a href=\"$item->url\">" : '<span>' !!}
-                            @if ($item->iconClass)
-                            <i class="{{ $item->iconClass }} icon"></i>
-                            @endif
-                            <p>{{ $item->title }}</p>
-                        {!! $isActiveBreadcrumb ? '</a>' : '<span>' !!}
-                    </li>
-                    @endforeach
-                </ul>
+        {{-- todo fix --}}
+        @if (isset($_logs))
+            <button id="logs-toggle-button" class="inline-block mb-4 text-gray-400 border border-gray-400 hover:bg-gray-400 hover:text-white px-2 py-1 rounded">
+                Show Debug Logs
+            </button>
+            <div class="mb-4 logs-cont" id="logs-container">
+                @foreach ($_logs as $info)
+                    <div style="word-break: break-all; padding: 0.3em">
+                        {{ $info }}
+                    </div>
+                @endforeach
             </div>
-            @endif
-
-            <div class="pure-u">
-                <div id="loader"></div>
-            </div>
-        </div>
-        <div class="breadcrumbs-placeholder pure-u-1"></div>
-
-        @if ( $header ||  $title)
-        <div class="header">
-            @if ( $header)
-                <h1>{!! $header !!}</h1>
-            @endif
-            @if ( $title )
-                <h2>{!! $title !!}</h2>
-            @endif
-        </div>
-        @else
-            <br/>
         @endif
+    </div>
 
-        <div class="content">
-
-            @yield('content')
-
-            @if (isset($_logs))
-                <button id="logs-toggle-button">
-                    Show Debug Logs
-                </button>
-                <div class="pure-g logs-cont" id="logs-container">
-                    @foreach ($_logs as $info)
-                        <div class="pure-u-1">
-                            <div style="word-break: break-all; padding: 0.3em">
-                                {{ $info }}
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
+    <div id="loader" class="hidden fixed bottom-10" style="left: 70%;">
+        <div class="mx-auto">
+            <i class="fa-solid fa-spinner fa-spin"></i>
         </div>
     </div>
 </div>

@@ -44,6 +44,10 @@ class BranchesController  extends AbstractController
             $this->pack = Pack::getById($packId);
             $this->packBranches = $this->pack->getBranches();
         }
+
+        $packId
+            ? $this->view->setAction("/packs/{$packId}", __('back_to_pack'))
+            : $this->view->setAction("/projects/{$projectId}", __('back_to_project'));
     }
 
     public function addBranchesForm(int $projectId, int $packId)
