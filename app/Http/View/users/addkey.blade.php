@@ -14,7 +14,7 @@
         ></textarea>
 
         <div class="mt-4 flex justify-start">
-            <button type="submit" class="bg-green-400 text-white hover:bg-green-600 hover:text-white px-4 py-1 rounded">{{ __('save') }}</button>
+            <button type="submit" class="bg-orange-400 text-white hover:bg-orange-600 hover:text-white px-4 py-1 rounded">{{ __('save') }}</button>
         </div>
     </form>
 </div>

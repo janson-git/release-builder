@@ -20,128 +20,93 @@ $view
 @extends('./layout.blade.php')
 
 @section('content')
-    <style>
-        .pure-button {
-            margin-top: 0.3em;
-        }
-        .btn-danger {
-            margin-top: 0.8em;
-        }
-        h2 {
-            padding-left: 0.7em;
-        }
-        .inactive {
-            color: #888;
-        }
-        .separator {
-            border-bottom: 1px solid #999;
-            height: 7px;
-            margin-bottom: 5px;
-        }
-    </style>
-
-    <div class="pure-g">
-        <div class="pure-u-1">
-            <section class="top-page-nav">
-                <a href="/projects/{{ $pack->getProject()->getId() }}" class="pure-button btn-secondary-outline btn-s">
-                    <i class="fa-solid fa-arrow-left"></i> {{ __('back_to_project') }}
-                </a>
-            </section>
-        </div>
-    </div>
-
-    <div class="pure-g">
-
-        <div class="pure-u-1 pure-u-md-2-3 bset">
-            <h3>{{ __('builds') }}</h3>
-            <div class="pure-g">
-
-                @php($lastCheckpointId = $pack->getLastCheckpoint()->getName())
-                @php($disabled = !$user->owned($pack))
-                @foreach ($pack->getCheckpoints() as $cpId => $checkPoint)
-                    @php( $className = ($lastCheckpointId === $cpId ? ' active ' : ''))
-                    <div class="pure-u-1 pure-u-lg-1-2 pure-u-xl-1-3 card build-card {{ $className }}">
-                        <div class="build-card-content">
-                            <div class="build-relative-date">{{ $checkPoint->getDetails()['relativeDate'] }}</div>
-
-                            <div>{{ $cpId }}</div>
-                            <div class="separator"></div>
-
-                            @foreach ($checkPoint->getCommands() as $command)
-                                @include('./components/commandButton.blade.php', [
-                                    'command' => $command,
-                                    'disabled' => $disabled
-                                ])
-                                <br>
-                            @endforeach
-                        </div>
-                        @if ($lastCheckpointId === $cpId)
-                        <div class="badge bottom-badge">
-                            <div>ACTIVE BUILD</div>
-                        </div>
-                        @endif
-                    </div>
-                @endforeach
-            </div>
-        </div>
-
-        @if (env('ENABLE_DEPLOY'))
-            <div class="pure-u-1 pure-u-md-1-3 bset">
-                <h3>{{ __('deploy') }}</h3>
-                @if ($lastCheckpoint = $pack->getLastCheckpoint())
-                    <div>{{ $lastCheckpoint->getName() }}</div>
-                    <div class="separator"></div>
-                    @foreach ($pack->getDeployCommands() as $command)
-                        <div>
-                            @include('./components/commandButton.blade.php', ['command' => $command])
-                        </div>
-                    @endforeach
-                @endif
-            </div>
-        @endif
-
-        <div class="pure-u-1 pure-u-md-2-3 bset">
-            <h3>{{ __('branches_in_pack') }} ({{ count($branches) }})</h3>
-
-            @if($user->owned($pack))
-                <a href="/branches/add/{{ $pId }}/{{ $id }}" class="pure-button btn-primary">Add branches</a>
-                <a href="/branches/remove/{{ $pId }}/{{ $id }}" class="pure-button ">Remove branches</a>
-            @else
-                <span disabled="disabled" class="pure-button btn-primary">Add branches</span>
-                <span disabled="disabled" class="pure-button ">Remove branches</span>
-            @endif
-            <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="pure-button ">Fork pack</a>
-
-            <ul>
-                @foreach ($branches as $branchName => $repos)
-                    <li class="{{ !$repos ? 'inactive' : '' }}">{{ $branchName }}
-                        <a style="cursor: pointer;"
-                           onclick="$(this).parent().find('div').toggle()">
-                            ({{ count($repos) }}) <small>{{array_sum(array_column($repos, 0)) }} < master
-                                > {{array_sum(array_column($repos, 1)) }}</small>
-                        </a>
-                        <div style="display: none; background: #cccccc; padding: 0.2em">
-                            @foreach ($repos as $repo => $toMasterStatus)
-                                {{$toMasterStatus[0] }} < <b>{{ $repo}}</b> > {{$toMasterStatus[1] }} <br>
-                            @endforeach
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-
-        <div class="pure-u-1 pure-u-md-1-3 bset">
-            <h3>{{ __('pack_controls') }}</h3>
-            @php($disabled = !$user->owned($pack))
-            @foreach ($pack->getPackCommands() as $command)
-                <div>
-                    @if($command->hasQuestion())
-                        @include('./components/commandButtonWithQuestion.blade.php', ['command' => $command, 'disabled' => $disabled])
-                    @else
-                        @include('./components/commandButton.blade.php', ['command' => $command, 'disabled' => $disabled])
+<div>
+    @php($lastCheckpointId = $pack->getLastCheckpoint()->getName())
+    @php($disabled = !$user->owned($pack))
+    @foreach ($pack->getCheckpoints() as $cpId => $checkPoint)
+        @php( $className = ($lastCheckpointId === $cpId ? ' active ' : ''))
+        <div class="card">
+            <div class="mb-4 flex justify-between items-center">
+                <div class="{{ $lastCheckpointId === $cpId ? '' : 'text-gray-400' }}">
+                    <span class="font-bold">Build</span> {{ $cpId }}
+                    @if ($lastCheckpointId === $cpId)
+                        <span class="ml-4 px-2 py-1 text-xs border bg-green-200 text-gray-600 rounded">
+                            active
+                        </span>
                     @endif
                 </div>
+
+                <div class="build-relative-date">
+                    {{ $checkPoint->getDetails()['relativeDate'] }}
+                </div>
+            </div>
+
+            @foreach ($checkPoint->getCommands() as $command)
+                @include('./components/commandButton.blade.php', [
+                    'command' => $command,
+                    'disabled' => $disabled
+                ])
+            @endforeach
+        </div>
+    @endforeach
+
+    @if (env('ENABLE_DEPLOY'))
+    <div class="card mt-4">
+
+        <h3 class="font-bold">{{ __('deploy') }}</h3>
+        @if ($lastCheckpoint = $pack->getLastCheckpoint())
+            <div>{{ $lastCheckpoint->getName() }}</div>
+            <div class="separator"></div>
+            @foreach ($pack->getDeployCommands() as $command)
+                <div>
+                    @include('./components/commandButton.blade.php', ['command' => $command])
+                </div>
+            @endforeach
+        @endif
+    </div>
+    @endif
+
+    <div class="card mt-4">
+        <h3 class="font-bold mb-4">{{ __('branches_in_pack') }}</h3>
+
+        @if($user->owned($pack))
+            <a href="/branches/add/{{ $pId }}/{{ $id }}" class="text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">Add branch</a>
+            <a href="/branches/remove/{{ $pId }}/{{ $id }}" class="text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">Remove branch</a>
+        @endif
+
+        <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">Fork pack</a>
+
+        <div class="mt-4">
+            @foreach ($branches as $branchName => $repos)
+            <div class="flex justify-between font-mono {{ !$repos ? 'inactive' : '' }}">{{ $branchName }}
+                <a class="cursor-pointer" onclick="$(this).parent().find('div').toggle()">
+                    ({{ count($repos) }}) <small>{{array_sum(array_column($repos, 0)) }} < master
+                        > {{array_sum(array_column($repos, 1)) }}</small>
+                </a>
+
+                <div style="display:none" class="font-normal">
+                    @foreach ($repos as $repo => $toMasterStatus)
+                        {{$toMasterStatus[0] }} < <b>{{ $repo}}</b> > {{$toMasterStatus[1] }} <br>
+                    @endforeach
+                </div>
+            </div>
             @endforeach
         </div>
     </div>
+
+    <div class="mt-4 card">
+        <h3 class="font-bold">Actions</h3>
+        @php($disabled = !$user->owned($pack))
+
+        @foreach ($pack->getPackCommands() as $command)
+            <div class="mt-4">
+                @if($command->hasQuestion())
+                    @include('./components/commandButtonWithQuestion.blade.php', ['command' => $command, 'disabled' => $disabled])
+                @else
+                    @include('./components/commandButton.blade.php', ['command' => $command, 'disabled' => $disabled])
+                @endif
+            </div>
+        @endforeach
+    </div>
+</div>
 @endsection

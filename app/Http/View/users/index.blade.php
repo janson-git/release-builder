@@ -81,7 +81,7 @@ $view->addBreadcrumb(new Breadcrumb('Profile', 'fa-solid fa-user'));
 
     <br>
 
-    <a class="mt-8 inline-block px-4 py-2 rounded border border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white" href="/auth/logout">
+    <a class="mt-8 inline-block px-4 py-2 rounded border border-orange-400 text-white bg-orange-400 hover:bg-orange-600" href="/auth/logout">
         Log out
     </a>
 </div>
