@@ -9,7 +9,7 @@
 
 @section('content')
     <div>
-        Set username and email which will displayed as commit owner info for pushed release branches
+        Set username and email which will display as a commit owner info for pushed release branches
     </div>
 
     <form class="mt-6 card bg-white p-8" method="post">

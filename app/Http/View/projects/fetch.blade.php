@@ -2,9 +2,9 @@
 
 @section('content')
 <div>
-    <a href="/web/project/show/{{ $pId }}">{{ __('back_to_project') }}</a>
+    <a class="mb-4" href="/web/project/show/{{ $pId }}">{{ __('back_to_project') }}</a>
     @foreach ($result as $path => $res)
-        <div>{{ $path }} : {{ $res }}</div>
+        <div class="mt-2 font-mono">{{ $path }} : {{ $res }}</div>
     @endforeach
 </div>
 @endsection

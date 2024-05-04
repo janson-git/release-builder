@@ -5,9 +5,9 @@
 
 $question = $command->isQuestion();
 
-$classString = "pure-button ";
+$classString = "inline-block text-white px-4 py-1 rounded ";
 //$classString .= $command->isPrimary() ? 'btn-primary': '';
-$classString .= $command->isDanger() ? 'btn-danger': '';
+$classString .= $command->isDanger() ? 'bg-red-400 hover:bg-red-600' : 'bg-orange-400 hover:bg-orange-600';
 
 if (isset($classes)) {
     $classString .= ' ' . $classes;

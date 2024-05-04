@@ -1,3 +1,4 @@
+{{--todo remore --}}
 <div class="breadcrumbs pure-g">
     @if ( $view->hasBreadcrumbs() )
         <div class="pure-u-4-5">

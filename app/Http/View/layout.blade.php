@@ -43,7 +43,7 @@ $currentPath = \request()->getUri()->getPath();
     <div class="mt-8">
         @yield('content')
 
-{{--        --}}{{-- todo move it somewhere--}}
+{{--         todo move it somewhere? remove? --}}
 {{--        @if (isset($_logs))--}}
 {{--            <button id="logs-toggle-button">--}}
 {{--                Show Debug Logs--}}

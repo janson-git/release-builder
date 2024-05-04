@@ -26,8 +26,6 @@ $view
     </div>
 </div>
 
-{{--<div class="mt-4">{{ __('packs') }}</div>--}}
-
 @foreach ($packs as $pack)
     <div class="card pack-card mt-6">
         <div>
