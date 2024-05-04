@@ -1,33 +1,48 @@
 @extends('./layout.blade.php')
 
 @section('content')
-<div class="pure-g">
-    <div class="pure-u-1">
+    <div class="card">
         <form class="pure-form pure-form-aligned" method="post">
-            <fieldset>
-                <div class="pure-control-group">
-                    <label for="login"><b>*</b> Login </label>
-                    <input id="login" name="login" type="text" placeholder="Login">
-                </div>
-                <div class="pure-control-group">
-                    <label for="name">Username</label>
-                    <input id="name" name="name" type="text" placeholder="Username">
-                </div>
+            <div class="flex justify-left">
+                <label for="name" class="w-40">Login</label>
+                <input
+                        id="login" name="login" type="text" placeholder="Login"
+                        class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                >
+            </div>
 
-                <div class="pure-control-group">
-                    <label for="password1"><b>*</b> Password</label>
-                    <input id="password1" name="password1" type="password" placeholder="Password">
-                </div>
-                <div class="pure-control-group">
-                    <label for="password2"><b>*</b> Confirm Password</label>
-                    <input id="password2" name="password2" type="password" placeholder="Confirm">
-                </div>
+            <div class="mt-4 flex justify-left">
+                <label for="name" class="w-40">Username</label>
+                <input
+                        id="name" name="name" type="text" placeholder="Username"
+                        class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                >
+            </div>
 
-                <div class="pure-controls">
-                    <button type="submit" class="pure-button pure-button-primary">Register</button>
+            <div class="mt-4 flex justify-left">
+                <label for="email" class="w-40">Password</label>
+                <input
+                        id="password" name="password" type="password" placeholder="Password"
+                        class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                >
+            </div>
+
+            <div class="mt-4 flex justify-left">
+                <label for="email" class="w-40">Password</label>
+                <input
+                        id="password2" name="password2" type="password" placeholder="Confirm"
+                        class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                >
+            </div>
+
+            <div class="mt-4 flex justify-start items-center">
+                <button type="submit" class="block px-4 py-2 rounded border border-green-400 text-green-400 hover:bg-green-400 hover:text-white">Register</button>
+
+                <div class="ml-4">or
+                    <a href="/auth/login" class="ml-2 cursor-pointer text-blue-400">login</a>
                 </div>
-            </fieldset>
+            </div>
         </form>
     </div>
- </div>
+</form>
 @endsection
