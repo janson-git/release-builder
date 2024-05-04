@@ -10,5 +10,7 @@
     </div>
 {{--    <a href="/projects/{{ $id }}" class="text-sky-400 border border-sky-400 hover:bg-sky-400 hover:text-white px-4 py-1 rounded" onclick='admin.update("{{ $dir }}", this)'>View</a>--}}
 
-    @if ($action)<a class="text-sky-400 border border-sky-400 hover:bg-sky-400 hover:text-white px-4 py-1 rounded" href="{{ $action['path'] }}">{{ $action['caption'] }}</a>@endif
+    @if (isset($linkAction))
+        <a class="text-sky-400 border border-sky-400 hover:bg-sky-400 hover:text-white px-4 py-1 rounded" href="{{ $linkAction['path'] }}">{{ $linkAction['caption'] }}</a>
+    @endif
 </div>

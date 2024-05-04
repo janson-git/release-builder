@@ -101,7 +101,8 @@ class View
 
     public function setAction(string $path, string $caption): self
     {
-        $this->data['action'] = ['path' => $path, 'caption' => $caption];
+        // renamed from action b/c of conflicts on some pages
+        $this->data['linkAction'] = ['path' => $path, 'caption' => $caption];
 
         return $this;
     }
