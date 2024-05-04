@@ -12,7 +12,6 @@ $view
 
 @section('content')
     <div class="card">
-
         <div class="mt-4 flex justify-start items-center">
             <div for="repository_path">Repository Path </div>
             <input type="text" id="repository_path" name="repository_path" required autocomplete="off"
@@ -27,7 +26,7 @@ $view
         >{{ __('save') }}</button>
     </div>
 
-    <div id="doneLog" class="p-4 font-mono text-xs">
+    <div class="font-mono text-xs">
         <p id="doneLog"></p>
     </div>
 </div>
