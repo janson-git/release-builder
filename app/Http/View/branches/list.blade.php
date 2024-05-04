@@ -36,9 +36,11 @@ $view->addBreadcrumb(new Breadcrumb($title));
         <input type="hidden" name="action" value="{{ $action }}"/>
 
         @if ($action == Branches::ACTION_PACK_CREATE || $action == Branches::ACTION_PACK_FORK)
-            <div class="flex justify-start">
-                <input type="text" value="" name="name" placeholder="{{ __('set_pack_name') }}" id="pack-name"/>
-                <input type="submit" value="{{ __('save_pack') }}" class="text-orange-400 border bg-orange-400 hover:bg-orange-600 text-white px-4 py-1 rounded"/>
+            <div class="flex justify-start items-center">
+                <input type="text" value="" name="name" placeholder="{{ __('set_pack_name') }}" id="pack-name"
+                       class="mt-6 mb-6 w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                />
+                <input type="submit" value="{{ __('save_pack') }}" class="ml-4 text-orange-400 border bg-orange-400 hover:bg-orange-600 text-white px-4 py-1 rounded"/>
                 <span class="btn-action-holder-for-input"></span>
             </div>
         @elseif ($action == Branches::ACTION_PACK_ADD_BRANCH || $action == Branches::ACTION_PACK_CHANGE_BRANCHES)

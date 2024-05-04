@@ -16,10 +16,6 @@ $currentPath = \request()->getUri()->getPath();
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-{{--    <link rel="stylesheet" href="/css/pure-min.css">--}}
-{{--    <link rel="stylesheet" href="/css/side-menu.css">--}}
-{{--    <link rel="stylesheet" href="/css/girds-min.css">--}}
-{{--    <link rel="stylesheet" href="/css/custom.css">--}}
     <link rel="stylesheet" href="/css/new.css">
     <link rel="stylesheet" href="/css/custom-buttons.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/rocket_32.png">
