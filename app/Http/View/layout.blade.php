@@ -57,6 +57,6 @@ $currentPath = \request()->getUri()->getPath();
     </div>
 </div>
 
-<script src="/js/ui.js?time={{ microtime(true) }}"></script>
+<script src="/js/ui.js"></script>
 </body>
 </html>
