@@ -32,22 +32,18 @@ $view->addBreadcrumb(new Breadcrumb($title));
 @section('content')
 <div class="card">
 {{--    <h2 class="font-bold">{{ __('branches') }} <span class="font-normal">({{ count($branches) }})</span></h2>--}}
-    <a href="/projects/{{ $project->getId() }}/fetch?return=1" class="text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">
-        {{ __('refetch_repositories') }}
-    </a>
-
     <form class="mt-4" action="/branches/save/{{ $project->getId() }}" method="post" onsubmit="return aFilter.checkForm(this);">
         <input type="hidden" name="action" value="{{ $action }}"/>
 
         @if ($action == Branches::ACTION_PACK_CREATE || $action == Branches::ACTION_PACK_FORK)
             <div class="flex justify-start">
                 <input type="text" value="" name="name" placeholder="{{ __('set_pack_name') }}" id="pack-name"/>
-                <input type="submit" value="{{ __('save_pack') }}" class="pure-button btn-primary btn-actionable"/>
+                <input type="submit" value="{{ __('save_pack') }}" class="text-orange-400 border bg-orange-400 hover:bg-orange-600 text-white px-4 py-1 rounded"/>
                 <span class="btn-action-holder-for-input"></span>
             </div>
         @elseif ($action == Branches::ACTION_PACK_ADD_BRANCH || $action == Branches::ACTION_PACK_CHANGE_BRANCHES)
             <div class="flex justify-start">
-                <input type="submit" value="Add selected branches to package" class="text-orange-400 border bg-orange-400 hover:bg-orange-600 text-white px-4 py-1 rounded"/>
+                <input type="submit" value="Update package branches" class="text-orange-400 border bg-orange-400 hover:bg-orange-600 text-white px-4 py-1 rounded"/>
                 <input type="hidden" name="packId" value="{{ $pack->getId() }}"/>
             </div>
         @endif
@@ -57,7 +53,7 @@ $view->addBreadcrumb(new Breadcrumb($title));
         @endif
 
         <input id="mainInput" type="text" placeholder="{{ __('filter_branches') }}" onkeydown="aFilter.filter()"
-               class="mt-4 mb-4 w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+               class="mt-6 mb-6 w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
                onkeyup="aFilter.filter()" autofocus/>
 
         @foreach ($branches as $branch => $repos)
@@ -77,7 +73,7 @@ $view->addBreadcrumb(new Breadcrumb($title));
 
                     @if (isset($branchesData[$branch]))
                         @foreach ($branchesData[$branch] as $repo => $toMasterStatus)
-                        <a style="cursor: pointer;" onclick="$(this).parent().find('div').toggle()">
+                        <a onclick="$(this).parent().find('div').toggle()">
                             {{ $repo }},
                         </a>
                         @endforeach
@@ -99,7 +95,7 @@ $view->addBreadcrumb(new Breadcrumb($title));
 </div>
 
 <div  class="mb-4">
-    <a href="/projects/{{ $project->getId() }}/fetch?return=1" class="mr-4 text-sky-400 border border-sky-400 hover:bg-sky-400 hover:text-white px-4 py-1 rounded">
+    <a href="/projects/{{ $project->getId() }}/fetch?return=1" class="mr-4 text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">
         {{ __('refetch_repositories_and_return') }}
     </a>
     if no branches found

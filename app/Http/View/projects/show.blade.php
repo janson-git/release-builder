@@ -21,7 +21,7 @@ $view
     <div class="pure-u-1">
         <a
             href="/commands/apply?command={{ $fetchCommand->getId() }}&context={{ $fetchCommand->getContext()->serialize() }}"
-            type="submit" class="inline-block px-4 py-2 rounded border border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white"
+            type="submit" class="inline-block px-2 py-1 rounded border border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white"
         >{{ $fetchCommand->getHumanName() }}</a>
     </div>
 </div>

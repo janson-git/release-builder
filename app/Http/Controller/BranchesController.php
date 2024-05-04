@@ -46,7 +46,7 @@ class BranchesController  extends AbstractController
         }
 
         $packId
-            ? $this->view->setAction("/packas/{$packId}", __('back_to_pack'))
+            ? $this->view->setAction("/packs/{$packId}", __('back_to_pack'))
             : $this->view->setAction("/projects/{$projectId}", __('back_to_project'));
     }
 
