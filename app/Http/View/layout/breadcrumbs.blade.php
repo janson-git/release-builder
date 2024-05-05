@@ -1,7 +1,7 @@
 <?php /** @var $view \Admin\View */ ?>
 
-<div class="mt-2 flex justify-start text-gray-small">
-    @if ( $view->hasBreadcrumbs() && count($view->getBreadcrumbs()) > 1)
+<div class="mt-1 border-y-2 py-0.5 flex justify-start text-gray-small">
+    @if ($view->hasBreadcrumbs())
         @foreach ($view->getBreadcrumbs() as $item)
             @if (!$loop->first)
                 <span class="ml-2"> > </span>
