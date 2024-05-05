@@ -27,7 +27,7 @@ class AuthController extends AbstractController
                     ->write();
 
                 return $this->app->getCookiesPipe()
-                    ->addCookie($this->response, 'tkn', $token)
+                    ->addCookie($this->response, $this->getAuthCookieName(), $token)
                     ->withRedirect('/projects');
             } else {
                 return $this->response->withRedirect('/auth/login');
@@ -39,7 +39,7 @@ class AuthController extends AbstractController
 
     public function logout(): Response
     {
-        $token = $this->request->getCookieParam('tkn');
+        $token = $this->request->getCookieParam($this->getAuthCookieName());
 
         Data::scope(App::DATA_SESSIONS)
             ->delete($token)
@@ -47,7 +47,7 @@ class AuthController extends AbstractController
 
         // delete token cookie and go to login page
         return $this->app->getCookiesPipe()
-            ->deleteCookie($this->response, 'tkn')
+            ->deleteCookie($this->response, $this->getAuthCookieName())
             ->withRedirect('/auth/login');
     }
 
@@ -82,15 +82,20 @@ class AuthController extends AbstractController
                 ->write();
 
             return $this->app->getCookiesPipe()
-                ->addCookie($this->response, 'tkn', $sessionToken)
+                ->addCookie($this->response, $this->getAuthCookieName(), $sessionToken)
                 ->withRedirect('/projects');
         }
 
         return $this->view->render('auth/registerForm.blade.php');
     }
 
-    protected function createToken(string $name): string
+    private function createToken(string $name): string
     {
         return md5(microtime() . $name);
+    }
+
+    private function getAuthCookieName(): string
+    {
+        return 'tkn' . App::i()->getIdentify();
     }
 }
