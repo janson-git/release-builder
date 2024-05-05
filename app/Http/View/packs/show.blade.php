@@ -24,9 +24,9 @@ $view
     @if (!$user->owned($pack))
         <div class="mb-4 border border-orange-400 rounded px-4 py-1 text-center">
             <div class="text-xl text-orange-400">
-                <i class="fa-solid fa-warning icon"></i> Actions available only for package owners!
+                <i class="fa-solid fa-warning icon"></i> Actions are available only for package owners!
             </div>
-            <div class="text-orange-400">If you need to handle this package you could fork it.</div>
+            <div class="text-orange-400">If you need to handle this package you should fork it.</div>
         </div>
     @endif
 
