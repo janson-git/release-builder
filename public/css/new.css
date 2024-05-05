@@ -1,3 +1,18 @@
+/* Define --main-bg-color here */
+:root {
+    --primary-button-color: #38bdf8;
+    --primary-button-color-hover: #0284c7;
+    --ordinary-button-color: #f3f4f6;
+    --ordinary-button-color-hover: #e5e7eb;
+    --danger-button-color: #f87171;
+    --danger-button-color-hover: #dc2626;
+}
+
+body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 14px;
+}
+
 .text-success {
     color: #2b4;
 }

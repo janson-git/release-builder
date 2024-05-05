@@ -21,8 +21,16 @@ $view
 
 @section('content')
 <div>
+    @if (!$user->owned($pack))
+        <div class="mb-4 border border-orange-400 rounded px-4 py-1 text-center">
+            <div class="text-xl text-orange-400">
+                <i class="fa-solid fa-warning icon"></i> Actions available only for package owners!
+            </div>
+            <div class="text-orange-400">If you need to handle this package you could fork it.</div>
+        </div>
+    @endif
+
     @php($lastCheckpointId = $pack->getLastCheckpoint()->getName())
-    @php($disabled = !$user->owned($pack))
     @foreach ($pack->getCheckpoints() as $cpId => $checkPoint)
         @php( $className = ($lastCheckpointId === $cpId ? ' active ' : ''))
         <div class="card">
@@ -41,12 +49,13 @@ $view
                 </div>
             </div>
 
-            @foreach ($checkPoint->getCommands() as $command)
-                @include('./components/commandButton.blade.php', [
-                    'command' => $command,
-                    'disabled' => $disabled
-                ])
-            @endforeach
+            @if ($user->owned($pack))
+                @foreach ($checkPoint->getCommands() as $command)
+                    @include('./components/commandButton.blade.php', [
+                        'command' => $command,
+                    ])
+                @endforeach
+            @endif
         </div>
     @endforeach
 
@@ -94,19 +103,20 @@ $view
         </div>
     </div>
 
+    @if ($user->owned($pack))
     <div class="mt-4 card">
         <h3 class="font-bold">Actions</h3>
-        @php($disabled = !$user->owned($pack))
 
         @foreach ($pack->getPackCommands() as $command)
             <div class="mt-4">
                 @if($command->hasQuestion())
-                    @include('./components/commandButtonWithQuestion.blade.php', ['command' => $command, 'disabled' => $disabled])
+                    @include('./components/commandButtonWithQuestion.blade.php', ['command' => $command])
                 @else
-                    @include('./components/commandButton.blade.php', ['command' => $command, 'disabled' => $disabled])
+                    @include('./components/commandButton.blade.php', ['command' => $command])
                 @endif
             </div>
         @endforeach
     </div>
+    @endif
 </div>
 @endsection

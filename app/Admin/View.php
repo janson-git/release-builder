@@ -75,7 +75,7 @@ class View
                 '#/user#',
             ]);
             $itemProfile->setIconClass('fa-solid fa-user');
-            array_unshift($menu, $itemProfile);
+            $menu[] = $itemProfile;
         } else {
             $itemLogin = new MenuItem(__('login'), '/auth/login');
             $itemLogin->setIconClass('fa-solid fa-right-to-bracket');
@@ -99,10 +99,18 @@ class View
         return $this;
     }
 
+    public function setMainAction(string $path, string $caption): self
+    {
+        // renamed from action b/c of conflicts on some pages
+        $this->data['pageMainAction'] = ['path' => $path, 'caption' => $caption];
+
+        return $this;
+    }
+
     public function setAction(string $path, string $caption): self
     {
         // renamed from action b/c of conflicts on some pages
-        $this->data['linkAction'] = ['path' => $path, 'caption' => $caption];
+        $this->data['pageAction'] = ['path' => $path, 'caption' => $caption];
 
         return $this;
     }

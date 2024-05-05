@@ -14,7 +14,7 @@ class PacksController extends AbstractController
         $pack = Pack::getById($id);
         $pack->getNode()->loadBranches();
 
-        $this->setTitle(__('pack') . ' ' , $pack->getName());
+        $this->setTitle(__('pack') . " '{$pack->getName()}'");
         if ($pack->getUser() !== null) {
             $this->setSubTitle('owned by @' . $pack->getUser()->getLogin());
         }

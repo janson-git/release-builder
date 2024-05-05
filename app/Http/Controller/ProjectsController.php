@@ -40,12 +40,17 @@ class ProjectsController extends AbstractController
 
         $this->setTitle('Project');
         $this->setSubTitle($project->getName());
-//        $this->setAction('/projects', __('back_to_project_list'));
-        $this->setAction('/branches/create-pack/' . $id, __('create_pack'));
+
         $project->getSlotsPool()->loadProjectSlots();
 
         $fetchCommand = new FetchProjectRepos();
         $fetchCommand->setContext((new CommandContext())->setProject($project));
+
+        $this->setMainAction('/branches/create-pack/' . $id, __('create_pack'));
+        $this->setAction(
+            "/commands/apply?command={$fetchCommand->getId()}&context={$fetchCommand->getContext()->serialize()}",
+            $fetchCommand->getHumanName()
+        );
 
         return $this->view->render('projects/show.blade.php', [
             'project' => $project,

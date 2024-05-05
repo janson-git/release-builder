@@ -2,7 +2,7 @@
     {{--                <a class="pure-menu-heading" href="/user">{{ $user?->getLogin() }}</a>--}}
     @foreach ( $mainMenu as $menuItem)
         <?php /** @var $menuItem \Service\Menu\MenuItem */ ?>
-        <a class="mr-12 hover:underline {!! $menuItem->isSelected() ? 'font-bold' : '' !!}" href="{{$menuItem->route }}">
+        <a class="px-6 py-2 hover:underline {!! $menuItem->isSelected() ? 'font-bold bg-gray-600 text-white' : '' !!}" href="{{$menuItem->route }}">
             @if ($menuItem->iconClass)
                 <i class="{{ $menuItem->iconClass }} icon"></i>
             @else

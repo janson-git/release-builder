@@ -22,11 +22,10 @@ $currentPath = \request()->getUri()->getPath();
     <script src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
-<body class="bg-gray-50 flex justify-around">
-<div class="w-1/2">
+<body class="bg-gray-50 w-full mx-auto flex justify-center">
+<div class="w-1/2 justify-around">
     @include('layout.navigation', ['mainMenu' => $mainMenu])
-
-{{--        @include('layout.breadcrumbs', ['view' => $view])--}}
+    @include('layout.breadcrumbs', ['view' => $view])
 
     <div class="mt-6">
         @include('layout.heading', ['header' => $header, 'title' => $title, 'action' => $action ?? null])
