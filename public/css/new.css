@@ -7,6 +7,9 @@
     --danger-button-color: #f87171;
     --danger-button-color-hover: #dc2626;
     --muted-button-color: #9ca3af;
+    --muted-button-color-hover: #6b7280;
+    --success-button-color: #22c55e;
+    --success-button-color-hover: #16a34a;
 
     --border-color-headers: #d0d7deb3;
 }

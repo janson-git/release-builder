@@ -9,6 +9,7 @@
 }
 
 .btn-primary,
+.btn-success,
 .btn-danger {
     color: white;
 }
@@ -31,6 +32,24 @@
     background-color: var(--primary-button-color);
 }
 
+.btn-success {
+    background-color: var(--success-button-color);
+    border-color: var(--success-button-color);
+}
+.btn-success:hover {
+    background-color: var(--success-button-color-hover);
+    border-color: var(--success-button-color-hover);
+}
+.btn-success-outline {
+    color: var(--success-button-color);
+    background-color: white;
+    border: 1px solid var(--success-button-color);
+}
+.btn-success-outline:hover {
+    color: white;
+    background-color: var(--success-button-color);
+}
+
 .btn-danger {
     background-color: var(--danger-button-color);
     border-color: var(--danger-button-color);
@@ -50,11 +69,21 @@
 }
 
 .btn-muted {
+    color: white;
+    background-color: var(--muted-button-color);
+    border: 1px solid var(--muted-button-color);
+}
+.btn-muted:hover {
+    background-color: var(--muted-button-color-hover);
+    border-color: var(--muted-button-color-hover);
+}
+
+.btn-muted-outline {
     color: var(--muted-button-color);
     background-color: white;
     border: 1px solid var(--muted-button-color);
 }
-.btn-muted:hover {
+.btn-muted-outline:hover {
     background-color: var(--muted-button-color);
     color: white;
 }

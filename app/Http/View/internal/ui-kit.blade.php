@@ -27,12 +27,28 @@
             <a href="#" class="btn btn-primary-outline">Primary outline button</a>
             <span class="ml-4 italic">btn btn-primary-outline</span>
         </div>
+
+        <div class="mt-4 flex justify-normal items-baseline">
+            <a href="#" class="btn btn-success">Success button</a>
+            <span class="ml-4 italic">btn btn-success</span>
+        </div>
+        <div class="mt-4 flex justify-normal items-baseline">
+            <a href="#" class="btn btn-success-outline">Success outline button</a>
+            <span class="ml-4 italic">btn btn-success-outline</span>
+        </div>
     </div>
 
     <div class="w-1/2">
         <div class="mt-4 flex justify-normal items-baseline">
+            <span class="py-1 px-4">&nbsp;</span>
+        </div>
+        <div class="mt-4 flex justify-normal items-baseline">
             <a href="#" class="btn btn-muted">Muted button</a>
             <span class="ml-4 italic">btn btn-muted</span>
+        </div>
+        <div class="mt-4 flex justify-normal items-baseline">
+            <a href="#" class="btn btn-muted-outline">Muted outline button</a>
+            <span class="ml-4 italic">btn btn-muted-outline</span>
         </div>
         <div class="mt-4 flex justify-normal items-baseline">
             <a href="#" class="btn btn-danger">Danger button</a>

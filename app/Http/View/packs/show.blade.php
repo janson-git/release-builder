@@ -51,9 +51,7 @@ $view
 
             @if ($user->owned($pack))
                 @foreach ($checkPoint->getCommands() as $command)
-                    @include('./components/commandButton.blade.php', [
-                        'command' => $command,
-                    ])
+                    @include('./components/commandButton.blade.php', ['command' => $command])
                 @endforeach
             @endif
         </div>

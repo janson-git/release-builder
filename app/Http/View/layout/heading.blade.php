@@ -10,7 +10,7 @@
             <a class="mr-2 px-4 py-1 btn btn-primary-outline" href="{{ $pageMainAction['path'] }}">{{ $pageMainAction['caption'] }}</a>
         @endif
         @if (isset($pageAction))
-            <a class="mr-2 px-4 py-1 btn btn-muted" href="{{ $pageAction['path'] }}">{{ $pageAction['caption'] }}</a>
+            <a class="mr-2 px-4 py-1 btn btn-muted-outline" href="{{ $pageAction['path'] }}">{{ $pageAction['caption'] }}</a>
         @endif
     </div>
     @endif
