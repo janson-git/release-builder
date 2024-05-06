@@ -17,14 +17,6 @@ $view
 @extends('./layout.blade.php')
 
 @section('content')
-<div class="pure-g">
-    <div class="pure-u-1">
-        <a
-            href="/commands/apply?command={{ $fetchCommand->getId() }}&context={{ $fetchCommand->getContext()->serialize() }}"
-            type="submit" class="inline-block px-2 py-1 rounded border border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white"
-        >{{ $fetchCommand->getHumanName() }}</a>
-    </div>
-</div>
 
 @foreach ($packs as $pack)
     <div class="card pack-card mt-6">
@@ -42,7 +34,7 @@ $view
                 @else
                     @include('./components/commandButton.blade.php', [
                         'command' => $pack->prepareCommand(new \Commands\Command\Pack\RemovePackWithData),
-                        'classes' => 'btn-s right btn-danger-outline',
+                        'classes' => 'right btn-danger-outline',
                     ])
                 @endif
             </div>

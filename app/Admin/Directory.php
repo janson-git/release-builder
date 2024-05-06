@@ -9,14 +9,9 @@ use Service\Util\StringHelper;
 class Directory
 {
     protected $sitesDir = null;
-    
-    protected $deployUser = null;
-    protected $wwwUser    = null;
-    
+
     function __construct()
     {
-        $this->deployUser = 'deploy';
-        $this->wwwUser    = 'www-data';
         $this->sitesDir   = REPOS_DIR . '/';
     }
 
@@ -28,11 +23,6 @@ class Directory
     public function setSitesDir(string $sitesDir): void
     {
         $this->sitesDir = $sitesDir;
-    }
-
-    public function getSitedDir(): string
-    {
-        return $this->sitesDir;
     }
 
     public function scanDir(): array

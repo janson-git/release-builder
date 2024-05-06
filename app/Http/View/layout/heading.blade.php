@@ -1,10 +1,19 @@
-<div class="flex justify-between items-center">
+<div class="flex justify-between items-start">
     <div>
         @if ($header)<div class="text-2xl font-bold">{!! $header !!}</div>@endif
         @if ($title)<div class="mt-2 italic">{!! $title !!}</div>@endif
     </div>
 
-    @if (isset($linkAction))
-        <a class="text-sky-400 border border-sky-400 hover:bg-sky-400 hover:text-white px-4 py-1 rounded" href="{{ $linkAction['path'] }}">{{ $linkAction['caption'] }}</a>
+    @if (isset($pageMainAction) || isset($pageAction))
+    <div class="flex justify-between items-start">
+        @if (isset($pageMainAction))
+            <a class="mr-2 px-4 py-1 btn btn-primary-outline" href="{{ $pageMainAction['path'] }}">{{ $pageMainAction['caption'] }}</a>
+        @endif
+        @if (isset($pageAction))
+            <a class="mr-2 px-4 py-1 btn btn-muted-outline" href="{{ $pageAction['path'] }}">{{ $pageAction['caption'] }}</a>
+        @endif
+    </div>
     @endif
 </div>
+
+

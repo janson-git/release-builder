@@ -33,33 +33,33 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
                 {{ implode(', ', $dirs) }}
             </div>
 
-            <a href="/projects/{{ $id }}" class="text-sky-400 border border-sky-400 hover:bg-sky-400 hover:text-white px-4 py-1 rounded" onclick='admin.update("{{ $dir }}", this)'>View</a>
+            <a href="/projects/{{ $id }}" class="px-4 py-1 btn btn-primary">View</a>
         </div>
 
         <div class="mt-2"></div>
         @if (isset($packsByProjects[$id]))
             @foreach ($packsByProjects[$id] as $packId => $pack)
-            <div class="mt-1">
-                <a href="/packs/{{ $packId }}" class="pack-link">
-                    <span class="icon-border"><i class="fa-regular fa-file-lines"></i></span> {{ $pack->getName() }}
-                </a>
+            <div class="mt-1 flex justify-between hover:bg-gray-100">
+                <div>
+                    <a href="/packs/{{ $packId }}" class="pack-link">
+                        <span class="icon-border"><i class="fa-regular fa-file-lines"></i></span> {{ $pack->getName() }}
+                    </a>
 
-                <?php
-                    $count = count($pack->getBranches());
-                ?>
-                @if($count > 0)
-                <span class="tool" data-tip="{!! implode("\n", $pack->getBranches()) !!}">
-                    Branches ({{ $count }}) <i class="fa-solid fa-info-circle"></i>
-                </span>
-                @else
-                <span class="empty"><i>No branches added</i></span>
-                @endif
-            </div>
-            <div class="pure-u-1-3">
-                <!-- Here a place to show pack owner name -->
-                @if ($pack->getUser() && !$user->owned($pack))
-                    <span class="text-gray-small right">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
-                @endif
+                    @php($count = count($pack->getBranches()))
+                    @if($count > 0)
+                    <span class="tool" data-tip="{!! implode("\n", $pack->getBranches()) !!}">
+                        Branches ({{ $count }}) <i class="fa-solid fa-info-circle"></i>
+                    </span>
+                    @else
+                    <span class="empty"><i>No branches added</i></span>
+                    @endif
+                </div>
+                <div>
+                    <!-- Here a place to show pack owner name -->
+                    @if ($pack->getUser() && !$user->owned($pack))
+                        <span class="text-gray-small right">owned by <abbr title="{{ $pack->getUser()->getName() }}">{{ '@' . $pack->getUser()->getLogin() }}</abbr></span>
+                    @endif
+                </div>
             </div>
             @endforeach
         @endif

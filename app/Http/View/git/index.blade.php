@@ -33,9 +33,7 @@ $view->addBreadcrumb(
         </span>
     </div>
 
-    <pre class="mt-6 text-xs font-mono py-4 pl-2 bg-gray-100 border border-gray-600">
-        {!! implode("\n", $data['com']) !!}
-    </pre>
+    <pre class="mt-6 overflow-scroll text-xs font-mono py-4 pl-2 bg-gray-100 border border-gray-600">{!! implode("\n", $data['com']) !!}</pre>
 
     <div class="mt-6">
         <div class="flex justify-start">
@@ -61,9 +59,9 @@ $view->addBreadcrumb(
     @endforeach
 
     <div class="mt-6 flex justify-start">
-        <button class="bg-green-400 text-white hover:bg-green-600 hover:text-white px-4 py-1 rounded" onclick='admin.update("{{ $dir }}", this)'>update</button>
-        <button class="ml-4 bg-gray-400 text-white hover:bg-gray-600 border border-gray-200 hover:bg-gray-200 px-4 py-1 rounded " onclick='admin.fixGit("{{ $dir }}", this)'>reset branch</button>
-        <button class="ml-4 bg-red-400 text-white hover:bg-red-600  px-2 py-1 rounded" onclick='admin.fixGit("{{ $dir }}", this, 1)'>reset and delete files</button>
+        <button class="px-4 py-1 btn btn-success" onclick='admin.update("{{ $dir }}", this)'>update</button>
+        <button class="ml-4 px-4 py-1 btn btn-muted" onclick='admin.fixGit("{{ $dir }}", this)'>reset branch</button>
+        <button class="ml-4 px-2 py-1 btn btn-danger" onclick='admin.fixGit("{{ $dir }}", this, 1)'>reset and delete files</button>
     </div>
 </div>
 @endforeach

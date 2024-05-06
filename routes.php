@@ -4,7 +4,7 @@
 use App\Http\Controller\AuthController;
 use App\Http\Controller\BranchesController;
 use App\Http\Controller\CommandsController;
-use App\Http\Controller\ConfigController;
+use App\Http\Controller\InternalController;
 use App\Http\Controller\GitController;
 use App\Http\Controller\PacksController;
 use App\Http\Controller\ProjectsController;
@@ -46,9 +46,7 @@ $app->group('', function(\Admin\App $app) {
     $app->get('/branches/create-pack/{projectId:[0-9]+}[/]', [BranchesController::class, 'createPackForm']);
     $app->post('/branches/save/{projectId:[0-9]+}[/]', [BranchesController::class, 'savePack']);
 
-    $app->get('/config[/]', [ConfigController::class, 'index']);
-    $app->get('/config/edit[/]', [ConfigController::class, 'edit']);
-    $app->get('/config/settings[/]', [ConfigController::class, 'settings']);
+    $app->get('/internal[/]', [InternalController::class, 'index']);
 
     $app->get('/commands/apply[/]', [CommandsController::class, 'apply']);
 })->add(OnlyAuthenticated::class);

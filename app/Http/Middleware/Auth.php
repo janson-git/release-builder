@@ -32,7 +32,7 @@ class Auth
         $next
     ) {
         // check sessions and users by session
-        $sessionToken = $request->getCookieParam('tkn');
+        $sessionToken = $request->getCookieParam('tkn' . App::i()->getIdentify());
 
         $sessions = Data::scope(App::DATA_SESSIONS)->getAll();
 

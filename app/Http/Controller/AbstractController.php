@@ -51,6 +51,11 @@ abstract class AbstractController
         $this->view->setTitle($subTitle);
     }
 
+    public function setMainAction($path, $caption): void
+    {
+        $this->view->setMainAction($path, $caption);
+    }
+
     public function setAction($path, $caption): void
     {
         $this->view->setAction($path, $caption);
