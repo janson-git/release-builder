@@ -33,7 +33,7 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
                 {{ implode(', ', $dirs) }}
             </div>
 
-            <a href="/projects/{{ $id }}" class="px-4 py-1 btn btn-primary" onclick='admin.update("{{ $dir }}", this)'>View</a>
+            <a href="/projects/{{ $id }}" class="px-4 py-1 btn btn-primary">View</a>
         </div>
 
         <div class="mt-2"></div>
