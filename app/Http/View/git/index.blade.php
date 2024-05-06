@@ -33,9 +33,7 @@ $view->addBreadcrumb(
         </span>
     </div>
 
-    <pre class="mt-6 text-xs font-mono py-4 pl-2 bg-gray-100 border border-gray-600">
-        {!! implode("\n", $data['com']) !!}
-    </pre>
+    <pre class="mt-6 overflow-scroll text-xs font-mono py-4 pl-2 bg-gray-100 border border-gray-600">{!! implode("\n", $data['com']) !!}</pre>
 
     <div class="mt-6">
         <div class="flex justify-start">
