@@ -16,8 +16,8 @@ class ProjectsController extends AbstractController
     public function index(): ResponseInterface
     {
         $this->setTitle( __('projects'));
-        ($hasRepos = !empty($this->app->directory()->allData()))
-            && $this->setAction("/projects/create-new", __('create_project'));
+        $hasRepos = !empty($this->app->directory()->allData());
+        $this->setMainAction("/projects/create-new", __('create_project'));
 
         $projects = Data::scope(App::DATA_PROJECTS)->getAll();
         $packsData = Data::scope(App::DATA_PACKS)->getAll();

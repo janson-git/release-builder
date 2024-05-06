@@ -34,7 +34,7 @@ $view
                 @else
                     @include('./components/commandButton.blade.php', [
                         'command' => $pack->prepareCommand(new \Commands\Command\Pack\RemovePackWithData),
-                        'classes' => 'btn-s right btn-danger-outline',
+                        'classes' => 'right btn-danger-outline',
                     ])
                 @endif
             </div>
