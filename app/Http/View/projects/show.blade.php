@@ -19,7 +19,7 @@ $view
 @section('content')
 
 @foreach ($packs as $pack)
-    <div class="card pack-card mt-6">
+    <div class="card pack-card mt-6 border-t-2 border-gray-200">
         <div>
             <?php $branches = $pack->getBranches() ?>
 

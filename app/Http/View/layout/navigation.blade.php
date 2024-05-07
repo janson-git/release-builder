@@ -1,5 +1,4 @@
-<div class="mt-12 flex justify-start">
-    {{--                <a class="pure-menu-heading" href="/user">{{ $user?->getLogin() }}</a>--}}
+<div class="flex justify-start">
     @foreach ( $mainMenu as $menuItem)
         <?php /** @var $menuItem \Service\Menu\MenuItem */ ?>
         <a class="px-6 py-2 hover:underline {!! $menuItem->isSelected() ? 'bg-gray-600 text-white' : '' !!}" href="{{$menuItem->route }}">

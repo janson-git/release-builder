@@ -22,39 +22,45 @@ $currentPath = \request()->getUri()->getPath();
     <script src="/js/jquery-2.1.1.min.js"></script>
 </head>
 
-<body class="bg-gray-50 w-full mx-auto flex justify-center">
-<div class="w-1/2 min-w-[800px] justify-around">
-    @include('layout.navigation', ['mainMenu' => $mainMenu])
-    @include('layout.breadcrumbs', ['view' => $view])
+<body class="bg-gray-50 mb-6">
 
-    <div class="mt-6">
-        @include('layout.heading', ['header' => $header, 'title' => $title, 'action' => $action ?? null])
-    </div>
-
-    <div class="mt-8">
-        @yield('content')
-
-        {{-- todo fix --}}
-        @if (isset($_logs))
-            <button id="logs-toggle-button" class="inline-block mb-4 text-gray-400 border border-gray-400 hover:bg-gray-400 hover:text-white px-2 py-1 rounded">
-                Show Debug Logs
-            </button>
-            <div class="mb-4 logs-cont" id="logs-container">
-                @foreach ($_logs as $info)
-                    <div style="word-break: break-all; padding: 0.3em">
-                        {{ $info }}
-                    </div>
-                @endforeach
-            </div>
-        @endif
-    </div>
-
-    <div id="loader" class="hidden fixed bottom-10" style="left: 70%;">
-        <div class="mx-auto">
-            <i class="fa-solid fa-spinner fa-spin"></i>
+    <div class="w-full pt-4 border-b-2">
+        <div class="w-1/2 min-w-[800px] mx-auto">
+            @include('layout.navigation', ['mainMenu' => $mainMenu])
+            @include('layout.breadcrumbs', ['view' => $view])
         </div>
     </div>
-</div>
+
+    <div class="w-full mt-6">
+        <div class="w-1/2 min-w-[800px] mx-auto">
+            @include('layout.heading', ['header' => $header, 'title' => $title, 'action' => $action ?? null])
+
+            <div class="mt-8">
+                @yield('content')
+
+                {{-- todo fix --}}
+                @if (isset($_logs))
+                    <button id="logs-toggle-button" class="mb-4 btn btn-muted-outline">
+                        Show Debug Logs
+                    </button>
+
+                    <div class="mb-4 logs-cont" id="logs-container">
+                        @foreach ($_logs as $info)
+                            <div style="word-break: break-all; padding: 0.3em">
+                                {{ $info }}
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            <div id="loader" class="hidden fixed bottom-10" style="left: 70%;">
+                <div class="mx-auto">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <script src="/js/ui.js"></script>
 </body>
