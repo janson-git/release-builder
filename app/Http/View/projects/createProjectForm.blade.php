@@ -14,6 +14,24 @@ $view
 
 @section('content')
 
+    @if ($passedDirs)
+        <div class="card">
+            <h2 class="inline-block">
+                {{count($passedDirs) }} selected root directories for project
+            </h2>
+            <a href="/projects/create-new" class="ml-4 text-blue-600 underline">{{ __('reset') }}</a>
+
+
+        <form action="/projects/save">
+            <ul>
+                <li>{!! implode('</li><li>', $passedDirs) !!}</li>
+            </ul>
+            <input type="hidden" name="saveDirs" value='{!! implode(',', $passedDirs) !!}' title=""/>
+            <input type="submit" value="{{ __('save_project') }}" class="mt-2 btn btn-primary"/>
+        </form>
+        </div>
+    @endif
+
     <form class="card">
         <h2 class="font-bold mb-2">{{ __('directories') }}</h2>
 
