@@ -16,10 +16,10 @@ $view
 
     @if ($passedDirs)
         <div class="card">
-            <h2 class="inline-block">
+            <h2 class="mb-2 inline-block">
                 {{count($passedDirs) }} selected root directories for project
             </h2>
-            <a href="/projects/create-new" class="ml-4 text-blue-600 underline">{{ __('reset') }}</a>
+            <a href="/projects/create-new" class="ml-3 text-blue-600 underline">Reset</a>
 
 
         <form action="/projects/save">
@@ -33,12 +33,13 @@ $view
     @endif
 
     <form class="card">
-        <h2 class="font-bold mb-2">{{ __('directories') }}</h2>
+        <h2 class="mb-2 inline-block">Directories</h2>
+        <a href="/projects/create-new" class="ml-3 text-blue-600 underline">Reset</a>
 
         @foreach ($dirs as $dirPath)
             <label for="ch_{{ $dirPath }}" class="block mt-1">
                 <input type="checkbox" title="{{ $dirPath }}" id="ch_{{ $dirPath }}" name="dirs[]" value="{{ $dirPath }}"/>
-                {{ $dirPath }}
+                <a class="ml-1 underline text-blue-600" href="?pack={{ $dirPath }}">{{ $dirPath }}</a>
             </label>
         @endforeach
 
@@ -47,22 +48,30 @@ $view
         />
     </form>
 
-    <h2 class="mt-8 font-bold">
-        {{ count($node->getRepos()) }} repositories available
-    </h2>
 
-    @foreach ($node->getRepos() as $id => $repo)
-        <div class="card mt-4">
+    @if (!$node->getRepos())
+        <h2 class="mt-8 mb-8 font-bold">
+            No repositories found in this folder
+        </h2>
+    @else
+        <h2 class="mt-8 font-bold">
+            {{ count($node->getRepos()) }} repositories available
+        </h2>
 
-            <div class="mt-2"><i class="fa fa-folder-open"></i> {{ $dirs[$id] }}</div>
-            <div class="mt-2 mb-4"><i class="fa fa-code-branch"></i> {{ count($node->getBranchesByRepoId($id)) }}</div>
+        @foreach ($node->getRepos() as $id => $repo)
+            <div class="card mt-4">
 
-            @foreach ($repo->getRemotesLastChangeTime() as $branch => $time)
-                <div class="flex justify-between">
-                    <div>{{ $branch }}</div>
-                    <div>{{ @date('d.M.Y H:i', $time) }}</div>
-                </div>
-            @endforeach
-        </div>
-    @endforeach
+                <div class="mt-2"><i class="fa fa-folder-open"></i> {{ $dirs[$id] }}</div>
+                <div class="mt-2 mb-4"><i class="fa fa-code-branch"></i> {{ count($node->getBranchesByRepoId($id)) }}</div>
+
+                @foreach ($repo->getRemotesLastChangeTime() as $branch => $time)
+                    <div class="flex justify-between">
+                        <div>{{ $branch }}</div>
+                        <div>{{ @date('d.M.Y H:i', $time) }}</div>
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
+    @endif
+
 @endsection
