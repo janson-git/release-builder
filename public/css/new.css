@@ -336,12 +336,6 @@ h1 i,
     font-style: italic;
 }
 
-.pack-card .branch-list {
-    overflow: scroll;
-    border: 1px solid #111111;
-    padding: 0.5em 0.5em;
-}
-
 .dataset-item {
     padding: 0.3em;
 }

@@ -66,6 +66,8 @@ class ProjectsController extends AbstractController
     {
         // SHOW NAVIGATOR FORM TO CREATE PROJECT
         $this->setTitle("Create Project");
+        $this->setSubTitle('Select repositories to add in project');
+
         $pack = $this->p('pack');
 
         $node = new Node();

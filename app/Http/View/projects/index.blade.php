@@ -28,7 +28,7 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
         });
         ?>
 
-        <div class="flex justify-between">
+        <div class="flex justify-between border-b pb-1">
             <div class="font-bold text-lg">
                 {{ implode(', ', $dirs) }}
             </div>
@@ -62,6 +62,10 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
                 </div>
             </div>
             @endforeach
+        @else
+            <div class="mb-2 text-center">
+                <p class="text-gray-600 italic">No packages created</p>
+            </div>
         @endif
     </div>
 @endforeach
