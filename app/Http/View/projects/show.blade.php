@@ -47,7 +47,7 @@ $view
             </div>
 
             <div class="">Branches</div>
-            <ul class="mt-2 branch-list">
+            <ul class="mt-2 p-2 border border-gray-400 overflow-scroll">
                 @if (!empty($branches))
                     @foreach($branches as $branch)
                         <li>{{ $branch }}</li>

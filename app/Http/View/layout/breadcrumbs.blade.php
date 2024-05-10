@@ -1,6 +1,6 @@
 <?php /** @var $view \Admin\View */ ?>
 
-<div class="mt-1 border-t py-1 flex justify-start text-gray-small items-center">
+<div class="ml-3 mt-1 py-1 flex justify-start text-gray-small items-center">
     @if ($view->hasBreadcrumbs())
         <span class="ml-2"><i class="fa fa-home"></i></span>
 

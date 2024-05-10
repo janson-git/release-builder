@@ -62,6 +62,10 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
                 </div>
             </div>
             @endforeach
+        @else
+            <div class="mb-2 text-center">
+                <p class="text-gray-600 italic">No packages created</p>
+            </div>
         @endif
     </div>
 @endforeach
