@@ -23,7 +23,7 @@ $currentPath = \request()->getUri()->getPath();
 </head>
 
 <body class="bg-gray-50 w-full mx-auto flex justify-center">
-<div class="w-1/2 min-w-[800px] justify-around">
+<div class="lg:w-1/2 lg:px-0 px-4 w-full min-w-[800px] justify-around">
     @include('layout.navigation', ['mainMenu' => $mainMenu])
     @include('layout.breadcrumbs', ['view' => $view])
 
