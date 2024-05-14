@@ -20,7 +20,7 @@ $view->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb());
 @endif
 
 @foreach ($projects as $id => $dirs)
-    <div class="w-full mt-8 card project-card">
+    <div class="w-full mt-8 card project-card border-t-2 border-green-200">
         <?php
         $dirs = $dirs ?: [];
         array_walk($dirs, function (&$val) {
