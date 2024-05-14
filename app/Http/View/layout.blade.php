@@ -63,5 +63,6 @@ $currentPath = \request()->getUri()->getPath();
     </div>
 
 <script src="/js/ui.js"></script>
+<script src="/js/clipboard.js"></script>
 </body>
 </html>
