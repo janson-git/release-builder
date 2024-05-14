@@ -25,7 +25,7 @@ $view
     @endif
 
     @foreach ($packs as $pack)
-        <div class="card pack-card mt-6 border-t-2 border-gray-200">
+        <div class="card pack-card mt-6 border-t-2 border-blue-200">
             <div>
                 <?php $branches = $pack->getBranches() ?>
 

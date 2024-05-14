@@ -20,6 +20,14 @@
             <span class="ml-4 italic">btn</span>
         </div>
         <div class="mt-4 flex justify-normal items-baseline">
+            <a href="#" class="btn btn-muted">Muted button</a>
+            <span class="ml-4 italic">btn btn-muted</span>
+        </div>
+        <div class="mt-4 flex justify-normal items-baseline">
+            <a href="#" class="btn btn-muted-outline">Muted outline button</a>
+            <span class="ml-4 italic">btn btn-muted-outline</span>
+        </div>
+        <div class="mt-4 flex justify-normal items-baseline">
             <a href="#" class="btn btn-primary">Primary button</a>
             <span class="ml-4 italic">btn btn-primary</span>
         </div>
@@ -43,12 +51,12 @@
             <span class="py-1 px-4">&nbsp;</span>
         </div>
         <div class="mt-4 flex justify-normal items-baseline">
-            <a href="#" class="btn btn-muted">Muted button</a>
-            <span class="ml-4 italic">btn btn-muted</span>
+            <a href="#" class="btn btn-warning">Warning button</a>
+            <span class="ml-4 italic">btn btn-warning</span>
         </div>
         <div class="mt-4 flex justify-normal items-baseline">
-            <a href="#" class="btn btn-muted-outline">Muted outline button</a>
-            <span class="ml-4 italic">btn btn-muted-outline</span>
+            <a href="#" class="btn btn-warning-outline">Warning outline button</a>
+            <span class="ml-4 italic">btn btn-warning-outline</span>
         </div>
         <div class="mt-4 flex justify-normal items-baseline">
             <a href="#" class="btn btn-danger">Danger button</a>
