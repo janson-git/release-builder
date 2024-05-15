@@ -85,7 +85,7 @@ $view
         @endif
         <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="btn btn-muted-outline">Fork package</a>
 
-        <div class="mt-4">
+        <div class="mt-4 pt-2 pb-2 border-b">
             @foreach ($branches as $branchName => $repos)
             <div class="px-2 flex justify-between hover:bg-gray-100 font-mono {{ !$repos ? 'inactive' : '' }}">{{ $branchName }}
                 <a class="cursor-pointer" onclick="$(this).parent().find('div').toggle()">
