@@ -25,14 +25,14 @@ $currentPath = \request()->getUri()->getPath();
 <body class="bg-gray-50 mb-6">
 
     <div class="w-full pt-4 border-b-2">
-        <div class="w-1/2 min-w-[800px] mx-auto">
+        <div class="lg:w-1/2 lg:px-0 lg:min-w-[800px] px-4 w-full mx-auto">
             @include('layout.navigation', ['mainMenu' => $mainMenu])
             @include('layout.breadcrumbs', ['view' => $view])
         </div>
     </div>
 
     <div class="w-full mt-6">
-        <div class="w-1/2 min-w-[800px] mx-auto">
+        <div class="lg:w-1/2 lg:px-0 lg:min-w-[800px] px-4 w-full mx-auto">
             @include('layout.heading', ['header' => $header, 'title' => $title, 'action' => $action ?? null])
 
             <div class="mt-8">
@@ -43,7 +43,6 @@ $currentPath = \request()->getUri()->getPath();
                     <button id="logs-toggle-button" class="mb-4 btn btn-muted-outline">
                         Show Debug Logs
                     </button>
-
                     <div class="mb-4 logs-cont" id="logs-container">
                         @foreach ($_logs as $info)
                             <div style="word-break: break-all; padding: 0.3em">
