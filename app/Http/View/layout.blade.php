@@ -40,7 +40,7 @@ $currentPath = \request()->getUri()->getPath();
 
                 {{-- todo fix --}}
                 @if (isset($_logs))
-                    <button id="logs-toggle-button" class="mb-4 btn btn-muted-outline">
+                    <button id="logs-toggle-button" class="mb-4 mt-6 btn btn-muted-outline">
                         Show Debug Logs
                     </button>
                     <div class="mb-4 logs-cont" id="logs-container">

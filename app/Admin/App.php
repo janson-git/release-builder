@@ -17,12 +17,12 @@ class App extends SlimApp
 
     public $itemId;
     
-    public $debug = true;
+    public bool $debug = false;
     
     private $identify;
 
     /** @var array */
-    protected $lang = [];
+    protected array $lang = [];
        
     const DATA_PROJECTS      = 'projects';
     const DATA_PACKS         = 'packs';

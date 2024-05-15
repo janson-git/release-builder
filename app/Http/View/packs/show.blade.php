@@ -104,7 +104,7 @@ $view
     </div>
 
     @if ($user->owned($pack))
-    <div class="mt-8">
+    <div class="mt-8 mb-4">
         <h3 class="font-bold">Actions</h3>
 
         @foreach ($pack->getPackCommands() as $command)

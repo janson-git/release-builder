@@ -89,6 +89,10 @@ try {
         ]));
     }
 
+    if (env('DEBUG')) {
+        $app->debug = true;
+    }
+
     // COMMON APP MIDDLEWARES
     $app->add(Middleware\Auth::class);
     $app->add(Middleware\HandleRouteCallable::class);
