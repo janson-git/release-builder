@@ -6,6 +6,8 @@
     --ordinary-button-color-hover: #e5e7eb;
     --danger-button-color: #f87171;
     --danger-button-color-hover: #dc2626;
+    --warning-button-color: #fb923c;
+    --warning-button-color-hover: #ea580c;
     --muted-button-color: #9ca3af;
     --muted-button-color-hover: #6b7280;
     --success-button-color: #22c55e;
@@ -334,12 +336,6 @@ h1 i,
 .pack-card .empty {
     color: #999;
     font-style: italic;
-}
-
-.pack-card .branch-list {
-    overflow: scroll;
-    border: 1px solid #111111;
-    padding: 0.5em 0.5em;
 }
 
 .dataset-item {

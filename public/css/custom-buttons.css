@@ -10,6 +10,7 @@
 
 .btn-primary,
 .btn-success,
+.btn-warning,
 .btn-danger {
     color: white;
 }
@@ -66,6 +67,24 @@
 .btn-danger-outline:hover {
     color: white;
     background-color: var(--danger-button-color);
+}
+
+.btn-warning {
+    background-color: var(--warning-button-color);
+    border-color: var(--warning-button-color);
+}
+.btn-warning:hover {
+    background-color: var(--warning-button-color-hover);
+    border-color: var(--warning-button-color-hover);
+}
+.btn-warning-outline {
+    color: var(--warning-button-color);
+    background-color: white;
+    border: 1px solid var(--warning-button-color);
+}
+.btn-warning-outline:hover {
+    color: white;
+    background-color: var(--warning-button-color);
 }
 
 .btn-muted {

@@ -33,10 +33,13 @@ $view
     @php($lastCheckpointId = $pack->getLastCheckpoint()->getName())
     @foreach ($pack->getCheckpoints() as $cpId => $checkPoint)
         @php( $className = ($lastCheckpointId === $cpId ? ' active ' : ''))
-        <div class="card">
+        <div class="card border-t-2 border-gray-200">
             <div class="mb-4 flex justify-between items-center">
                 <div class="{{ $lastCheckpointId === $cpId ? '' : 'text-gray-400' }}">
-                    <span class="font-bold">Build</span> {{ $cpId }}
+                    <span class="font-bold text-xl mr-2">Build</span>
+                    <span class="p-1 bg-sky-100 text-blue-800 cursor-pointer" onclick="Clipboard.writeToClipboard('{{ $cpId }}')">{{ $cpId }}</span>
+                    <i class="ml-1 fa-regular fa-copy text-gray-800 cursor-pointer" onclick="Clipboard.writeToClipboard('{{ $cpId }}')"></i>
+
                     @if ($lastCheckpointId === $cpId)
                         <span class="ml-4 px-2 py-1 text-xs border bg-green-200 text-gray-600 rounded">
                             active
@@ -73,22 +76,21 @@ $view
     </div>
     @endif
 
-    <div class="card mt-4">
+    <div class="mt-8">
         <h3 class="font-bold mb-4">{{ __('branches_in_pack') }}</h3>
 
         @if($user->owned($pack))
-            <a href="/branches/add/{{ $pId }}/{{ $id }}" class="text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">Add branch</a>
-            <a href="/branches/remove/{{ $pId }}/{{ $id }}" class="text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">Remove branch</a>
+            <a href="/branches/add/{{ $pId }}/{{ $id }}" class="btn btn-warning-outline">Add branch</a>
+            <a href="/branches/remove/{{ $pId }}/{{ $id }}" class="btn btn-warning-outline">Remove branch</a>
         @endif
-
-        <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">Fork pack</a>
+        <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="btn btn-muted-outline">Fork pack</a>
 
         <div class="mt-4">
             @foreach ($branches as $branchName => $repos)
-            <div class="flex justify-between font-mono {{ !$repos ? 'inactive' : '' }}">{{ $branchName }}
+            <div class="px-2 flex justify-between hover:bg-gray-100 font-mono {{ !$repos ? 'inactive' : '' }}">{{ $branchName }}
                 <a class="cursor-pointer" onclick="$(this).parent().find('div').toggle()">
-                    ({{ count($repos) }}) <small>{{array_sum(array_column($repos, 0)) }} < master
-                        > {{array_sum(array_column($repos, 1)) }}</small>
+                    ({{ count($repos) }})
+                    <small>{{array_sum(array_column($repos, 0)) }} < master > {{array_sum(array_column($repos, 1)) }}</small>
                 </a>
 
                 <div style="display:none" class="font-normal">
@@ -102,7 +104,7 @@ $view
     </div>
 
     @if ($user->owned($pack))
-    <div class="mt-4 card">
+    <div class="mt-8">
         <h3 class="font-bold">Actions</h3>
 
         @foreach ($pack->getPackCommands() as $command)
