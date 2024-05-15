@@ -37,7 +37,7 @@ $view
             <div class="mb-4 flex justify-between items-center">
                 <div class="{{ $lastCheckpointId === $cpId ? '' : 'text-gray-400' }}">
                     <span class="font-bold text-xl mr-2">Build</span>
-                    <span class="p-1 bg-sky-100 text-blue-800 cursor-pointer" onclick="Clipboard.writeToClipboard('{{ $cpId }}')">{{ $cpId }}</span>
+                    <span class="p-1 bg-sky-100 text-blue-800">{{ $cpId }}</span>
                     <i class="ml-1 fa-regular fa-copy text-gray-800 cursor-pointer" onclick="Clipboard.writeToClipboard('{{ $cpId }}')"></i>
 
                     @if ($lastCheckpointId === $cpId)
@@ -77,7 +77,7 @@ $view
     @endif
 
     <div class="mt-8">
-        <h3 class="font-bold mb-4">{{ __('branches_in_pack') }}</h3>
+        <h3 class="font-bold mb-4">Branches in package</h3>
 
         @if($user->owned($pack))
             <a href="/branches/add/{{ $pId }}/{{ $id }}" class="btn btn-warning-outline">Add branch</a>

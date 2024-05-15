@@ -24,16 +24,18 @@
         element.className = classes.join(' ');
     }
 
-    logsToggleButton.onclick = function (e) {
-        const $container = $(logsContainer);
-        $container.toggle()
+    if (logsToggleButton) {
+        logsToggleButton.onclick = function (e) {
+            const $container = $(logsContainer);
+            $container.toggle()
 
-        if ($container.css('display') !== 'none') {
-            this.innerHTML = 'Hide Debug Logs';
-        } else {
-            this.innerHTML = 'Show Debug Logs'
-        }
-    };
+            if ($container.css('display') !== 'none') {
+                this.innerHTML = 'Hide Debug Logs';
+            } else {
+                this.innerHTML = 'Show Debug Logs'
+            }
+        };
+    }
 
     window.spinnerOn = function(btn) {
         $('#loader').show();

@@ -22,7 +22,6 @@ return [
     'create_git_tag' => 'Create git tag',
     'push_to_git' => 'Push build to repository',
     'branches' => 'Branches',
-    'branches_in_pack' => 'Branches in package',
     'package' => 'Package',
     'packages' => 'Packages',
     'pack' => 'Package',
