@@ -83,7 +83,7 @@ $view
             <a href="/branches/add/{{ $pId }}/{{ $id }}" class="btn btn-warning-outline">Add branch</a>
             <a href="/branches/remove/{{ $pId }}/{{ $id }}" class="btn btn-warning-outline">Remove branch</a>
         @endif
-        <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="btn btn-muted-outline">Fork pack</a>
+        <a href="/branches/fork-pack/{{ $pId }}/{{ $id }}" class="btn btn-muted-outline">Fork package</a>
 
         <div class="mt-4">
             @foreach ($branches as $branchName => $repos)

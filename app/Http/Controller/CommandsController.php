@@ -32,9 +32,11 @@ class CommandsController extends AbstractController
 //            $this->context->setSlot((new SlotStack())->setStack($slots)); 
 //        }
 
-        $this->context->getProject()
-            ? $this->view->setAction("/projects/{$this->context->getProject()->getId()}", __('back_to_project'))
-            : $this->view->setAction("/packs/{$this->context->getPack()->getId()}", __('back_to_pфсл'));
+        if ($command !== CommandConfig::PACK_CLEAR_DATA && $this->context->getPack()) {
+            $this->view->setAction("/packs/{$this->context->getPack()->getId()}", __('back_to_pack'));
+        } elseif ($this->context->getProject()) {
+            $this->view->setAction("/projects/{$this->context->getProject()->getId()}", __('back_to_project'));
+        }
 
         $this->_buildTitle();
         
@@ -49,7 +51,6 @@ class CommandsController extends AbstractController
             'runner'  => $runner,
             'runtime' => $runner->getRuntime(),
             'packId'  => $this->context->getPack() ? $this->context->getPack()->getId() : '',
-            'isPackDeleted' => ($command === CommandConfig::PACK_CLEAR_DATA),
         ]);
     }
     

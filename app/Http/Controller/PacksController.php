@@ -18,7 +18,9 @@ class PacksController extends AbstractController
         if ($pack->getUser() !== null) {
             $this->setSubTitle('owned by @' . $pack->getUser()->getLogin());
         }
+
         $this->view->setAction('/projects/' . $pack->getProject()->getId(), 'Back to project');
+
         $node = $pack->getNode();
         $packReposByBranches = $node->getToMasterStatus($pack->getBranches());
 
