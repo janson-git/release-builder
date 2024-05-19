@@ -50,10 +50,3 @@ $app->group('', function(\Admin\App $app) {
 
     $app->get('/commands/apply[/]', [CommandsController::class, 'apply']);
 })->add(OnlyAuthenticated::class);
-
-//// OLD COMMON ROUTE FOR ALL
-$app->any('/{module}[/[{controller}[/[{action}[/[{id}]]]]]]', function ($request, $response, $args) use ($app) {
-    $callable = [$app, 'doRoute'];
-
-    return call_user_func($callable, ...$args);
-});
