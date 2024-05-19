@@ -60,22 +60,6 @@ $view
         </div>
     @endforeach
 
-    @if (env('ENABLE_DEPLOY'))
-    <div class="card mt-4">
-
-        <h3 class="font-bold">{{ __('deploy') }}</h3>
-        @if ($lastCheckpoint = $pack->getLastCheckpoint())
-            <div>{{ $lastCheckpoint->getName() }}</div>
-            <div class="separator"></div>
-            @foreach ($pack->getDeployCommands() as $command)
-                <div>
-                    @include('./components/commandButton.blade.php', ['command' => $command])
-                </div>
-            @endforeach
-        @endif
-    </div>
-    @endif
-
     <div class="mt-8">
         <h3 class="font-bold mb-4">Branches in package</h3>
 

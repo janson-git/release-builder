@@ -49,19 +49,6 @@ class View
         $projectsItem->setIconClass('fa-solid fa-folder-tree');
         $menu[] = $projectsItem;
 
-        if (env('ENABLE_DEPLOY')) {
-            $serversItem = new MenuItem(__('menu.servers'), '/web/slot');
-            $serversItem->setIconClass('fa-solid fa-server');
-            $menu[] = $serversItem;
-        }
-        if (env('ENABLE_EDIT_CONFIGURATIONS')) {
-            $configItem = new MenuItem(__('menu.configurations'), '/config', [
-                '#/config#'
-            ]);
-            $configItem->setIconClass('fa-solid fa-gears');
-            $menu[] = $configItem;
-        }
-
         $gitItem = new MenuItem(__('menu.git'), '/git', [
             '/git',
             '/git/add-repository',
