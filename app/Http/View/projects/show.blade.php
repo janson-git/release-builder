@@ -1,6 +1,5 @@
 <?php
 /* @var $project \Service\Project
- * @var $slots \Service\Slot\SlotProto[]
  * @var $fetchCommand \Commands\Command\Project\FetchProjectRepos
  * @var $packs \Service\Pack[]
  * @var $view \Admin\View

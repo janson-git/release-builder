@@ -14,7 +14,6 @@ class Project
     private array $projectRootDirs = [];
 
     private ?Node $node = null;
-    private ?SlotsPool $slotsPool = null;
 
     public function __construct() {}
 
@@ -108,15 +107,6 @@ class Project
     public function getNameQuoted(): string
     {
         return preg_replace('/\W+/', '-', $this->getName());
-    }
-
-    public function getSlotsPool(): SlotsPool
-    {
-        if ($this->slotsPool === null) {
-            $this->slotsPool = new SlotsPool();
-            $this->slotsPool->setProjectId($this->id);
-        }
-        return $this->slotsPool;
     }
 
     public function save(): void

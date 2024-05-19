@@ -3,7 +3,6 @@
 namespace Commands;
 
 use Service\Event\TelegramBot;
-use Service\Event\TestingJenkinsCallback;
 use Service\Events;
 
 class CommandRuntime implements \ArrayAccess
@@ -24,7 +23,6 @@ class CommandRuntime implements \ArrayAccess
     {
         $this->eventProcessor = new Events();
         $this->eventProcessor->addProvider(new TelegramBot());
-        $this->eventProcessor->addProvider(new TestingJenkinsCallback());
     }
     
     public function startSection(string $id, string $name): void

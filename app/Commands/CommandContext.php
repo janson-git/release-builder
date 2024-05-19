@@ -5,34 +5,21 @@ namespace Commands;
 use Service\Checkpoint;
 use Service\Pack;
 use Service\Project;
-use Service\Slot\SlotProto;
-use Service\SlotFactory;
-use Service\SlotsPool;
 
 class CommandContext
 {
     const DATA_CHECKPOINT = 'checkpoint';
-    const DATA_SLOT = 'slot';
     const DATA_PACK = 'pack';
     const DATA_PROJECT = 'project';
     const USER_CONTEXT = '_userContext';
 
-    /**
-     * @var Checkpoint
-     */
+    /** @var Checkpoint */
     protected $checkpoint;
     
     /** @var Pack|null */
     protected $pack;
     
-    /**
-     * @var SlotProto
-     */
-    protected $slot;
-    
-    /**
-     * @var Project
-     */
+    /** @var Project */
     protected $project;
     
     private $data = [];
@@ -64,11 +51,7 @@ class CommandContext
         if ($this->checkpoint) {
             $data[self::DATA_CHECKPOINT] = $this->checkpoint->getName();
         }
-        
-        if ($this->slot) {
-            $data[self::DATA_SLOT] = $this->slot->getId();
-        }
-        
+
         if ($this->project) {
             $data[self::DATA_PROJECT] = $this->project->getId();
         } elseif($this->pack) {
@@ -95,10 +78,6 @@ class CommandContext
             $this->checkpoint->setCommands($this->pack->getCheckpointCommands()); // todo remove
         }
         
-        if (isset($data[self::DATA_SLOT])) {
-            $this->slot = SlotFactory::getSlot($data[self::DATA_SLOT]);
-        }
-        
         if (isset($data[self::DATA_PROJECT])) {
             $this->project = Project::getById($data[self::DATA_PROJECT]);
         }
@@ -123,17 +102,6 @@ class CommandContext
     public function setCheckpoint(Checkpoint $checkpoint): self
     {
         $this->checkpoint = $checkpoint;
-        return $this;
-    }
-
-    public function getSlot(): ?SlotProto
-    {
-        return $this->slot;
-    }
-    
-    public function setSlot(SlotProto $slot): self
-    {
-        $this->slot = $slot;
         return $this;
     }
     
