@@ -56,8 +56,8 @@ class GitController extends AbstractController
 
     public function addRepository(): Response
     {
-        // SSH link like: git@github.com:janson-git/deploy.git
-        // HTTPS url like: https://github.com/janson-git/deploy.git
+        // SSH link like: git@github.com:janson-git/release-builder.git
+        // HTTPS url like: https://github.com/janson-git/release-builder.git
 
         $repoPath = $this->p('repository_path');
         $repoPath = preg_replace('#[^a-zA-Z0-9:@./\-]#', '', $repoPath);

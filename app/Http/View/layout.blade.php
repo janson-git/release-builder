@@ -8,7 +8,7 @@ $currentPath = \request()->getUri()->getPath();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $_identify }} Config Server</title>
+    <title>{{ $_identify }} - Release Builder</title>
 
     <link href="/fontawesome/css/fontawesome.css" rel="stylesheet">
     <link href="/fontawesome/css/regular.css" rel="stylesheet">

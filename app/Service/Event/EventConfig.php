@@ -13,6 +13,5 @@ class EventConfig
     
     const DATA_USER     = '_user';
     const DATA_LOCATION = '_location';
-    const DATA_SLOT_NAME = 'slot_name';
     const DATA_BUILD_NAME = 'build_name';
 }

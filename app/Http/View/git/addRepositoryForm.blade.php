@@ -16,7 +16,7 @@ $view
             <div for="repository_path">Repository Path </div>
             <input type="text" id="repository_path" name="repository_path" required autocomplete="off"
                    class="ml-4 w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
-                   placeholder="git@github.com:janson-git/deploy.git"
+                   placeholder="git@github.com:janson-git/release-builder.git"
             />
         </div>
 

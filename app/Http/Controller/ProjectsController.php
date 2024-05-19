@@ -41,8 +41,6 @@ class ProjectsController extends AbstractController
         $this->setTitle('Project');
         $this->setSubTitle($project->getName());
 
-        $project->getSlotsPool()->loadProjectSlots();
-
         $fetchCommand = new FetchProjectRepos();
         $fetchCommand->setContext((new CommandContext())->setProject($project));
 
@@ -58,7 +56,6 @@ class ProjectsController extends AbstractController
             'id'        => $project->getId(),
             'setData'   => $project->getPaths(),
             'packs' => $project->getPacks(),
-            'slots' => $project->getSlotsPool()->getSlots(),
         ]);
     }
 

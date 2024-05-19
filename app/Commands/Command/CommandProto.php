@@ -4,7 +4,6 @@ namespace Commands\Command;
 
 use Commands\CommandRuntime;
 use Commands\CommandContext;
-use Service\Slot\SlotProto;
 
 abstract class CommandProto
 {
@@ -36,11 +35,6 @@ abstract class CommandProto
     abstract public function run();
     abstract public function getId();
     abstract public function getHumanName();
-    
-    public function getSlot (): ?SlotProto
-    {
-        return $this->context->getSlot();
-    }
     
     public function getRuntime()
     {

@@ -4,13 +4,11 @@ namespace Service;
 
 use Admin\App;
 use Commands\Command\Pack\GitCreateTag;
-use Commands\Command\SlotDeploy;
 use Commands\CommandConfig;
 use Commands\CommandContext;
 use DateTimeImmutable;
 use Exception;
 use Git\GitRepository;
-use Commands\Command\LocalDeploy;
 use Commands\Command\CommandProto;
 use Commands\Command\Pack\CheckpointCreateCommand;
 use Commands\Command\Pack\ConflictAnalyzeCommand;
@@ -137,7 +135,6 @@ class Pack
     public function getCheckpointCommands(): array
     {
         return $this->getPreparedCommands([
-//            CommandConfig::BUILD_AND_DEPLOY, // @TODO: deprecated?
             CommandConfig::CHECKPOINT_MERGE_BRANCHES,
             CommandConfig::PACK_CONFLICT_ANALYZE,
             CommandConfig::CHECKPOINT_DELETE,
@@ -160,22 +157,6 @@ class Pack
         $commands[] = CommandConfig::PACK_CLEAR_DATA;
 
         return $this->getPreparedCommands($commands);
-    }
-
-    public function getDeployCommands(): array
-    {
-        /* @var $commands CommandProto[] */
-        $commands = [];
-
-        $slots = $this->getProject()->getSlotsPool()->loadProjectSlots()->getSlots();
-
-        foreach ($slots as $slot) {
-            $command = new SlotDeploy();
-            $command->getContext()->setSlot($slot);
-            $commands[] = $command;
-        }
-
-        return $this->prepareCommands($commands);
     }
 
     private function init(): self

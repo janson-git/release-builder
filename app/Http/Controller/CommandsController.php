@@ -5,7 +5,6 @@ namespace App\Http\Controller;
 use Commands\CommandConfig;
 use Commands\CommandContext;
 use Commands\CommandRunner;
-use Service\Slot\SlotStack;
 
 class CommandsController extends AbstractController
 {
@@ -26,11 +25,6 @@ class CommandsController extends AbstractController
         $this->context = new CommandContext();
         $this->context->deserialize($contextString);
         $this->context->set(CommandContext::USER_CONTEXT, $userData);
-        
-//        if (!$this->context->getSlot() && $this->context->getPack()) {
-//            $slots = $this->context->getPack()->getProject()->getSlotsPool()->loadProjectSlots()->getSlots();
-//            $this->context->setSlot((new SlotStack())->setStack($slots)); 
-//        }
 
         $this->context->getProject()
             ? $this->view->setAction("/projects/{$this->context->getProject()->getId()}", __('back_to_project'))
@@ -65,10 +59,6 @@ class CommandsController extends AbstractController
         
         if ($this->context->getCheckpoint()) {
             $this->_addTitle(__('build') . ": {$this->context->getCheckpoint()->getName()}");
-        }
-
-        if ($this->context->getSlot()) {
-            $this->_addTitle(__('server') . ": {$this->context->getSlot()->getDescription()}");
         }
     }
     

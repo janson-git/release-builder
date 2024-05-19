@@ -2,7 +2,6 @@
 
 namespace Commands;
 
-use Commands\Command\SlotDeploy;
 use Exception;
 use Commands\Command\CommandProto;
 use Service\Util\Lock;
@@ -27,13 +26,6 @@ class CommandRunner
     
     public function run () 
     {
-        $slot = $this->context->getSlot(); 
-        if ($slot && !$slot->isValid()) {
-            
-            $this->runtime->log('Invalid slot for command: ' . $slot->getState());
-            return;
-        }
-    
         $this->context->set(CommandConfig::GLOBAL_WORK_DIR, dirname(getcwd()));
         
         foreach ($this->commandIdsToRun as $commandId) {

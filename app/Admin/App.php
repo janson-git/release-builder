@@ -15,8 +15,6 @@ class App extends SlimApp
 {
     private static $instance;
 
-    public $itemId;
-    
     public bool $debug = false;
     
     private $identify;
@@ -29,14 +27,13 @@ class App extends SlimApp
     const DATA_PROJECT_NAMES = 'project_names';
     const DATA_PACK_NAMES    = 'pack_names';
     const DATA_PACK_BUILDS   = 'pack_builds';
-    const DATA_SLOTS         = 'slots';
     const DATA_USERS         = 'users';
     const DATA_SESSIONS      = 'sessions';
 
     /**
      * @return null|\Admin\App|\Slim\App
      */
-    public static function i () 
+    public static function i()
     {
         return self::getInstance();
     }
@@ -154,40 +151,8 @@ class App extends SlimApp
         
         $this->getLogger()->debug($info, [$form]);
     }
-    
-    public function doRoute ($module = 'web', $controller = 'user', $action = 'index', $id = 0)
-    {
-        $module     = ucfirst($module);
-        $controller = ucfirst($controller);
-        
-        $this->itemId = $id;
-        if (is_numeric($action) && $action) {
-            $this->itemId = $action;
-            $action = 'index';
-        }
 
-        $class = "\\Interaction\\{$module}\\Controller\\{$controller}";
-        if (!class_exists($class)) {
-            $class .= 'Controller';
-            if (!class_exists($class)) {
-                $this->notFound();
-            }
-        }
-        
-        $this->view()->setTemplatesDirectory("app/Interaction/{$module}/Templates");
-        
-        /* @var $controllerModel \Interaction\Base\Controller\ControllerProto */
-        $controllerModel = new $class;
-        $controllerModel->setApp($this);
-        $controllerModel->setController(lcfirst($controller));
-        $controllerModel->setAction($action);
-        
-        $this->log('Routing to: '.get_class($controllerModel).'->'.$action.'()', __METHOD__);
-        
-        return $controllerModel->run();
-    }
-    
-    public function getIdentify () 
+    public function getIdentify()
     {
         if (!$this->identify) {
             $this->identify = @gethostname(); 

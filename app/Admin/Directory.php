@@ -29,27 +29,20 @@ class Directory
     {
         $data = $this->doScanDir($this->sitesDir);
         
-        $exclude = Data::scope('deploy_exclude')->read();
-        
         foreach ($data as $dirName => &$item) {
-            $keys = array_flip(explode('/', $dirName));
-            if (array_intersect_key($exclude, $keys)) {
-                unset($data[$dirName]);
-            } else {
-                $time = $this->getUpdateTime($dirName);
-                $remotes = $this->getRemotes($dirName);
-                $repoType = strpos($remotes[0], 'https:') > 0 ? 'https' : 'ssh';
+            $time = $this->getUpdateTime($dirName);
+            $remotes = $this->getRemotes($dirName);
+            $repoType = strpos($remotes[0], 'https:') > 0 ? 'https' : 'ssh';
 
-                $item += [
-                    'branch' => $this->getBranch($dirName),
-                    'time'   => $time,
-                    'idx'    => $time['timestamp'],
-                    'com'    => $this->getLastCommit($dirName),
-                    'remote' => $remotes,
-                    'repoName' => $this->getFullRepoName($dirName),
-                    'type' => $repoType,
-                ];
-            }
+            $item += [
+                'branch' => $this->getBranch($dirName),
+                'time'   => $time,
+                'idx'    => $time['timestamp'],
+                'com'    => $this->getLastCommit($dirName),
+                'remote' => $remotes,
+                'repoName' => $this->getFullRepoName($dirName),
+                'type' => $repoType,
+            ];
         }
         
         $keys = array_keys($data);
@@ -130,7 +123,7 @@ class Directory
 
     /**
      * Suggests that full repo name contains owner name and repo name
-     * Like: owner/repo.git, janson-git/deploy.git
+     * Like: owner/repo.git, janson-git/release-builder.git
      */
     public function getFullRepoName(string $dir): string
     {
@@ -187,12 +180,6 @@ class Directory
         }
         
         $branch = $this->getCurrentBranch($dir);
-        $result = [];
-
-//            if ($this->deployUser) {
-//                exec('sudo /bin/chown -R ' . $this->deployUser . ':' . $this->wwwUser . ' ' . $this->sitesDir . $dir . ' 2>&1',
-//                    $result);
-//            }
 
         $repo = new GitRepository($this->sitesDir . $dir);
 

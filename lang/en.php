@@ -32,7 +32,6 @@ return [
     'project' => 'Project',
     'projects' => 'Projects',
     'servers' => 'Servers',
-    'deploy' => 'Deploy',
     'git' => 'Git',
     'delete' => 'Delete',
     'root_directories' => 'Root directories',
