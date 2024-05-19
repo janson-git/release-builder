@@ -9,11 +9,6 @@ class Directory
 {
     protected string $sitesDir = REPOS_DIR . '/';
 
-    public function getSitesDir(): string
-    {
-        return $this->sitesDir;
-    }
-
     public function setSitesDir(string $sitesDir): void
     {
         $this->sitesDir = $sitesDir;
@@ -83,7 +78,7 @@ class Directory
     {
         return is_dir($this->sitesDir . $dir);
     }
-    
+
     /**
      * @param string $dir
      * @return mixed
@@ -99,14 +94,14 @@ class Directory
         return $result;
     }
     
-    public function getLastCommit(string $dir)
+    public function getLastCommit(string $dir): array
     {
         exec('cd ' . $this->sitesDir . $dir . ' && git log -5 --pretty="%cn %B" ', $result);
         
         return array_filter($result);
     }
     
-    public function getRemotes(string $dir)
+    public function getRemotes(string $dir): array
     {
         exec('cd ' . $this->sitesDir . $dir . ' && git remote -v ', $result);
         
@@ -128,7 +123,7 @@ class Directory
         }
 
         // different ways to split https and ssh links
-        if (strpos($fullPath, 'https://') === 0) {
+        if (str_starts_with($fullPath, 'https://')) {
             $parts = explode('/', $fullPath);
             $nameParts = array_slice($parts, -2);
             $repoFullName = implode('/', $nameParts);
