@@ -3,17 +3,11 @@
 namespace Admin;
 
 use Git\GitRepository;
-use Service\Data;
 use Service\Util\StringHelper;
 
 class Directory
 {
-    protected $sitesDir = null;
-
-    function __construct()
-    {
-        $this->sitesDir   = REPOS_DIR . '/';
-    }
+    protected string $sitesDir = REPOS_DIR . '/';
 
     public function getSitesDir(): string
     {
@@ -48,15 +42,15 @@ class Directory
         $keys = array_keys($data);
         $idx  = array_column($data, 'idx');
         array_multisort($idx, SORT_DESC, $data, $keys);
-        $data = array_combine($keys, $data);
 
-        return $data;
+        return array_combine($keys, $data);
     }
     
-    public function doScanDir(string $dir, int $deep = 1, $prefix = ''): array
+    protected function doScanDir(string $dir, int $deep = 1, $prefix = ''): array
     {
         $dir = rtrim($dir, '/');
         $prefix = $prefix ? $prefix . '/' : '';
+
         $data   = [];
         if ($handle = @opendir($dir)) {
             while (false !== ($entry = readdir($handle))) {
@@ -64,7 +58,6 @@ class Directory
                 if ($entry != "." && $entry != ".." && is_dir($file)) {
                     $localName = $prefix . '' . $entry;
                     if (file_exists($file . '/.git')) {
-                        
                         $data[$localName] = [
                             'file' => $file,
                         ];
@@ -92,8 +85,7 @@ class Directory
     }
     
     /**
-     * @param $dir
-     *
+     * @param string $dir
      * @return mixed
      */
     public function getBranch(string $dir)
@@ -152,7 +144,7 @@ class Directory
         $branches = $this->getBranch($dir);
         
         foreach ($branches as $branch) {
-            if (strpos($branch, '*') === 0) {
+            if (str_starts_with($branch, '*')) {
                 return trim($branch, ' *');
             }
         }
@@ -164,13 +156,11 @@ class Directory
     {
         $time = filemtime($this->sitesDir . $dir);
         
-        $result = [
+        return [
             'back'      => StringHelper::howMuchAgo($time),
             'date'      => date('d-m h:i', $time),
             'timestamp' => $time,
         ];
-        
-        return $result;
     }
     
     public function update($dir): string
@@ -186,7 +176,7 @@ class Directory
         return $repo->update($branch);
     }
     
-    public function fix($dir, $realClear = null)
+    public function fix($dir, $realClear = null): string
     {
         if (!$this->checkDir($dir)) {
             return 'not a dir: ' . $this->sitesDir . $dir;
@@ -227,65 +217,6 @@ class Directory
 
         return implode("\n", $result);
     }
-    
-    public function createRepo($name)
-    {
-        var_dump($name);exit;
-        $repoDir  = 'repo/';
-        $commands = array(
-            ['cd ' . $this->sitesDir . $repoDir, 'mkdir ' . $this->sitesDir . $repoDir],
-            ['pwd ', ''],
-            ['mkdir ' . $name, 'rmdir ' . $name],
-            ['cd ' . $this->sitesDir . $repoDir . $name, ''],
-            ['pwd ', ''],
-            ['git init --bare', ''],
-            ['chmod -R g+rw ./', ''],
-            ['cd ' . $this->sitesDir, ''],
-            ['pwd ', ''],
-            ['git clone ' . $this->sitesDir . $repoDir . $name, ''],
-        );
-        
-        $result = array();
-        $state  = 0;
-
-//            $try = exec(implode(' && '))
-        $dir = 'cd ' . $this->sitesDir;
-        
-        $log = function ($c, $data) use (&$result) {
-            $result[] = array(
-                'com' => $c,
-                'res' => $data,
-            );
-        };
-        
-        foreach ($commands as $cData) {
-            list ($command, $pill) = $cData;
-            if ($state) {
-                break;
-            }
-            if (substr($command, 0, 3) == 'cd ') {
-                $dir = $command;
-            }
-            
-            $eCommand = $dir . ' && ' . $command . ' 2>&1';
-            unset ($res);
-            exec($eCommand, $res, $state);
-            $log($command, !$state ? ($res ? implode('<br>', $res) : 'ok') : 'fail: ' . implode('<br>', $res));
-            
-            if ($state && $pill) {
-                unset ($res);
-                exec($dir . ' && ' . $pill, $res, $state);
-                $log($command . ' pill => ' . $pill,
-                    !$state ? ($res ? implode('<br>', $res) : 'ok') : 'fail: ' . implode('<br>', $res));
-                unset ($res);
-                exec($eCommand, $res, $state);
-                $log($command . ' recall',
-                    !$state ? ($res ? implode('<br>', $res) : 'ok') : 'fail: ' . implode('<br>', $res));
-            }
-        }
-        
-        return $result;
-    }
 
     public function cloneRepository(string $repositoryPath, string $dirName): string
     {
@@ -294,10 +225,10 @@ class Directory
         }
 
         $newRepoDir = $this->sitesDir . $dirName;
-        $commands = array(
+        $commands = [
             ['mkdir ' . $newRepoDir, ''],
             ['pwd ', ''],
-        );
+        ];
 
         $result = [];
         $state  = 0;
@@ -305,35 +236,45 @@ class Directory
         $dir = 'cd ' . $this->sitesDir;
 
         $log = function ($c, $data) use (&$result) {
-            $result[] = array(
+            $result[] = [
                 'com' => $c,
                 'res' => $data,
-            );
+            ];
+        };
+        $resultToLogString = function (int $state, array $result): string {
+            if (!$state) {
+                $res = $result ? implode('<br>', $result) : 'ok';
+            } else {
+                $res = 'fail: ' . implode('<br>', $result);
+            }
+
+            return $res;
         };
 
         foreach ($commands as $cData) {
             list ($command, $pill) = $cData;
+            // if last command was failed - let's break
             if ($state) {
                 break;
             }
-            if (substr($command, 0, 3) == 'cd ') {
+            if (str_starts_with($command, 'cd ')) {
                 $dir = $command;
             }
 
             $eCommand = $dir . ' && ' . $command . ' 2>&1';
+
             unset ($res);
             exec($eCommand, $res, $state);
-            $log($command, !$state ? ($res ? implode('<br>', $res) : 'ok') : 'fail: ' . implode('<br>', $res));
+            $log($command, $resultToLogString($state, $res));
 
             if ($state && $pill) {
                 unset ($res);
                 exec($dir . ' && ' . $pill, $res, $state);
-                $log($command . ' pill => ' . $pill,
-                    !$state ? ($res ? implode('<br>', $res) : 'ok') : 'fail: ' . implode('<br>', $res));
+                $log($command . ' pill => ' . $pill, $resultToLogString($state, $res));
+
                 unset ($res);
                 exec($eCommand, $res, $state);
-                $log($command . ' recall',
-                    !$state ? ($res ? implode('<br>', $res) : 'ok') : 'fail: ' . implode('<br>', $res));
+                $log($command . ' recall', $resultToLogString($state, $res));
             }
         }
 
