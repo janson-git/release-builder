@@ -2,9 +2,6 @@
 
 namespace Commands;
 
-use Service\Event\TelegramBot;
-use Service\Events;
-
 class CommandRuntime implements \ArrayAccess
 {
     private array $data = [];
@@ -16,14 +13,6 @@ class CommandRuntime implements \ArrayAccess
     private int $coreSection = 0;
     private array $errors      = [];
     private array $exceptions  = [];
-
-    private Events $eventProcessor;
-
-    public function __construct()
-    {
-        $this->eventProcessor = new Events();
-        $this->eventProcessor->addProvider(new TelegramBot());
-    }
     
     public function startSection(string $id, string $name): void
     {
@@ -169,10 +158,5 @@ class CommandRuntime implements \ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->data[$this->currentSection][$offset]);
-    }
-
-    public function getEventProcessor(): Events
-    {
-        return $this->eventProcessor;
     }
 }

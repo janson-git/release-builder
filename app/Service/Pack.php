@@ -14,7 +14,6 @@ use Commands\Command\Pack\CheckpointCreateCommand;
 use Commands\Command\Pack\ConflictAnalyzeCommand;
 use Commands\Command\Pack\FetchSandbox;
 use Commands\Command\Pack\CheckpointMergeBranches;
-use Commands\Command\Pack\GitMergeToMaster;
 use Commands\Command\Pack\GitPushCheckpoint;
 use Commands\Command\Pack\RemoveCheckpoint;
 use Commands\Command\Pack\RemovePackWithData;

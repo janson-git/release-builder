@@ -5,7 +5,6 @@ namespace Commands\Command\Pack;
 use Admin\App;
 use Commands\Command\CommandProto;
 use Commands\CommandConfig;
-use Service\Event\EventConfig;
 
 class GitPushCheckpoint extends CommandProto
 {
@@ -29,14 +28,7 @@ class GitPushCheckpoint extends CommandProto
     
             $this->runtime[$repo->getPath()] = $repo->getLastOutput();
         }
-    
-        $branches = $this->context->getPack()->getBranches();
-        natsort($branches);
-        $msg = "🕺 Branch {$checkpoint} pushed:\n";
-        $msg .= implode("\n", $branches);
-    
-        $this->runtime->getEventProcessor()->add(trim($msg), EventConfig::EVENT_TYPE_RELEASE_STATUS);
-        
+
         return $this->runtime;
     }
     
