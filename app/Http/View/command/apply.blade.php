@@ -3,7 +3,18 @@
  * @var $runtime \Commands\CommandRuntime
  * @var $context \Commands\CommandContext
  * @var $packId
+ * @var $pack \Service\Pack
+ * @var $view \Admin\View
  */
+use Service\Breadcrumbs\BreadcrumbsFactory;
+
+if ($pack) {
+    $view
+        ->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb())
+        ->addBreadcrumb(BreadcrumbsFactory::makeProjectPageBreadcrumb($pack->getProject()))
+        ->addBreadcrumb(BreadcrumbsFactory::makePackPageBreadcrumb($pack))
+        ->addBreadcrumb(new \Service\Breadcrumbs\Breadcrumb($commandName));
+}
 ?>
 
 @extends('./layout.blade.php')
