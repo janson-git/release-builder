@@ -4,10 +4,13 @@ namespace Commands\Command\Pack;
 
 use Commands\Command\CommandProto;
 use Commands\CommandConfig;
+use Commands\PackOwnerAuthorityTrait;
 use Git\GitRepository;
 
 class CheckpointMergeBranches extends CommandProto
 {
+    use PackOwnerAuthorityTrait;
+
     private const MERGE_RETRIES_LIMIT = 5;
 
     public function run()

@@ -42,7 +42,8 @@ class CommandsController extends AbstractController
             'context' => $runner->getContext(),
             'runner'  => $runner,
             'runtime' => $runner->getRuntime(),
-            'packId'  => $this->context->getPack() ? $this->context->getPack()->getId() : '',
+            'pack'    => $this->context->getPack() ?? null,
+            'commandName' => CommandConfig::getCommand($command)->getHumanName(),
         ]);
     }
     

@@ -4,10 +4,13 @@ namespace Commands\Command\Pack;
 
 use Commands\Command\CommandProto;
 use Commands\CommandConfig;
+use Commands\PackOwnerAuthorityTrait;
 use Service\Util\Fs;
 
 class RemovePackWithData extends CommandProto
 {
+    use PackOwnerAuthorityTrait;
+
     public function run()
     {
         $pack = $this->context->getPack();

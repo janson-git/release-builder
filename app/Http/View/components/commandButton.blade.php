@@ -6,6 +6,7 @@
 $classString = 'btn ';
 $classString .= $command->isPrimary() ? 'btn-primary': '';
 $classString .= $command->isDanger() ? 'btn-danger': '';
+$classString .= $command->isConfirmRequired() ? 'btn-warning': '';
 
 if (isset($classes)) {
     $classString .= ' ' . $classes;

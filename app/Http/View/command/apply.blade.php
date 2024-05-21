@@ -3,7 +3,18 @@
  * @var $runtime \Commands\CommandRuntime
  * @var $context \Commands\CommandContext
  * @var $packId
+ * @var $pack \Service\Pack
+ * @var $view \Admin\View
  */
+use Service\Breadcrumbs\BreadcrumbsFactory;
+
+if ($pack) {
+    $view
+        ->addBreadcrumb(BreadcrumbsFactory::makeProjectListBreadcrumb())
+        ->addBreadcrumb(BreadcrumbsFactory::makeProjectPageBreadcrumb($pack->getProject()))
+        ->addBreadcrumb(BreadcrumbsFactory::makePackPageBreadcrumb($pack))
+        ->addBreadcrumb(new \Service\Breadcrumbs\Breadcrumb($commandName));
+}
 ?>
 
 @extends('./layout.blade.php')
@@ -15,9 +26,9 @@
             <h2>Command: {{ $runtime->getSectionName($sectionId) }}</h2>
             <div>
                 @foreach ($sectionLogs as $key => $result)
-                    <div>Project: {{ $key }}</div>
-                    <div class="mt-1">
-                        <div>{!! \Admin\View::parse($result) !!}</div>
+                    <div class="mt-2 font-bold">{{ $key }}</div>
+                    <div class="mt-2 pl-4 overflow-x-scroll">
+                        <pre>{!! \Admin\View::parse($result) !!}</pre>
                     </div>
                 @endforeach
             </div>
