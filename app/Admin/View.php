@@ -102,7 +102,7 @@ class View
         return $this;
     }
 
-    public function render($template, $data = null): Response
+    public function render($template, $data = []): Response
     {
         $container = $this->app->getContainer();
 
