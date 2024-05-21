@@ -5,9 +5,12 @@ namespace Commands\Command\Pack;
 use Admin\App;
 use Commands\Command\CommandProto;
 use Commands\CommandConfig;
+use Commands\PackOwnerAuthorityTrait;
 
 class GitPushCheckpoint extends CommandProto
 {
+    use PackOwnerAuthorityTrait;
+
     public function run()
     {
         $checkpoint = $this->context->getCheckpoint()->getName();

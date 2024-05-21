@@ -6,23 +6,20 @@ use Admin\App;
 use Commands\Command\CommandProto;
 use Commands\CommandConfig;
 use Commands\CommandContext;
+use Commands\PackOwnerAuthorityTrait;
 
 class GitCreateTag extends CommandProto
 {
+    use PackOwnerAuthorityTrait;
+
     public const QUESTION_TAG = 'tag';
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return CommandConfig::CHECKPOINT_CREATE_TAG;
     }
 
-    /**
-     * @return string
-     */
-    public function getHumanName()
+    public function getHumanName(): string
     {
         return __('create_git_tag');
     }

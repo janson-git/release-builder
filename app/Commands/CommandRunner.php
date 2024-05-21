@@ -4,6 +4,7 @@ namespace Commands;
 
 use Exception;
 use Commands\Command\CommandProto;
+use Exceptions\UnauthorizedException;
 use Service\Util\Lock;
 
 class CommandRunner
@@ -43,6 +44,11 @@ class CommandRunner
             $this->runtime->startSection($command->getId(), $command->getHumanName());
             
             $pack = $this->context->getPack();
+
+            if (!$command->isAuthorizedForCurrentUser() ) {
+                throw new UnauthorizedException('You are not owner of package');
+            }
+
             if ($pack) {
                 $project = $pack->getProject();
                 $lock = new Lock('pack_'.$project->getNameQuoted().'_'.$pack->getName(), $command->getHumanName());

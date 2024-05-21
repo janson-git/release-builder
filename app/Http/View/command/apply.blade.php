@@ -15,9 +15,9 @@
             <h2>Command: {{ $runtime->getSectionName($sectionId) }}</h2>
             <div>
                 @foreach ($sectionLogs as $key => $result)
-                    <div>Project: {{ $key }}</div>
-                    <div class="mt-1">
-                        <div>{!! \Admin\View::parse($result) !!}</div>
+                    <div class="mt-2 font-bold">{{ $key }}</div>
+                    <div class="mt-2 pl-4 overflow-x-scroll">
+                        <pre>{!! \Admin\View::parse($result) !!}</pre>
                     </div>
                 @endforeach
             </div>

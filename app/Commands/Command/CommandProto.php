@@ -26,7 +26,12 @@ abstract class CommandProto
         $this->allRoot = dirname(getcwd());
         $this->allRoot .= '/builds';
     }
-    
+
+    public function isAuthorizedForCurrentUser(): bool
+    {
+        return true;
+    }
+
     public function prepare()
     {
         // do nothing by default

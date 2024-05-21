@@ -150,7 +150,6 @@ class Pack
 
         if ($this->getLastCheckpoint() && $this->allowPush) {
             $commands[] = CommandConfig::CHECKPOINT_PUSH_TO_ORIGIN;
-//            $commands[] = CommandConfig::CHECKPOINT_MERGE_TO_MASTER;
         }
 
         $commands[] = CommandConfig::PACK_CLEAR_DATA;

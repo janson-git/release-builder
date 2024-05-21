@@ -88,11 +88,11 @@ $view
     </div>
 
     @if ($user->owned($pack))
-    <div class="mt-8 mb-4">
-        <h3 class="font-bold">Actions</h3>
+    <div class="mt-8 mb-4 card border-t-2 border-gray-200">
+        <h3 class="font-bold">Package actions</h3>
 
         @foreach ($pack->getPackCommands() as $command)
-            <div class="mt-4">
+            <div class="mt-4 inline-block">
                 @if($command->hasQuestion())
                     @include('./components/commandButtonWithQuestion.blade.php', ['command' => $command])
                 @else
@@ -102,5 +102,6 @@ $view
         @endforeach
     </div>
     @endif
+
 </div>
 @endsection

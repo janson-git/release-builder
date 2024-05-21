@@ -4,11 +4,14 @@ namespace Commands\Command\Pack;
 
 use Commands\Command\CommandProto;
 use Commands\CommandConfig;
+use Commands\PackOwnerAuthorityTrait;
 
 class CheckpointCreateCommand extends CommandProto
 {
-    private string $checkpointName = '';
+    use PackOwnerAuthorityTrait;
     
+    private string $checkpointName = '';
+
     public function prepare()
     {
         $sandbox = $this->context->getPack();

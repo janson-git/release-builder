@@ -1,19 +1,20 @@
 <?php
 
-
 namespace Commands\Command\Pack;
-
 
 use Commands\Command\CommandProto;
 use Commands\CommandConfig;
+use Commands\PackOwnerAuthorityTrait;
 use Git\GitRepository;
 use Git\GitException;
 
 class ConflictAnalyzeCommand extends CommandProto
 {
+    use PackOwnerAuthorityTrait;
+
     private $knownPairs = [];
     private $troubles = 0;
-    
+
     public function prepare()
     {
         foreach ($this->context->getPack()->getRepos() as $id => $repo) {
@@ -32,7 +33,7 @@ class ConflictAnalyzeCommand extends CommandProto
             
             if ($conflict) {
                 $testBranches = $branches;
-                array_unshift($testBranches, 'master');
+                array_unshift($testBranches, 'master', 'main');
     
                 foreach ($conflict as $conflictBranch) {
                     $this->_findConflictPairs($repo, $conflictBranch, $testBranches);
