@@ -4,16 +4,8 @@ help:
 
 .DEFAULT_GOAL := help
 
-up: ## Up docker containers with app
+up:
 	docker-compose up -d
-	@echo "\n>>> Open http://localhost:9088 in your browser <<<\n"
 
-down: ## Down containers
+down:
 	docker-compose down
-
-install: ## Setup app before use it
-	if [ ! -f .env ] ; then \
-		cp .env.example .env \
-	; fi
-	docker-compose build
-	@echo "\n.env file created.\nProject ready to start. Type 'make up' to build and start use."
