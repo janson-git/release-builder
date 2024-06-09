@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/login', [\App\Http\Controllers\LoginController::class, 'show'])
+    ->name('login');
+Route::post('/login', [\App\Http\Controllers\LoginController::class, 'store']);
+
+Route::get('/sign-up', [\App\Http\Controllers\SignupController::class, 'show'])
+    ->name('sign-up');
+Route::post('/sign-up', [\App\Http\Controllers\SignupController::class, 'store']);
+
 Route::get('/', function () {
     return view('welcome');
 });
