@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     public function show(): Response
     {
-//        dd( request()->getRequestUri() );
-
         return response()->view('auth/login', [
             'header' => 'Log In',
         ]);
@@ -24,22 +22,15 @@ class LoginController extends Controller
 
         // TODO: add validation
 
-        $user = User::where([
-            'email' => $email,
-            'password' => md5($pass)
-        ])->first();
-        if ($user !== null) {
-            $token = $this->createToken($email);
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-            Data::scope(App::DATA_SESSIONS)
-                ->insertOrUpdate($token, $email)
-                ->write();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-            return $this->app->getCookiesPipe()
-                ->addCookie($this->response, $this->getAuthCookieName(), $token)
-                ->withRedirect('/projects');
-        } else {
-//            return $this->response->withRedirect('/auth/login');
+            return redirect()->intended('dashboard');
         }
 
         return \response()->redirectToRoute('login');

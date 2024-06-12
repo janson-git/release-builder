@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,14 +16,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [\App\Http\Controllers\LoginController::class, 'show'])
-    ->name('login');
-Route::post('/login', [\App\Http\Controllers\LoginController::class, 'store']);
+Route::group(['middleware' => ['guest']], function () {
+    Route::get('/login', [LoginController::class, 'show'])
+        ->name('login');
+    Route::post('/login', [LoginController::class, 'store']);
 
-Route::get('/sign-up', [\App\Http\Controllers\SignupController::class, 'show'])
-    ->name('sign-up');
-Route::post('/sign-up', [\App\Http\Controllers\SignupController::class, 'store']);
+    Route::get('/sign-up', [SignupController::class, 'show'])
+        ->name('sign-up');
+    Route::post('/sign-up', [SignupController::class, 'store']);
+});
+
+Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth']], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+});
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->intended('login');
 });
