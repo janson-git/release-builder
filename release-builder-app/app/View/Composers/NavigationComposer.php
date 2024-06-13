@@ -21,16 +21,9 @@ class NavigationComposer
     {
         $menu = [];
 
-        $projectsItem = new MenuItem('Projects', '/projects', [
-            '#/projects#',
-            '#/packs#',
-            '#/branches/add#',
-            '#/branches/remove#',
-            '#/branches/fork-pack#',
-            '#/branches/create-pack#',
-        ]);
-        $projectsItem->setIconClass('fa-solid fa-folder-tree');
-        $menu[] = $projectsItem;
+        $dashboardItem = new MenuItem('Releases', '/releases');
+        $dashboardItem->setIconClass('fa-solid fa-table-columns');
+        $menu[] = $dashboardItem;
 
         $gitItem = new MenuItem('Git', '/git', [
             '/git',

@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ReleasesController;
 use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,8 +29,12 @@ Route::group(['middleware' => ['guest']], function () {
     Route::post('/sign-up', [SignupController::class, 'store']);
 });
 
-Route::group(['namespace' => 'App\Http\Controllers', 'middleware' => ['auth']], function () {
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/dashboard', function() {
+        return redirect()->intended('/releases');
+    });
+    Route::get('/releases', [ReleasesController::class, 'index']);
+    Route::get('/releases/{id}', [ReleasesController::class, 'show']);
 });
 
 Route::get('/', function () {
