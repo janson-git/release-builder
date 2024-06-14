@@ -25,9 +25,9 @@ class NavigationComposer
         $dashboardItem->setIconClass('fa-solid fa-table-columns');
         $menu[] = $dashboardItem;
 
-        $gitItem = new MenuItem('Git', '/git', [
-            '/git',
-            '/git/add-repository',
+        $gitItem = new MenuItem('Services', '/services', [
+            '/services',
+            '/services/add',
         ]);
         $gitItem->setIconClass('fa-solid fa-code-branch');
         $menu[] = $gitItem;

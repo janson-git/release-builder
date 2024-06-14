@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ReleasesController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\SignupController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,10 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::get('/releases', [ReleasesController::class, 'index']);
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
+
+    Route::get('/services', [ServicesController::class, 'index']);
+    Route::get('/services/add', [ServicesController::class, 'create']);
+    Route::post('/services', [ServicesController::class, 'store']);
 });
 
 Route::get('/', function () {

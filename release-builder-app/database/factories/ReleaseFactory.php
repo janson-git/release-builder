@@ -16,8 +16,15 @@ class ReleaseFactory extends Factory
      */
     public function definition(): array
     {
+        $branches = [];
+        for ($i = 1; $i < rand(2, 5); $i++) {
+            $branches[] = 'task_' . rand(9000, 9999);
+        }
+
         return [
-            //
+            'name' => fake()->name(),
+            'branches' => $branches,
+            'delivery_date' => now()->addDays(rand(3, 10)),
         ];
     }
 }

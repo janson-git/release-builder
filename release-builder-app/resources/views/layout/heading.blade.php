@@ -4,14 +4,9 @@
         @if (isset($title))<div class="mt-2 italic">{!! $title !!}</div>@endif
     </div>
 
-    @if (isset($pageMainAction) || isset($pageAction))
+    @hasSection('pageActions')
     <div class="flex justify-between items-start">
-        @if (isset($pageMainAction))
-            <a class="mr-2 px-4 py-1 btn btn-primary-outline" href="{{ $pageMainAction['path'] }}">{{ $pageMainAction['caption'] }}</a>
-        @endif
-        @if (isset($pageAction))
-            <a class="mr-2 px-4 py-1 btn btn-muted-outline" href="{{ $pageAction['path'] }}">{{ $pageAction['caption'] }}</a>
-        @endif
+        @yield('pageActions')
     </div>
     @endif
 </div>

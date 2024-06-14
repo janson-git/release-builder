@@ -16,8 +16,10 @@ class ServiceFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->colorName . ' ' . fake()->name . ' ' . fake()->monthName;
         return [
-            //
+            'name' => $name,
+            'repository_url' => 'https://fake-github.domain' . '/' . fake()->slug(3),
         ];
     }
 }

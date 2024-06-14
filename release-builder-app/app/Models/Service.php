@@ -21,6 +21,16 @@ class Service extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'repository_url',
+    ];
+
+    /**
      * This method returns list of branches in MAIN cloned repository.
      * But every release has own sandbox clones of repositories
      */
