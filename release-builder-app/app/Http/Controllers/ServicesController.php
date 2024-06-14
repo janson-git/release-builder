@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddServiceRequest;
+use App\Models\Service;
 use App\Services\GitService;
-use App\Services\ServicesService;
 
 class ServicesController extends Controller
 {
     public function index()
     {
-        $serviceService = app(ServicesService::class);
-
         return response()->view('services.index', [
             'header' => 'Services',
-            'serviceList' => $serviceService->getServices(),
+            'serviceList' => Service::all(),
         ]);
     }
 

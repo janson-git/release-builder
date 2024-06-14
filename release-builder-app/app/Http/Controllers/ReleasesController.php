@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\ReleaseService;
+use App\Models\Release;
 
 class ReleasesController extends Controller
 {
     public function index()
     {
-        $releaseService = app(ReleaseService::class);
-
         return response()->view('releases.index', [
-            'releaseList' => $releaseService->getReleases(),
+            'releaseList' => Release::all(),
         ]);
     }
 
     public function show(int $id)
     {
-        $release = app(ReleaseService::class)->getRelease($id);
+        $release = Release::find($id);
 
         return response()->view('releases.show', [
             'release' => $release,
