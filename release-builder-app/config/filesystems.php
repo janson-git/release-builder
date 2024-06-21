@@ -56,6 +56,11 @@ return [
             'throw' => false,
         ],
 
+        'repositories' => [
+            'driver' => 'local',
+            'root' => storage_path('repositories'),
+            'throw' => false,
+        ]
     ],
 
     /*

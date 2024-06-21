@@ -5,9 +5,11 @@
 ?>
 @extends('layout')
 
-@section('content')
-    <h1>RELEASES</h1>
+@section('pageActions')
+    <x-main-page-action href="/releases/create">New release</x-main-page-action>
+@endsection
 
+@section('content')
     @foreach($releaseList as $release)
         <div class="card pack-card mt-6 border-t-2 border-blue-200">
             <div>

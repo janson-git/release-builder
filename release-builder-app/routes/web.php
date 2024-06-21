@@ -35,9 +35,11 @@ Route::group(['middleware' => ['auth']], function () {
         return redirect()->intended('/releases');
     });
     Route::get('/releases', [ReleasesController::class, 'index']);
+    Route::get('/releases/create', [ReleasesController::class, 'create']);
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
 
-    Route::get('/services', [ServicesController::class, 'index']);
+    Route::get('/services', [ServicesController::class, 'index'])
+        ->name('services');
     Route::get('/services/add', [ServicesController::class, 'create']);
     Route::post('/services', [ServicesController::class, 'store']);
 });

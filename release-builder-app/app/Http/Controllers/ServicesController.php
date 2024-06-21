@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddServiceRequest;
 use App\Models\Service;
-use App\Services\GitService;
+use App\Services\GitRepositoriesService;
 
 class ServicesController extends Controller
 {
@@ -31,11 +31,15 @@ class ServicesController extends Controller
         // HTTPS url like: https://github.com/janson-git/release-builder.git
 
         $repoPath = $request->getRepositoryPath();
-        $repoPath = preg_replace('#[^a-zA-Z0-9:@./\-]#', '', $repoPath);
 
-        $repoNameFull = mb_substr($repoPath, strrpos($repoPath, '/') + 1);
-        $dirName = str_replace('.git', '', $repoNameFull);
-//
+        // Check service already exists
+        $service = Service::where('repository_url', $repoPath)->first();
+        if ($service) {
+            return back()->withErrors([
+                'repository_url' => 'This repository URL already exists'
+            ]);
+        }
+
 //        if (str_starts_with($repoPath, 'git@github') && !$this->app->getAuth()->isSshKeyExists()) {
 //            return $this->app->json([
 //                'error' => 'You should add SSH key in your profile to use SSH repository links',
@@ -44,8 +48,22 @@ class ServicesController extends Controller
 //            );
 //        }
 
-        app(GitService::class)->cloneRepository($repoPath, $dirName);
+        $service = Service::create([
+            'name' => $repoPath,
+            'repository_url' => $repoPath,
+        ]);
 
-        dd($request);
+        try {
+            app(GitRepositoriesService::class)->cloneRepository($repoPath);
+            $service->update(['status' => Service::STATUS_CLONED]);
+        } catch (\Throwable $e) {
+            $service->update(['status' => Service::STATUS_FAILED]);
+
+            return back()->withErrors([
+                'exception' => $e->getMessage(),
+            ]);
+        }
+
+        return redirect()->route('services');
     }
 }

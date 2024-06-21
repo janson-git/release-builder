@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('repository_url', 255);
+            $table->string('status', 20)->nullable();
             $table->timestamps();
         });
     }

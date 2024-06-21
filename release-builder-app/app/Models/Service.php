@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\GitRepositoriesService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,11 +15,14 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property string $name
  * @property string $repository_url
- * @property-read array $branches
+ * @property string $status
  */
 class Service extends Model
 {
     use HasFactory;
+
+    public const STATUS_FAILED = 'failed';
+    public const STATUS_CLONED = 'cloned';
 
     /**
      * The attributes that are mass assignable.
@@ -28,15 +32,15 @@ class Service extends Model
     protected $fillable = [
         'name',
         'repository_url',
+        'status'
     ];
 
     /**
      * This method returns list of branches in MAIN cloned repository.
      * But every release has own sandbox clones of repositories
      */
-    public function getBranchesAttribute(): array
+    public function getBranches(): array
     {
-        // TODO: should scan repository dir for branches list every time
-        return [];
+        return app(GitRepositoriesService::class)->getServiceLocalBranches($this);
     }
 }
