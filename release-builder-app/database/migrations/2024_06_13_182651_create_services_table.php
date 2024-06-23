@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->string('directory', 255);
             $table->string('repository_url', 255);
             $table->string('status', 20)->nullable();
             $table->timestamps();

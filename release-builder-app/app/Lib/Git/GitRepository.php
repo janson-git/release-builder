@@ -63,9 +63,11 @@ class GitRepository
 //        $this->commitAuthorEmail = $user->getCommitAuthorEmail();
 //        $this->accessToken = $user->getAccessToken();
 //
-        $this->remoteUrl = $this->getRemoteUrl();
 
-//        $this->setMainBranch();
+        if ($this->isRepositoryExists()) {
+            $this->remoteUrl = $this->getRemoteUrl();
+            $this->setMainBranch();
+        }
     }
 
     /**
@@ -229,6 +231,22 @@ class GitRepository
                 return false;
             }
             return trim(str_replace('*', '', $value));
+        });
+    }
+
+    /**
+     * Returns list of all branches (local and remote) in repo.
+     *
+     * @return string[]|NULL  NULL => no branches
+     * @throws GitException
+     */
+    public function getAllBranches(): ?array
+    {
+        return $this->extractFromCommand('git branch -a', function ($value) {
+            if (strrpos($value, 'HEAD detached') !== false ) {
+                return false;
+            }
+            return trim($value);
         });
     }
 
@@ -528,6 +546,13 @@ class GitRepository
         return $remoteUrl;
     }
 
+    public function getRemotes(): array
+    {
+        exec('cd ' . $this->path . ' && git remote -v ', $result);
+
+        return array_filter($result);
+    }
+
     private function getRemoteUrl(): string
     {
         $this->begin();
@@ -641,11 +666,16 @@ class GitRepository
     {
         $tokenizedRepoUrl = $this->getTokenizedRemoteUrl($this->accessToken, $remoteRepo);
 
-        return $this->begin()
+        $this->begin()
             ->run("git clone {$tokenizedRepoUrl} \"$dir\"")
             // remove PAT from git remote url after clone for secure reasons
             ->run("cd \"{$dir}\" && git remote set-url origin {$remoteRepo} && cd ..")
             ->end();
+
+        $this->remoteUrl = $this->getRemoteUrl();
+        $this->setMainBranch();
+
+        return $this;
     }
 
     /**
@@ -878,5 +908,19 @@ class GitRepository
     public function setAccessToken(string $accessToken): void
     {
         $this->accessToken = $accessToken;
+    }
+
+    protected function isRepositoryExists(): bool
+    {
+        try {
+            $this->begin()
+                ->run('git status')
+                ->end();
+
+        } catch (\Throwable $e) {
+            // Just skip exception for not existed repository
+        }
+
+        return !str_contains($this->lastOutput, 'fatal: not a git repository');
     }
 }

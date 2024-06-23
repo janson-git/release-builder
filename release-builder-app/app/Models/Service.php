@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
-use App\Services\GitRepositoriesService;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Service\Util\StringHelper;
 
 /**
- * NOTE:
- * Service is name for repository entity. Repository is a some remote Git repo,
- * but service - is a wrapper on repo to represent it in Release Builder UI.
- * Release Builder's 'Services' have the name and repo url to make pull and push
- * actions.
- *
- * @property string $name
+ * @property string $directory
  * @property string $repository_url
  * @property string $status
+ * @property-read ServiceBoundRepository $repository
  */
 class Service extends Model
 {
@@ -30,17 +26,23 @@ class Service extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'directory',
         'repository_url',
         'status'
     ];
 
     /**
-     * This method returns list of branches in MAIN cloned repository.
-     * But every release has own sandbox clones of repositories
+     * Wrapper to access GitRepository bound to current service
+     * @return Attribute
      */
-    public function getBranches(): array
+    protected function repository(): Attribute
     {
-        return app(GitRepositoriesService::class)->getServiceLocalBranches($this);
+        return Attribute::make(
+            get: fn() => app(ServiceBoundRepository::class, [
+                'service' => $this
+            ]),
+        );
     }
+
+
 }

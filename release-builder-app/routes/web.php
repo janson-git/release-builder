@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/services', [ServicesController::class, 'index'])
         ->name('services');
     Route::get('/services/add', [ServicesController::class, 'create']);
+    Route::get('/services/{id}/retry', [ServicesController::class, 'retryCloneRepository']);
     Route::post('/services', [ServicesController::class, 'store']);
 });
 

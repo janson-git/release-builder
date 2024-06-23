@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddServiceRequest;
 use App\Models\Service;
-use App\Services\GitRepositoriesService;
+use App\Services\GitRepositoryService;
 
 class ServicesController extends Controller
 {
@@ -34,7 +34,7 @@ class ServicesController extends Controller
 
         // Check service already exists
         $service = Service::where('repository_url', $repoPath)->first();
-        if ($service) {
+        if ($service && $service->status === Service::STATUS_CLONED) {
             return back()->withErrors([
                 'repository_url' => 'This repository URL already exists'
             ]);
@@ -48,20 +48,37 @@ class ServicesController extends Controller
 //            );
 //        }
 
-        $service = Service::create([
-            'name' => $repoPath,
-            'repository_url' => $repoPath,
-        ]);
+        if (!$service) {
+            $service = Service::create([
+                'directory' => app(GitRepositoryService::class)->getRepositoryDirNameFromUrl($repoPath),
+                'repository_url' => $repoPath,
+            ]);
+        }
 
         try {
-            app(GitRepositoriesService::class)->cloneRepository($repoPath);
+            app(GitRepositoryService::class)->cloneRepository($service);
+
             $service->update(['status' => Service::STATUS_CLONED]);
         } catch (\Throwable $e) {
             $service->update(['status' => Service::STATUS_FAILED]);
 
-            return back()->withErrors([
-                'exception' => $e->getMessage(),
-            ]);
+            throw $e;
+        }
+
+        return redirect()->route('services');
+    }
+
+    public function retryCloneRepository(int $serviceId)
+    {
+        $service = Service::find($serviceId);
+
+        try {
+            app(GitRepositoryService::class)->cloneRepository($service);
+            $service->update(['status' => Service::STATUS_CLONED]);
+        } catch (\Throwable $e) {
+            $service->update(['status' => Service::STATUS_FAILED]);
+
+            throw $e;
         }
 
         return redirect()->route('services');

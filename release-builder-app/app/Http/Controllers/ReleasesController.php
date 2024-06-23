@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Release;
 use App\Models\Service;
-use App\Services\GitRepositoriesService;
+use App\Services\GitRepositoryService;
 
 class ReleasesController extends Controller
 {
@@ -20,26 +20,15 @@ class ReleasesController extends Controller
 
     public function create()
     {
-        $gitRepoService = app(GitRepositoriesService::class);
+        $gitRepoService = app(GitRepositoryService::class);
 
         $allServices = Service::all();
 
-
-        //--- TODO: SHOULD BE A FUNCTION
-        $scannedBranches = $gitRepoService->scanBranches($allServices);
-        $commonBranches = [];
-        foreach ($scannedBranches as $repoDir => $dirBranches) {
-            foreach ($dirBranches as $branch) {
-                $commonBranches[$branch][$repoDir] = $repoDir;
-            }
-        }
-        $branches = array_keys($commonBranches);
-        array_multisort($branches, SORT_NATURAL, $commonBranches);
-        $branches = array_combine($branches, $commonBranches);
-        //---
+        $branches = $gitRepoService->getBranchesWithServices($allServices);
 
         // TODO: move/refactor Node->getToMasterStatus() from old version
         // TODO: we need enrich branches with difference from 'master'
+//        $packReposByBranches = $this->node->getToMasterStatus($this->packBranches);
 
         return response()->view('releases.create', [
             'header' => 'Services',
