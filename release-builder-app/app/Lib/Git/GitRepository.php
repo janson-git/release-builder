@@ -425,6 +425,15 @@ class GitRepository
     }
 
     /**
+     * @return string[]
+     * @throws GitException
+     */
+    public function getLastCommitsLog(): array
+    {
+        return $this->extractFromCommand('git log -5 --pretty="%cn %B"');
+    }
+
+    /**
      * Checkout branch.
      * `git checkout <branch>`
      *

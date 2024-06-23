@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Lib\Git\GitException;
 use App\Lib\Git\GitRepository;
 use App\Services\GitRepositoryService;
 
@@ -29,7 +30,7 @@ class ServiceBoundRepository
         return $this->gitRepository->getAllBranches();
     }
 
-    public function getRemotes()
+    public function getRemotes(): array
     {
         return $this->gitRepository->getRemotes();
     }
@@ -37,5 +38,14 @@ class ServiceBoundRepository
     public function getFilesUpdateTime(): array
     {
         return $this->gitRepositoryService->getFilesUpdateTime($this->service);
+    }
+
+    /**
+     * @return array|string[]
+     * @throws GitException
+     */
+    public function getLastCommitsLog(): array
+    {
+        return $this->gitRepository->getLastCommitsLog();
     }
 }
