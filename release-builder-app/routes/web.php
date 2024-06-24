@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/releases', [ReleasesController::class, 'index']);
     Route::get('/releases/create', [ReleasesController::class, 'create']);
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
+    Route::post('/releases', [ReleasesController::class, 'store']);
 
     Route::get('/services', [ServicesController::class, 'index'])
         ->name('services');

@@ -10,26 +10,49 @@
     <div class="card">
         <form method="POST" action="/releases">
 
-            <div class="mb-6 mt-4 flex justify-start items-center">
-                <input type="text" value="" name="name" placeholder="Release name" id="release-name"
-                       class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
-                />
+            <div class="mb-6 mt-4">
+                <div class="flex justify-start items-center">
+                    <input type="text" value="{{ old('name') }}" name="name" placeholder="Release name" id="release-name"
+                           class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                    />
+                </div>
+                @if($errors->has('name'))
+                    <div class="text-error">{{ $errors->first('name') }}</div>
+                @endif
             </div>
 
             <div class="mb-6">
                 <h4 class="mb-2">Services to release:</h4>
+                @if($errors->has('service_ids'))
+                    <div class="text-error">{{ $errors->first('service_ids') }}</div>
+                @endif
+
+
+
                 @foreach($servicesList as $service)
                     <div class="flex justify-start">
-                        <input type="checkbox" id="service-{{ $service->id }}" name="services[]" value="{{ $service->id }}">
+                        @php($checked = in_array($service->id, old('service_ids', [])) ? 'checked="checked"' : '')
+                        <input
+                            type="checkbox"
+                            id="service-{{ $service->id }}"
+                            name="service_ids[]"
+                            value="{{ $service->id }}"
+                            {{ $checked }}
+                        />
                         <label for="service-{{ $service->id }}" class="ml-2 cursor-pointer">
                             <span>{{ $service->repository_url }}</span>
                         </label>
                     </div>
                 @endforeach
+
             </div>
 
             <div class="mb-6">
                 <h4 class="mb-2">Branches to release:</h4>
+                @if($errors->has('branches'))
+                    <div class="text-error">{{ $errors->first('branches') }}</div>
+                @endif
+
                 <input id="mainInput" type="text" placeholder="{{ __('filter_branches') }}" onkeydown="aFilter.filter()"
                        class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
                        onkeyup="aFilter.filter()" autofocus/>

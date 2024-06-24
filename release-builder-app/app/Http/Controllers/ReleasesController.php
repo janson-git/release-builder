@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewReleaseRequest;
 use App\Models\Release;
 use App\Models\Service;
 use App\Services\GitRepositoryService;
@@ -15,6 +16,16 @@ class ReleasesController extends Controller
         return response()->view('releases.index', [
             'header' => 'Releases',
             'releaseList' => Release::all(),
+        ]);
+    }
+
+    public function show(int $id)
+    {
+        $release = Release::find($id);
+
+        return response()->view('releases.show', [
+            'header' => 'Releases',
+            'release' => $release,
         ]);
     }
 
@@ -38,13 +49,8 @@ class ReleasesController extends Controller
         ]);
     }
 
-    public function show(int $id)
+    public function store(NewReleaseRequest $request)
     {
-        $release = Release::find($id);
-
-        return response()->view('releases.show', [
-            'header' => 'Releases',
-            'release' => $release,
-        ]);
+        throw new \Exception('Not implemented!');
     }
 }
