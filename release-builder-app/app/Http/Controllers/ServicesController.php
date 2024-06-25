@@ -12,9 +12,12 @@ class ServicesController extends Controller
 {
     public function index()
     {
+        $services = Service::all();
+
         return response()->view('services.index', [
             'header' => 'Services',
-            'serviceList' => Service::all(),
+            'subheader' => "{$services->count()} services on this page",
+            'serviceList' => $services,
         ]);
     }
 

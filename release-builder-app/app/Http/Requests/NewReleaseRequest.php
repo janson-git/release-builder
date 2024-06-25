@@ -15,21 +15,9 @@ class NewReleaseRequest extends FormRequest
             // services - int[]
             'service_ids' => 'required|array',
             'service_ids.*' => 'exists:services,id',
-            // branches - services able to have different branch names for same
-            //   tasks, we need to get array of services with branches:
-            // [
-            //    <SERVICE_ID_1> => [
-            //        'task-xx-branch-name',
-            //        'task-yy-branch-name',
-            //    ],
-            //    <SERVICE_ID_2> => [
-            //        'task-xx-branch-name',
-            //        'task-aa-branch-name',
-            //        'task-yy-branch-name-in-other-service',
-            //    ],
-            // ]
+            // branches - string[]
             'branches' => 'required|array',
-//            'branches.*' => 'array',
+            'branches.*' => 'string',
         ];
     }
 
@@ -38,12 +26,18 @@ class NewReleaseRequest extends FormRequest
         return $this->validated('name');
     }
 
-    public function getServiceIds(): string
+    /**
+     * @return array|int[]
+     */
+    public function getServiceIds(): array
     {
         return $this->validated('service_ids');
     }
 
-    public function getBranchesGroupedBySericeIds(): string
+    /**
+     * @return array|string[]
+     */
+    public function getBranches(): array
     {
         return $this->validated('branches');
     }

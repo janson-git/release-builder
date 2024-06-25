@@ -29,14 +29,15 @@
         <div>
             <h3>Services in release</h3>
 
-            <div class="flex justify-between items-center mb-4">
-                @foreach($release->sandboxes as $sandbox)
-                    <p>{{ $sandbox->service()->name }}</p>
+            <div class="mb-4">
+                @foreach($release->services as $service)
+                    <div class="text-sm">
+                        <i class="text-xs fa-solid fa-external-link"></i>
+                        <a href="{{ $service->repository_url }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
+                            {{ $service->directory }}
+                        </a>
+                    </div>
                 @endforeach
-
-                <a href="/releases/{{ $release->id }}" class="pack-link">
-                    <i class="fa-regular fa-file-lines"></i> {{ $release->name }}
-                </a>
             </div>
         </div>
 
@@ -49,14 +50,12 @@
 {{--        --}}
 
 
-{{--        <div class="">Branches</div>--}}
-{{--        <ul class="mt-2 p-2 border border-gray-400 overflow-scroll">--}}
-{{--            @if (!empty($release->branches))--}}
-{{--                @foreach($release->branches as $branch)--}}
-{{--                    <li>{{ $branch }}</li>--}}
-{{--                @endforeach--}}
-{{--            @else--}}
-{{--                <li class="empty"><i>No branches added</i></li>--}}
-{{--            @endif--}}
-{{--        </ul>--}}
+        <div class="">Branches</div>
+        <ul class="mt-2 p-2 border border-gray-400 overflow-scroll">
+            @forelse ($release->branches as $branch)
+                <li>{{ $branch }}</li>
+            @empty
+                <li class="empty"><i>No branches added</i></li>
+            @endforelse
+        </ul>
 @endsection

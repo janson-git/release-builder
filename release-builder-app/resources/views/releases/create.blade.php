@@ -31,13 +31,13 @@
 
                 @foreach($servicesList as $service)
                     <div class="flex justify-start">
-                        @php($checked = in_array($service->id, old('service_ids', [])) ? 'checked="checked"' : '')
+                        @php($checked = in_array($service->id, old('service_ids', [])))
                         <input
                             type="checkbox"
                             id="service-{{ $service->id }}"
                             name="service_ids[]"
                             value="{{ $service->id }}"
-                            {{ $checked }}
+                            {{ $checked ? 'checked' : '' }}
                         />
                         <label for="service-{{ $service->id }}" class="ml-2 cursor-pointer">
                             <span>{{ $service->repository_url }}</span>
@@ -58,12 +58,13 @@
                        onkeyup="aFilter.filter()" autofocus/>
 
                 @foreach ($branches as $branch => $repos)
+                    @php($checked = in_array($branch, old('branches', [])))
                     @if (!$selected || ($selected && isset($selected[$branch])))
                         <div class="mt-2 flex justify-start items-center branches-item">
                             <input type="checkbox" name="branches[]" id="br_{{ $branch }}" value="{{ $branch }}"
                                    class="checkbox-item"
                                    title=""
-                                {{ isset($selected[$branch]) ? 'checked' : '' }}
+                                {{ $checked ? 'checked' : '' }}
                             />
 
                             <label class="ml-2" for="br_{{ $branch }}" class="branch-name">{{ $branch }}</label>

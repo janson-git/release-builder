@@ -5,8 +5,6 @@
 @endsection
 
 @section('content')
-    <h2>WIP</h2>
-
     <form method="POST" action="/services">
         @csrf
         <div class="card">

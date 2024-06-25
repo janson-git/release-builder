@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Service\Util\StringHelper;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property string $directory
@@ -44,5 +44,8 @@ class Service extends Model
         );
     }
 
-
+    public function releases(): BelongsToMany
+    {
+        return $this->belongsToMany(Release::class);
+    }
 }

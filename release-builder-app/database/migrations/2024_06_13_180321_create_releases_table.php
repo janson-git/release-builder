@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->json('branches');
-            $table->date('delivery_date');
+            $table->date('delivery_date')->nullable();
             $table->timestamps();
         });
     }

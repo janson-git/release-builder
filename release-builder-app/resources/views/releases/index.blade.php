@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    @foreach($releaseList as $release)
+    @forelse($releaseList as $release)
         <div class="card pack-card mt-6 border-t-2 border-blue-200">
             <div>
                 <div class="flex justify-between items-center mb-4">
@@ -31,5 +31,9 @@
                 @endif
             </ul>
         </div>
-    @endforeach
+    @empty
+        <div class="mt-6 mb-2 text-center">
+            <p class="text-gray-600 italic">No releases added</p>
+        </div>
+    @endforelse
 @endsection

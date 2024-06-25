@@ -70,7 +70,7 @@ class GitRepositoryService
                 }
             }
 
-            $branchesByServices[$service->name] = $branches;
+            $branchesByServices[$service->id] = $branches;
         }
 
         return $branchesByServices;
@@ -87,13 +87,13 @@ class GitRepositoryService
      */
     public function getBranchesWithServices(Collection $serviceList): array
     {
-        $serviceList = $serviceList->keyBy('name');
+        $serviceList = $serviceList->keyBy('id');
 
         $scannedBranches = $this->scanBranches($serviceList);
         $commonBranches = [];
-        foreach ($scannedBranches as $serviceName => $dirBranches) {
+        foreach ($scannedBranches as $serviceId => $dirBranches) {
             foreach ($dirBranches as $branch) {
-                $commonBranches[$branch][$serviceName] = $serviceName;
+                $commonBranches[$branch][$serviceId] = $serviceList->get($serviceId)->directory;
             }
         }
         $branches = array_keys($commonBranches);
@@ -169,10 +169,6 @@ class GitRepositoryService
 
     public function getServiceRepository(Service $service): GitRepository
     {
-        if (!$this->hasClonedRepository($service)) {
-            throw new \Exception('Service repository still has not cloned');
-        }
-
         if (array_key_exists($service->repository_url, $this->initializedRepos)) {
             return $this->initializedRepos[$service->repository_url];
         }

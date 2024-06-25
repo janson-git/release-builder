@@ -34,7 +34,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', function() {
         return redirect()->intended('/releases');
     });
-    Route::get('/releases', [ReleasesController::class, 'index']);
+    Route::get('/releases', [ReleasesController::class, 'index'])
+        ->name('releases');
     Route::get('/releases/create', [ReleasesController::class, 'create']);
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
     Route::post('/releases', [ReleasesController::class, 'store']);

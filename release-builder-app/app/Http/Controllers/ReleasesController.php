@@ -13,9 +13,11 @@ class ReleasesController extends Controller
 {
     public function index()
     {
+        $releases = Release::all();
         return response()->view('releases.index', [
             'header' => 'Releases',
-            'releaseList' => Release::all(),
+            'subheader' => "{$releases->count()} releases on this page",
+            'releaseList' => $releases,
         ]);
     }
 
@@ -51,6 +53,13 @@ class ReleasesController extends Controller
 
     public function store(NewReleaseRequest $request)
     {
-        throw new \Exception('Not implemented!');
+        $release = new Release();
+        $release->name = $request->getReleaseName();
+        $release->branches = $request->getBranches();
+        $release->save();
+
+        $release->services()->sync($request->getServiceIds(), false);
+
+        return redirect()->route('releases');
     }
 }
