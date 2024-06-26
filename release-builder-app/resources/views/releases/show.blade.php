@@ -7,6 +7,7 @@
 
 @section('content')
     <h1>RELEASE: {{ $release->name }}</h1>
+    <span class="mr-4 btn btn-muted-outline font-bold">STATUS BADGE</span>
 
     <div class="card border-t-2 border-gray-200">
         <div class="mb-4 flex justify-between items-center">
