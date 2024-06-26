@@ -21,7 +21,9 @@ class NavigationComposer
     {
         $menu = [];
 
-        $dashboardItem = new MenuItem('Releases', '/releases');
+        $dashboardItem = new MenuItem('Releases', '/releases', [
+            '#/releases/\d*#'
+        ]);
         $dashboardItem->setIconClass('fa-solid fa-table-columns');
         $menu[] = $dashboardItem;
 
