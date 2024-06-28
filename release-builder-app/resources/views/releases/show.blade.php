@@ -47,16 +47,59 @@
 {{--                @include('./components/commandButton.blade.php', ['command' => $command])--}}
 {{--            @endforeach--}}
 {{--        @endif--}}
+
+        {{-- TODO: BUILD/CHECKPOINT ACTIONS HERE: merge, search conflicts, delete --}}
     </div>
 {{--        --}}
 
 
-        <div class="">Branches</div>
-        <ul class="mt-2 p-2 border border-gray-400 overflow-scroll">
-            @forelse ($release->branches as $branch)
-                <li>{{ $branch }}</li>
-            @empty
-                <li class="empty"><i>No branches added</i></li>
-            @endforelse
-        </ul>
+
+    {{-- TODO: RELEASE ACTIONS HERE: add branches, remove branches, fork release --}}
+    <div class="mt-8 mb-4">
+        <h3>Branches:</h3>
+        <div class="mt-4 inline-block">
+            <a class="btn btn-primary-outline" href="#">Add branches</a>
+        </div>
+        <div class="mt-4 inline-block">
+            <a class="btn btn-primary-outline" href="#">Remove branches</a>
+        </div>
+        <div class="mt-4 inline-block">
+            <a class="btn btn-muted-outline" href="#">Fork release</a>
+        </div>
+
+        <div>
+            <ul class="mt-2 p-2">
+                @forelse ($release->branches as $branch)
+                    <li>{{ $branch }}</li>
+                @empty
+                    <li class="empty"><i>No branches added</i></li>
+                @endforelse
+            </ul>
+        </div>
+    </div>
+
+
+{{--    @if ($user->owned($pack))--}}
+        <div class="mt-8 mb-4 card border-t-2 border-gray-200">
+            <h3 class="font-bold">Package actions</h3>
+
+            @php
+            $actions = [
+                ['Create build'],
+                ['Fetch repositories'],
+                ['Create git tag'],
+                ['Push build to repository'],
+                ['Delete package'],
+            ];
+            @endphp
+
+            @foreach ($actions as $action)
+                <div class="mt-4 inline-block">
+                    <a href="#" class="btn">{{ $action[0] }}</a>
+                </div>
+            @endforeach
+        </div>
+{{--    @endif--}}
+
+
 @endsection
