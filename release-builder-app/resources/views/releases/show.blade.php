@@ -22,7 +22,7 @@
             </div>
 
             <div class="build-relative-date">
-                {{ $release->delivery_date }}
+                {{ $release->delivery_date}}
             </div>
         </div>
 
@@ -49,6 +49,11 @@
 {{--        @endif--}}
 
         {{-- TODO: BUILD/CHECKPOINT ACTIONS HERE: merge, search conflicts, delete --}}
+        <div class="mt-4 inline-block">
+            <a href="/releases/{{ $release->id }}/merge-branches" class="btn btn-primary">Merge branches NI</a>
+            <a href="#" class="btn btn-secondary">Search conflicts branches NI</a>
+            <a href="#" class="btn btn-secondary">Remove build NI</a>
+        </div>
     </div>
 {{--        --}}
 
@@ -58,14 +63,14 @@
     <div class="mt-8 mb-4">
         <h3>Branches:</h3>
         <div class="mt-4 inline-block">
-            <a class="btn btn-primary-outline" href="#">Add branches</a>
+            <a class="btn btn-primary-outline" href="#">Add branches NI</a>
         </div>
         <div class="mt-4 inline-block">
-            <a class="btn btn-primary-outline" href="#">Remove branches</a>
+            <a class="btn btn-primary-outline" href="#">Remove branches NI</a>
         </div>
-        <div class="mt-4 inline-block">
-            <a class="btn btn-muted-outline" href="#">Fork release</a>
-        </div>
+{{--        <div class="mt-4 inline-block">--}}
+{{--            <a class="btn btn-muted-outline" href="#">Fork release NI</a>--}}
+{{--        </div>--}}
 
         <div>
             <ul class="mt-2 p-2">
@@ -85,11 +90,11 @@
 
             @php
             $actions = [
-                ['Create build'],
-                ['Fetch repositories'],
-                ['Create git tag'],
-                ['Push build to repository'],
-                ['Delete package'],
+                ['Create build NI'],
+                ['Fetch repositories NI'],
+                ['Create git tag NI'],
+                ['Push build to repository NI'],
+                ['Delete package NI'],
             ];
             @endphp
 

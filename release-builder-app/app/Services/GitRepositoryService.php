@@ -14,21 +14,23 @@ use Illuminate\Support\Facades\Storage;
 
 class GitRepositoryService
 {
-    private array $initializedRepos = [];
+    protected array $initializedRepos = [];
 
-    public function cloneRepository(Service $service): void
+    public function cloneRepository(GitRepositoryLinkable $service): void
     {
+        $directory = $service->getRepositoryDirectoryName();
+
         if ($this->hasClonedRepository($service)) {
-            throw new \Exception("Directory '{$service->directory}' already exists and not empty");
+            throw new \Exception("Directory '{$directory}' already exists and not empty");
         }
 
-        $this->storage()->createDirectory($service->directory);
+        $this->storage()->createDirectory($directory);
 
         $gitRepository = $this->getServiceRepository($service);
 
         $gitRepository->cloneRemoteRepository(
-                $service->repository_url,
-                $this->storage()->path($service->directory)
+                $service->getRepositoryUrl(),
+                $this->storage()->path($directory)
             );
 
         $output = $gitRepository->getLastOutput();
@@ -36,11 +38,13 @@ class GitRepositoryService
         app(Logger::class)->debug($output);
     }
 
-    private function hasClonedRepository(Service $service): bool
+    private function hasClonedRepository(GitRepositoryLinkable $service): bool
     {
+        $directory = $service->getRepositoryDirectoryName();
+
         $storage = $this->storage();
-        return ($storage->directoryExists($service->directory)
-            && count($storage->listContents($service->directory)->toArray()) > 0);
+        return ($storage->directoryExists($directory)
+            && count($storage->listContents($directory)->toArray()) > 0);
     }
 
     public function getRemoteBranches(Service $service): array
@@ -154,7 +158,7 @@ class GitRepositoryService
         ];
     }
 
-    private function storage(): FilesystemAdapter
+    protected function storage(): FilesystemAdapter
     {
         return Storage::disk('repositories');
     }
@@ -167,17 +171,17 @@ class GitRepositoryService
         return str_replace('.git', '', $repoNameFull);
     }
 
-    public function getServiceRepository(Service $service): GitRepository
+    public function getServiceRepository(GitRepositoryLinkable $item): GitRepository
     {
-        if (array_key_exists($service->repository_url, $this->initializedRepos)) {
-            return $this->initializedRepos[$service->repository_url];
+        if (array_key_exists($item->getRepositoryUrl(), $this->initializedRepos)) {
+            return $this->initializedRepos[$item->getRepositoryUrl()];
         }
 
         $repository = app(GitRepository::class, [
-            'repository' => $this->storage()->path($service->directory)
+            'repository' => $item->getRepositoryPath()
         ]);
 
-        $this->initializedRepos[$service->repository_url] = $repository;
+        $this->initializedRepos[$item->getRepositoryUrl()] = $repository;
 
         return $repository;
     }

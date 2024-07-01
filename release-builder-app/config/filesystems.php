@@ -60,6 +60,11 @@ return [
             'driver' => 'local',
             'root' => storage_path('repositories'),
             'throw' => false,
+        ],
+        'sandboxes' => [
+            'driver' => 'local',
+            'root' => storage_path('sandboxes'),
+            'throw' => false,
         ]
     ],
 

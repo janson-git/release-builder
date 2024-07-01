@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Services\GitRepositoryLinkable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property string $directory
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $status
  * @property-read ServiceBoundRepository $repository
  */
-class Service extends Model
+class Service extends Model implements GitRepositoryLinkable
 {
     use HasFactory;
 
@@ -47,5 +49,20 @@ class Service extends Model
     public function releases(): BelongsToMany
     {
         return $this->belongsToMany(Release::class);
+    }
+
+    public function getRepositoryUrl(): string
+    {
+        return $this->repository_url;
+    }
+
+    public function getRepositoryDirectoryName(): string
+    {
+        return $this->directory;
+    }
+
+    public function getRepositoryPath(): string
+    {
+        return Storage::disk('repositories')->path($this->directory);
     }
 }

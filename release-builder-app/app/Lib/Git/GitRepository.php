@@ -62,7 +62,9 @@ class GitRepository
 //        $this->commitAuthorName = $user->getCommitAuthorName();
 //        $this->commitAuthorEmail = $user->getCommitAuthorEmail();
 //        $this->accessToken = $user->getAccessToken();
-//
+
+        $this->commitAuthorName = config('gitsettings.committer.name');
+        $this->commitAuthorEmail = config('gitsettings.committer.email');
 
         if ($this->isRepositoryExists()) {
             $this->remoteUrl = $this->getRemoteUrl();

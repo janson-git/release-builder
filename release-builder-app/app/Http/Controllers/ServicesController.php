@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddServiceRequest;
 use App\Models\Service;
 use App\Services\GitRepositoryService;
+use App\Services\SandboxRepositoryService;
 
 class ServicesController extends Controller
 {
@@ -62,6 +63,11 @@ class ServicesController extends Controller
             app(GitRepositoryService::class)->cloneRepository($service);
 
             $service->update(['status' => Service::STATUS_CLONED]);
+
+            // Also create sandbox for new service
+            // TODO: research for quick local clone without remote here
+            $sandboxRepoService = app(SandboxRepositoryService::class);
+            $sandboxRepoService->cloneRepository($service);
         } catch (\Throwable $e) {
             $service->update(['status' => Service::STATUS_FAILED]);
 

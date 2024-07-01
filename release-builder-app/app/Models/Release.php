@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property array $branches
  * @property Carbon $delivery_date
  * @property int $created_by
+ *
+ * @property-read array|Service[] $services
+ * @property-read array|Sandbox[] $sandboxes
+ * @property-read string $release_branch_name
  */
 class Release extends Model
 {
@@ -56,6 +61,17 @@ class Release extends Model
 
     public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Service::class, 'sandboxes');
+    }
+
+    /**
+     * Wrapper to get release branch name
+     * @return Attribute
+     */
+    protected function releaseBranchName(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => "release_{$this->id}_" . $this->created_at->format('Ymd_His'),
+        );
     }
 }

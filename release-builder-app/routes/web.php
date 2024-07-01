@@ -36,9 +36,10 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::get('/releases', [ReleasesController::class, 'index'])
         ->name('releases');
+    Route::post('/releases', [ReleasesController::class, 'store']);
     Route::get('/releases/create', [ReleasesController::class, 'create']);
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
-    Route::post('/releases', [ReleasesController::class, 'store']);
+    Route::get('/releases/{id}/merge-branches', [ReleasesController::class, 'mergeBranches']);
 
     Route::get('/services', [ServicesController::class, 'index'])
         ->name('services');
