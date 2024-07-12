@@ -20,7 +20,18 @@
                 </div>
             </div>
 
-            <div class="">Branches</div>
+            <h4>Services</h4>
+            <ul class="my-2 pl-2">
+                @if (!empty($release->services))
+                    @foreach($release->services as $service)
+                        <li>{{ $service->repository_url }}</li>
+                    @endforeach
+                @else
+                    <li class="empty"><i>No services selected</i></li>
+                @endif
+            </ul>
+
+            <h4>Branches</h4>
             <ul class="mt-2 p-2 border border-gray-400 overflow-scroll">
                 @if (!empty($release->branches))
                     @foreach($release->branches as $branch)

@@ -30,7 +30,7 @@ class ReleasesController extends Controller
         $release = Release::find($id);
 
         return response()->view('releases.show', [
-            'header' => 'Releases',
+            'header' => $release->name,
             'release' => $release,
         ]);
     }
