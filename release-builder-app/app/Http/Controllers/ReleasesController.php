@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NewReleaseRequest;
+use App\Lib\Git\GitException;
 use App\Lib\Git\GitRepository;
 use App\Models\Release;
 use App\Models\Sandbox;
@@ -88,7 +89,7 @@ class ReleasesController extends Controller
 
         $gitRepoService = app(GitRepositoryService::class);
 
-        $operationLog = [];
+        $actionLog = [];
 
         // TODO: LOG all operations and show errors
         foreach ($release->sandboxes as $sandbox) {
@@ -97,10 +98,16 @@ class ReleasesController extends Controller
             $sandboxRepo->fetch();
             $sandboxRepo->fullReset();
             $sandboxRepo->checkout($release->release_branch_name);
-            $this->_mergeBranches($sandboxRepo, $branches, $operationLog);
+            $this->_mergeBranches($sandboxRepo, $branches, $actionLog);
         }
 
-        dd('WIP IMPLEMENTATION', $release, $branches, $operationLog);
+        return response()->view('releases.action-results', [
+            'header' => $release->name,
+            'subheader' => "Merge branches results",
+            'release' => $release,
+            'action' => 'Merge Branches',
+            'actionLog' => $actionLog,
+        ]);
     }
 
     private function _mergeBranches(GitRepository $repo, array $branches, array &$log = [], int $loop = 1): array
@@ -115,21 +122,26 @@ class ReleasesController extends Controller
                 if ($result !== false) {
                     $results[$branch] = $result;
                     $mergedCount++;
+                } else {
+                    $results[$branch] = 'Doesn\'t exist in ' . $repo->getPath();
                 }
-            } catch (\Exception $e) {
-                $results[$branch] = 'Error: ' . $e->getMessage();
+            } catch (GitException $e) {
+                $exceptionOutput = $e->getOutput();
+                $results[$branch] = 'Error: ' . $e->getMessage() . ". Trace: \n" . implode("\n", $exceptionOutput);
                 $repo->fullReset();
                 $unmerged[] = $branch;
             }
         }
 
         $log[] = [
+            'command' => 'merge branches',
+            'options' => $branches,
+            'repoPath' => $repo->getPath(),
             'results' => $results,
-            'repoPath' => $repo->getPath()
         ];
 
         // private const MERGE_RETRIES_LIMIT = 5;
-        if ($mergedCount && $loop < 5) {
+        if ($mergedCount && count($unmerged) > 0 && $loop < 5) {
             $this->_mergeBranches($repo, $unmerged, $log, ++$loop);
         }
 

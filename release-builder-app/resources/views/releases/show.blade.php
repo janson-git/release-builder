@@ -53,7 +53,7 @@
 
         {{-- TODO: BUILD/CHECKPOINT ACTIONS HERE: merge, search conflicts, delete --}}
         <div class="mt-4 inline-block">
-            <a href="/releases/{{ $release->id }}/merge-branches" class="btn btn-primary">Merge branches NI</a>
+            <a href="/releases/{{ $release->id }}/merge-branches" class="btn btn-primary">Merge branches</a>
             <a href="#" class="btn btn-secondary">Search conflicts branches NI</a>
             <a href="#" class="btn btn-secondary">Remove build NI</a>
         </div>

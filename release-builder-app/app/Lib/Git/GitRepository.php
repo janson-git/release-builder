@@ -315,8 +315,6 @@ class GitRepository
             return $this->lastOutput;
         }
 
-//        $this->exception($this->path.' not found '. $branch .' in '.implode(', ',$this->remoteBranches).' branch');
-
         return false;
     }
 
@@ -784,9 +782,12 @@ class GitRepository
 
         $gitAuthor = '';
         if ($this->commitAuthorName && $this->commitAuthorEmail) {
-            $gitName = " export GIT_AUTHOR_NAME=\"$this->commitAuthorName\" ";
-            $gitEmail = " export GIT_AUTHOR_EMAIL=\"$this->commitAuthorEmail\" ";
-            $gitAuthor = "$gitName && $gitEmail && ";
+            $gitAuthorName = " export GIT_AUTHOR_NAME=\"$this->commitAuthorName\" ";
+            $gitAuthorEmail = " export GIT_AUTHOR_EMAIL=\"$this->commitAuthorName\" ";
+            $gitName = " export GIT_COMMITTER_NAME=\"$this->commitAuthorName\" ";
+            $gitEmail = " export GIT_COMMITTER_EMAIL=\"$this->commitAuthorEmail\" ";
+
+            $gitAuthor = "$gitName && $gitEmail && $gitAuthorName && $gitAuthorEmail && ";
         }
 
         $commandLine = trim("{$sshParams} {$programName} " . implode(' ', $cmd));

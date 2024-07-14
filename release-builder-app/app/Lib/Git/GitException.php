@@ -20,7 +20,7 @@ class GitException extends \Exception
      */
     public function setOutput($output)
     {
-        $this->output = (array)$output;
+        $this->output = (array) $output;
     }
 
 
