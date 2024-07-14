@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/releases/create', [ReleasesController::class, 'create']);
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
     Route::get('/releases/{id}/merge-branches', [ReleasesController::class, 'mergeBranches']);
+    Route::get('/releases/{id}/search-conflicts', [ReleasesController::class, 'searchConflicts']);
 
     Route::get('/services', [ServicesController::class, 'index'])
         ->name('services');

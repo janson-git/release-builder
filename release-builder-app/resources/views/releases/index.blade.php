@@ -25,6 +25,7 @@
                 @if (!empty($release->services))
                     @foreach($release->services as $service)
                         <li>{{ $service->repository_url }}</li>
+                        <!-- TODO: display release branch name and link to PR if exists -->
                     @endforeach
                 @else
                     <li class="empty"><i>No services selected</i></li>
