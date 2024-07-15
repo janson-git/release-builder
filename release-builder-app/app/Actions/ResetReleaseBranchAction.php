@@ -7,9 +7,9 @@ namespace App\Actions;
 use App\Models\Release;
 use App\Services\GitRepositoryService;
 
-class RemoveReleaseBranchAction extends AbstractAction
+class ResetReleaseBranchAction extends AbstractAction
 {
-    protected const ACTION_NAME = 'remove-release-branch';
+    protected const ACTION_NAME = 'reset-release-branch';
 
     public function execute(Release $release): void
     {
@@ -23,6 +23,8 @@ class RemoveReleaseBranchAction extends AbstractAction
             $sandboxRepo->checkoutToOriginMainBranch();
             try {
                 $sandboxRepo->removeBranch($branchName);
+                $sandboxRepo->checkoutToNewBranchFromOriginMain($branchName);
+
                 $this->log('success', $sandboxRepo->getPath());
             } catch (\Exception $e) {
                 $this->log('Error: ' . $e->getMessage(), $sandboxRepo->getPath());

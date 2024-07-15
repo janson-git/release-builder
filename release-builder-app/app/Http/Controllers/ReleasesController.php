@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\MergeReleaseBranchesAction;
-use App\Actions\RemoveReleaseBranchAction;
-use App\Actions\SearchConflictBranchesInReleaseAction;
 use App\Http\Requests\NewReleaseRequest;
 use App\Models\Release;
 use App\Models\Service;
@@ -75,53 +72,5 @@ class ReleasesController extends Controller
         }
 
         return redirect()->route('releases');
-    }
-
-    public function mergeBranches(int $id)
-    {
-        $release = Release::find($id);
-
-        $action = new MergeReleaseBranchesAction();
-        $action->execute($release);
-
-        return response()->view('releases.action-results', [
-            'header' => $release->name,
-            'subheader' => "Merge branches results",
-            'release' => $release,
-            'action' => 'Merge Branches',
-            'actionLog' => $action->getActionLog(),
-        ]);
-    }
-
-    public function searchConflicts(int $id)
-    {
-        $release = Release::find($id);
-
-        $action = new SearchConflictBranchesInReleaseAction();
-        $action->execute($release);
-
-        return response()->view('releases.action-results', [
-            'header' => $release->name,
-            'subheader' => "Search conflicts results",
-            'release' => $release,
-            'action' => 'Search Conflicts',
-            'actionLog' => $action->getActionLog(),
-        ]);
-    }
-
-    public function removeReleaseBranch(int $id)
-    {
-        $release = Release::find($id);
-
-        $action = new RemoveReleaseBranchAction();
-        $action->execute($release);
-
-        return response()->view('releases.action-results', [
-            'header' => $release->name,
-            'subheader' => "Remove release branch results",
-            'release' => $release,
-            'action' => 'Remove release branch',
-            'actionLog' => $action->getActionLog(),
-        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\Release;
 use App\Http\Controllers\ReleasesController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\SignupController;
@@ -39,9 +40,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/releases', [ReleasesController::class, 'store']);
     Route::get('/releases/create', [ReleasesController::class, 'create']);
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
-    Route::get('/releases/{id}/merge-branches', [ReleasesController::class, 'mergeBranches']);
-    Route::get('/releases/{id}/search-conflicts', [ReleasesController::class, 'searchConflicts']);
-    Route::get('/releases/{id}/remove-release-branch', [ReleasesController::class, 'removeReleaseBranch']);
+    Route::get('/releases/{id}/merge-branches', Release\MergeBranchesController::class);
+    Route::get('/releases/{id}/search-conflicts', Release\SearchConflictBranchesController::class);
+    Route::get('/releases/{id}/reset-release-branch', Release\ResetReleaseBranchController::class);
 
     Route::get('/services', [ServicesController::class, 'index'])
         ->name('services');
