@@ -9,9 +9,9 @@
     <link href="/fontawesome/css/regular.css" rel="stylesheet">
     <link href="/fontawesome/css/solid.css" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FIXME: use local tailwind file for development -->
+    <script src="/tailwindcss-3.4.5.js"></script>
 
-    <link rel="stylesheet" href="/css/tailwindcss-3.4.5.css">
     <link rel="stylesheet" href="/css/new.css">
     <link rel="stylesheet" href="/css/custom-buttons.css">
 
