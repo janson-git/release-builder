@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\MergeReleaseBranchesAction;
+use App\Actions\RemoveReleaseBranchAction;
 use App\Actions\SearchConflictBranchesInReleaseAction;
 use App\Http\Requests\NewReleaseRequest;
 use App\Models\Release;
@@ -104,6 +105,22 @@ class ReleasesController extends Controller
             'subheader' => "Search conflicts results",
             'release' => $release,
             'action' => 'Search Conflicts',
+            'actionLog' => $action->getActionLog(),
+        ]);
+    }
+
+    public function removeReleaseBranch(int $id)
+    {
+        $release = Release::find($id);
+
+        $action = new RemoveReleaseBranchAction();
+        $action->execute($release);
+
+        return response()->view('releases.action-results', [
+            'header' => $release->name,
+            'subheader' => "Remove release branch results",
+            'release' => $release,
+            'action' => 'Remove release branch',
             'actionLog' => $action->getActionLog(),
         ]);
     }

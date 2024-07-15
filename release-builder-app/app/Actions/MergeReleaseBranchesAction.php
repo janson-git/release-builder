@@ -20,21 +20,24 @@ class MergeReleaseBranchesAction extends AbstractAction
         array_unshift($branches, 'master', 'main');
 
         $gitRepoService = app(GitRepositoryService::class);
+        $releaseBranchName = $release->release_branch_name;
 
-        $actionLog = [];
-
-        // TODO: LOG all operations and show errors
         foreach ($release->sandboxes as $sandbox) {
             $sandboxRepo = $gitRepoService->getServiceRepository($sandbox);
 
             $sandboxRepo->fetch();
             $sandboxRepo->fullReset();
-            $sandboxRepo->checkout($release->release_branch_name);
-            $this->_mergeBranches($sandboxRepo, $branches, $actionLog);
+
+            if (!$sandboxRepo->isBranchExists($releaseBranchName)) {
+                $sandboxRepo->checkoutToNewBranchFromOriginMain($releaseBranchName);
+            } else {
+                $sandboxRepo->checkout($releaseBranchName);
+            }
+            $this->_mergeBranches($sandboxRepo, $branches);
         }
     }
 
-    private function _mergeBranches(GitRepository $repo, array $branches, array &$log = [], int $loop = 1): array
+    private function _mergeBranches(GitRepository $repo, array $branches, int $loop = 1): void
     {
         $unmerged    = [];
         $results     = [];
@@ -61,9 +64,7 @@ class MergeReleaseBranchesAction extends AbstractAction
 
         // private const MERGE_RETRIES_LIMIT = 5;
         if ($mergedCount && count($unmerged) > 0 && $loop < 5) {
-            $this->_mergeBranches($repo, $unmerged, $log, ++$loop);
+            $this->_mergeBranches($repo, $unmerged, ++$loop);
         }
-
-        return $log;
     }
 }

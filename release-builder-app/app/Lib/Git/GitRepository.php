@@ -935,4 +935,10 @@ class GitRepository
 
         return !str_contains($this->lastOutput, 'fatal: not a git repository');
     }
+
+    public function isBranchExists(string $name): bool
+    {
+        $branches = $this->getBranches();
+        return in_array($name, $branches);
+    }
 }
