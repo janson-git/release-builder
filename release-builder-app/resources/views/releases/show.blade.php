@@ -93,7 +93,7 @@
             @php
             $actions = [
                 ['Create build NI'],
-                ['Fetch repositories NI'],
+                ['Fetch repositories', "/releases/{$release->id}/fetch-repositories"],
                 ['Create git tag NI'],
                 ['Push build to repository NI'],
                 ['Delete package NI'],
@@ -102,7 +102,7 @@
 
             @foreach ($actions as $action)
                 <div class="mt-4 inline-block">
-                    <a href="#" class="btn">{{ $action[0] }}</a>
+                    <a href="{{ $action[1] ?? '#' }}" class="btn">{{ $action[0] }}</a>
                 </div>
             @endforeach
         </div>
