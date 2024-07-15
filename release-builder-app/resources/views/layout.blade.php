@@ -11,6 +11,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <link rel="stylesheet" href="/css/tailwindcss-3.4.5.css">
     <link rel="stylesheet" href="/css/new.css">
     <link rel="stylesheet" href="/css/custom-buttons.css">
 

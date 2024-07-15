@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Release;
 use App\Actions\FetchReleaseSandboxesAction;
 use App\Models\Release;
 
-class FetchRepositoriesController
+class FetchSandboxesController
 {
     public function __invoke(int $id)
     {

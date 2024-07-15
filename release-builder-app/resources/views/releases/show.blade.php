@@ -90,21 +90,19 @@
         <div class="mt-8 mb-4 card border-t-2 border-gray-200">
             <h3 class="font-bold">Package actions</h3>
 
-            @php
-            $actions = [
-                ['Create build NI'],
-                ['Fetch repositories', "/releases/{$release->id}/fetch-repositories"],
-                ['Create git tag NI'],
-                ['Push build to repository NI'],
-                ['Delete package NI'],
-            ];
-            @endphp
-
-            @foreach ($actions as $action)
-                <div class="mt-4 inline-block">
-                    <a href="{{ $action[1] ?? '#' }}" class="btn">{{ $action[0] }}</a>
-                </div>
-            @endforeach
+            <div class="mt-4 inline-block">
+                <a href="/releases/{{ $release->id }}/fetch-repositories" class="btn">Fetch repositories</a>
+            </div>
+            <div class="mt-4 inline-block">
+                <!-- TODO: need implement popup for getting tags for repositories in release -->
+                <a href="#" class="btn" onclick="">Create git tag NI</a>
+            </div>
+            <div class="mt-4 inline-block">
+                <a href="#" class="btn">Push build to repository NI</a>
+            </div>
+            <div class="mt-4 inline-block">
+                <a href="#" class="btn">Delete package NI</a>
+            </div>
         </div>
 {{--    @endif--}}
 

@@ -9,7 +9,7 @@ use App\Services\GitRepositoryService;
 
 class FetchReleaseSandboxesAction extends AbstractAction
 {
-    protected const ACTION_NAME = 'fetch-repositories';
+    protected const ACTION_NAME = 'fetch-sandboxes';
 
     public function execute(Release $release): void
     {

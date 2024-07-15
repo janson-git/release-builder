@@ -19,18 +19,12 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
     public function execute(Release $release): void
     {
         $branches = $release->branches;
-        // always get latest master, main branches
-//        array_unshift($branches, 'master', 'main');
-
-//        $sandbox = $this->context->getPack();
-//        $branches   = $sandbox->getBranches();
 
         $gitRepoService = app(GitRepositoryService::class);
 
         foreach ($release->sandboxes as $sandbox) {
             $sandboxRepo = $gitRepoService->getServiceRepository($sandbox);
 
-//            $this->runtime->startSection($id, $repo->getPath());
             $conflict = $this->_findConflictBranches($sandboxRepo, $branches);
 
             if ($conflict) {
