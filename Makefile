@@ -8,6 +8,7 @@ up:
 	docker-compose up -d
 	docker-compose exec app composer install
 	docker-compose exec app php artisan migrate
+	docker-compose exec app php artisan ide-helper:generate
 
 down:
 	docker-compose down

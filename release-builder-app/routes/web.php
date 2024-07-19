@@ -40,6 +40,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/releases', [ReleasesController::class, 'store']);
     Route::get('/releases/create', [ReleasesController::class, 'create']);
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
+    Route::get('/releases/{id}/edit', [ReleasesController::class, 'edit']);
+    Route::post('/releases/{id}', [ReleasesController::class, 'update']);
+
     Route::get('/releases/{id}/merge-branches', Release\MergeBranchesController::class);
     Route::get('/releases/{id}/search-conflicts', Release\SearchConflictBranchesController::class);
     Route::get('/releases/{id}/reset-release-branch', Release\ResetReleaseBranchController::class);

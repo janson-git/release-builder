@@ -64,32 +64,40 @@
     {{-- TODO: RELEASE ACTIONS HERE: add branches, remove branches, fork release --}}
     <div class="mt-8 mb-4">
         <h3>Branches:</h3>
-        <div class="mt-4 inline-block">
-            <a class="btn btn-primary-outline" href="#">Add branches NI</a>
-        </div>
-        <div class="mt-4 inline-block">
-            <a class="btn btn-primary-outline" href="#">Remove branches NI</a>
-        </div>
-{{--        <div class="mt-4 inline-block">--}}
-{{--            <a class="btn btn-muted-outline" href="#">Fork release NI</a>--}}
-{{--        </div>--}}
 
         <div>
-            <ul class="mt-2 p-2">
-                @forelse ($release->branches as $branch)
-                    <li>{{ $branch }}</li>
+            <div class="w-full mt-2 p-2 font-mono">
+                @forelse ($branchesDiffs as $branch => $repos)
+                    <div class="flex items-start hover:bg-gray-100">
+                        <div class="w-2/3">{{ $branch }}</div>
+                        <div class="w-1/3 text-right">
+                            <a class="cursor-pointer" onclick="$(this).parent().find('div').toggle()">
+                                ({{ count($repos) }})
+                                <small>{{array_sum(array_column($repos, 0)) }} < master > {{array_sum(array_column($repos, 1)) }}</small>
+                            </a>
+
+                            <div style="display:none" class="text-xs text-gray-800 whitespace-nowrap">
+                                @foreach ($repos as $repo => $toMasterStatus)
+                                    {{$toMasterStatus[0] }} < <b>{{ $repo}}</b> > {{$toMasterStatus[1] }} <br>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 @empty
-                    <li class="empty"><i>No branches added</i></li>
+                    <div class="empty"><i>No branches added</i></div>
                 @endforelse
-            </ul>
+            </div>
         </div>
     </div>
 
 
 {{--    @if ($user->owned($pack))--}}
         <div class="mt-8 mb-4 card border-t-2 border-gray-200">
-            <h3 class="font-bold">Package actions</h3>
+            <h3 class="font-bold">Release actions</h3>
 
+            <div class="mt-4 inline-block">
+                <a href="/releases/{{ $release->id }}/edit" class="btn btn-success">Edit release</a>
+            </div>
             <div class="mt-4 inline-block">
                 <a href="/releases/{{ $release->id }}/fetch-repositories" class="btn">Fetch repositories</a>
             </div>
@@ -98,10 +106,13 @@
                 <a href="#" class="btn" onclick="">Create git tag NI</a>
             </div>
             <div class="mt-4 inline-block">
-                <a href="#" class="btn">Push build to repository NI</a>
+                <a href="#" class="btn">Push release branch to repository NI</a>
             </div>
+{{--            <div class="mt-4 inline-block">--}}
+{{--                <a href="#" class="btn">Delete release NI</a>--}}
+{{--            </div>--}}
             <div class="mt-4 inline-block">
-                <a href="#" class="btn">Delete package NI</a>
+                <a href="#" class="btn btn-warning">Fork release NI</a>
             </div>
         </div>
 {{--    @endif--}}

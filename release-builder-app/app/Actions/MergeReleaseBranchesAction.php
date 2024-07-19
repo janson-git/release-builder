@@ -13,6 +13,8 @@ class MergeReleaseBranchesAction extends AbstractAction
 {
     protected const ACTION_NAME = 'merge-release-branches';
 
+    private const MERGE_RETRIES_LIMIT = 5;
+
     public function execute(Release $release): void
     {
         $branches = $release->branches;
@@ -49,9 +51,8 @@ class MergeReleaseBranchesAction extends AbstractAction
                 if ($result !== false) {
                     $results[$branch] = $result;
                     $mergedCount++;
-                } else {
-                    $results[$branch] = 'Doesn\'t exist in ' . $repo->getPath();
                 }
+                // omit for not exists branches
             } catch (GitException $e) {
                 $exceptionOutput = $e->getOutput();
                 $results[$branch] = 'Error: ' . $e->getMessage() . ". Trace: \n" . implode("\n", $exceptionOutput);
@@ -63,7 +64,7 @@ class MergeReleaseBranchesAction extends AbstractAction
         $this->log($results, $repo->getPath());
 
         // private const MERGE_RETRIES_LIMIT = 5;
-        if ($mergedCount && count($unmerged) > 0 && $loop < 5) {
+        if ($mergedCount && count($unmerged) > 0 && $loop < self::MERGE_RETRIES_LIMIT) {
             $this->_mergeBranches($repo, $unmerged, ++$loop);
         }
     }

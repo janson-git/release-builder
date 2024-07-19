@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Lib\Git\GitException;
 use App\Lib\Git\GitRepository;
 use App\Lib\Git\Utils\StringHelper;
 use App\Models\Service;
@@ -105,45 +106,28 @@ class GitRepositoryService
         return array_combine($branches, $commonBranches);
     }
 
-    // REFACTOR Node method to V3
-
-    /**
-     * @param array $branches
-     * @param Collection|Service[] $services
-     * @return mixed
-     * @throws \App\Lib\Git\GitException
-     */
-    public function getToMasterStatus(array $branches, Collection $services)
+    public function getToMasterStatus(array $branches, Collection $services): array
     {
-        // FIXME: STILL NEED FIX. But getBehindStatus() by default works with
-        // FIXME:   local branches diff. It fails if local repo has not branch
-        // FIXME:   copies locally
+        $branchesToMasterDiffs = [];
         foreach ($services as $service) {
             $repo = $this->getServiceRepository($service);
-            foreach ($branches as $branch => $value) {
-                $diff = $repo->getBehindStatus($branch);
+            foreach ($branches as $branch) {
+                try {
+                    $diff = $repo->getBehindStatus('origin/' . $branch);
+
+                    $branchesToMasterDiffs[$branch][$service->directory] = $diff;
+                } catch (GitException $e) {
+                    $output = implode(PHP_EOL, $e->getOutput());
+                    if (str_contains($output, 'unknown revision or path not in the working tree')) {
+                        // repo hasn't the branch. Just skip it
+                        continue;
+                    }
+                }
             }
         }
-//        $branchIdx = array_flip($branches);
-//        $repoIdToDirs = array_flip($this->dirs);
-//
-//        $scannedBranches;
-//        foreach ($this->branchesByRepoDirs as $repoDir => $dirBranches) {
-//            foreach ($dirBranches as $branch) {
-//                if (!isset($branchIdx[$branch])) {
-//                    continue;
-//                }
-//
-//                $this->branchesToMasterStatus[$branch][$repoDir] = $this->repos[$repoIdToDirs[$repoDir]]->getBehindStatus('origin/'.$branch);
-//            }
-//        }
-//
-//        $branchesResult = array_intersect_key($this->branchesToMasterStatus, $branchIdx);
-//
-//        $branches = array_keys($branchesResult);
-//        array_multisort($branches, SORT_NATURAL, $branchesResult);
-//
-//        return array_combine($branches, $branchesResult);
+
+        ksort($branchesToMasterDiffs, SORT_NATURAL);
+        return $branchesToMasterDiffs;
     }
 
     public function getFilesUpdateTime(Service $service): array
