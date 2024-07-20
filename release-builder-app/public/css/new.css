@@ -359,72 +359,98 @@ h1 i,
 /*** TOOLTIPS    ****************/
 
 /*== start of code for tooltips ==*/
-.tool {
-    cursor: help;
+/*.tool {*/
+/*    cursor: help;*/
+/*    position: relative;*/
+/*    color: #666;*/
+/*}*/
+/*!*== common styles for both parts of tool tip ==*!*/
+/*.tool::before,*/
+/*.tool::after {*/
+/*    left: 50%;*/
+/*    opacity: 0;*/
+/*    position: absolute;*/
+/*    z-index: -100;*/
+/*}*/
+
+/*.tool:hover::before,*/
+/*.tool:focus::before,*/
+/*.tool:hover::after,*/
+/*.tool:focus::after {*/
+/*    opacity: 1;*/
+/*    transform: scale(1) translateY(0);*/
+/*    z-index: 100;*/
+/*}*/
+
+/*.tool::after {*/
+/*    content: "";*/
+/*    margin-left: -0.5em;*/
+/*    height: 0;*/
+/*    width: 0;*/
+/*    color: #edeff0;*/
+/*    position: absolute;*/
+/*    bottom: 9px;*/
+/*    border-color: transparent transparent #edeff0 #edeff0;*/
+/*    border: 0.8em solid;*/
+/*    box-sizing: border-box;*/
+/*    box-shadow: -7px 7px 6px 0 rgba(0, 0, 0, 0.2);*/
+/*    transform-origin: 0 0;*/
+/*    transform: rotate(-45deg) !important;*/
+/*}*/
+/*!*== pointer tip ==*!*/
+
+/*.tool:hover::after,*/
+/*.tool:focus::after {*/
+/*    transition: all .15s cubic-bezier(.84,-0.18,.31,1.26);*/
+/*}*/
+
+
+/*!*== speech bubble ==*!*/
+/*.tool::before {*/
+/*    background: #edeff0;*/
+/*    border-radius: 5px;*/
+/*    bottom: 180%;*/
+/*    color: #3e474f;*/
+/*    content: attr(data-tip);*/
+/*    margin-left: -3em;*/
+/*    padding: 1em;*/
+/*    transition: all .35s cubic-bezier(.84,-0.18,.31,1.26) .2s;*/
+/*    transform: scale(.6) translateY(50%);*/
+/*    width: fit-content;*/
+/*    white-space: pre;*/
+/*    overflow: hidden;*/
+/*    box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.2);*/
+/*}*/
+
+/*.tool:hover::before,*/
+/*.tool:focus::before  {*/
+/*    transition: all .15s cubic-bezier(.84,-0.18,.31,1.26);*/
+/*}*/
+
+
+/** NEW SIMPLE TOOLTIP EXPERIMENT */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: white;
+    color: #000;
+    width: max-content;
+    border-radius: 6px;
+    padding: 5px 8px;
+    margin-left: 7px;
+    box-shadow: gray 2px 2px 12px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip {
     position: relative;
-    color: #666;
-}
-/*== common styles for both parts of tool tip ==*/
-.tool::before,
-.tool::after {
-    left: 50%;
-    opacity: 0;
-    position: absolute;
-    z-index: -100;
+    display: inline-block;
 }
 
-.tool:hover::before,
-.tool:focus::before,
-.tool:hover::after,
-.tool:focus::after {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    z-index: 100;
-}
-
-.tool::after {
-    content: "";
-    margin-left: -0.5em;
-    height: 0;
-    width: 0;
-    color: #edeff0;
-    position: absolute;
-    bottom: 9px;
-    border-color: transparent transparent #edeff0 #edeff0;
-    border: 0.8em solid;
-    box-sizing: border-box;
-    box-shadow: -7px 7px 6px 0 rgba(0, 0, 0, 0.2);
-    transform-origin: 0 0;
-    transform: rotate(-45deg) !important;
-}
-/*== pointer tip ==*/
-
-.tool:hover::after,
-.tool:focus::after {
-    transition: all .15s cubic-bezier(.84,-0.18,.31,1.26);
-}
-
-
-/*== speech bubble ==*/
-.tool::before {
-    background: #edeff0;
-    border-radius: 5px;
-    bottom: 180%;
-    color: #3e474f;
-    content: attr(data-tip);
-    margin-left: -3em;
-    padding: 1em;
-    transition: all .35s cubic-bezier(.84,-0.18,.31,1.26) .2s;
-    transform: scale(.6) translateY(50%);
-    width: fit-content;
-    white-space: pre;
-    overflow: hidden;
-    box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.2);
-}
-
-.tool:hover::before,
-.tool:focus::before  {
-    transition: all .15s cubic-bezier(.84,-0.18,.31,1.26);
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }
 
 

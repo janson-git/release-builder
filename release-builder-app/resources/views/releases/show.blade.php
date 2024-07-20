@@ -63,7 +63,18 @@
 
     {{-- TODO: RELEASE ACTIONS HERE: add branches, remove branches, fork release --}}
     <div class="mt-8 mb-4">
-        <h3>Branches:</h3>
+        <div>
+            <h3 class="inline-block">Branches:</h3>
+
+            <div class="tooltip ml-2">
+                <span class="text-cyan-600 inline-block fa fa-solid fa-question-circle"></span>
+                <span class="tooltiptext">
+                    Every branch shows diff with master: <span class="font-mono font-bold">LEFT < master > RIGHT</span><br>
+                    LEFT - commits in master that not presented in work branch<br>
+                    RIGHT - commits in branch that not presented in master
+                </span>
+            </div>
+        </div>
 
         <div>
             <div class="w-full mt-2 p-2 font-mono">
