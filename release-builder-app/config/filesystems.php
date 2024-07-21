@@ -65,7 +65,12 @@ return [
             'driver' => 'local',
             'root' => storage_path('sandboxes'),
             'throw' => false,
-        ]
+        ],
+        'keys' => [
+            'driver' => 'local',
+            'root' => storage_path('keys'),
+            'throw' => false,
+        ],
     ],
 
     /*

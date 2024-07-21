@@ -13,6 +13,9 @@ up:
 down:
 	docker-compose down
 
+shell:
+	docker-compose exec app bash
+
 install:
 	if [ ! -f ./release-builder-app/.env ] ; then \
 		cp ./release-builder-app/.env.example ./release-builder-app/.env \

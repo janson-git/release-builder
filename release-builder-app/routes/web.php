@@ -6,6 +6,8 @@ use App\Http\Controllers\Release;
 use App\Http\Controllers\ReleasesController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\SignupController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\Users;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,6 +56,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/services/add', [ServicesController::class, 'create']);
     Route::get('/services/{id}/retry', [ServicesController::class, 'retryCloneRepository']);
     Route::post('/services', [ServicesController::class, 'store']);
+
+    Route::get('/user', [UsersController::class, 'show']);
+    Route::get('/user/add-key', [Users\UserSshKeyController::class, 'edit']);
+    Route::post('/user/add-key', [Users\UserSshKeyController::class, 'update']);
 });
 
 Route::get('/', function () {

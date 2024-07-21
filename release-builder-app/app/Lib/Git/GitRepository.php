@@ -3,6 +3,7 @@
 namespace App\Lib\Git;
 
 use App\Lib\Git\Utils\Fs;
+use App\Models\User;
 use Illuminate\Log\Logger;
 
 class GitRepository
@@ -53,18 +54,13 @@ class GitRepository
 
         $this->fs = new Fs($this->path);
 
-//        $user = App::i()->getAuth()->getUser();
-//        $userLogin = $user->getLogin();
-//        if ($userLogin !== Auth::USER_ANONIM) {
-//            $this->setSshKeyPath(SSH_KEYS_DIR . "/{$userLogin}");
-//        }
-//
-//        $this->commitAuthorName = $user->getCommitAuthorName();
-//        $this->commitAuthorEmail = $user->getCommitAuthorEmail();
+        /** @var User $user */
+        $user = app()->auth->getUser();
+        $this->setSshKeyPath($user->getSshKeyPath());
 //        $this->accessToken = $user->getAccessToken();
 
-        $this->commitAuthorName = config('gitsettings.committer.name');
-        $this->commitAuthorEmail = config('gitsettings.committer.email');
+        $this->commitAuthorName = $user->committer?->name ?? config('gitsettings.committer.name');
+        $this->commitAuthorEmail = $user->committer?->email ?? config('gitsettings.committer.email');
 
         if ($this->isRepositoryExists()) {
             $this->remoteUrl = $this->getRemoteUrl();
