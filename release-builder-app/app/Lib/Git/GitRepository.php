@@ -38,7 +38,7 @@ class GitRepository
      *
      * @throws GitException
      */
-    public function __construct(string $repository)
+    public function __construct(string $repository, User $user)
     {
         if (basename($repository) === '.git') {
             $repository = dirname($repository);
@@ -54,8 +54,6 @@ class GitRepository
 
         $this->fs = new Fs($this->path);
 
-        /** @var User $user */
-        $user = app()->auth->getUser();
         $this->setSshKeyPath($user->getSshKeyPath());
 //        $this->accessToken = $user->getAccessToken();
 

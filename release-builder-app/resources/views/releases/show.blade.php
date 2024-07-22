@@ -16,8 +16,8 @@
         <div class="mb-4 flex justify-between items-center">
             <div>
                 <span class="font-bold text-xl mr-2">Build</span>
-                <span class="p-1 bg-sky-100 text-blue-800">PLACEHOLDER</span>
-                <i class="ml-1 fa-regular fa-copy text-gray-800 cursor-pointer" onclick="Clipboard.writeToClipboard('PLACEHOLDER')"></i>
+                <span class="p-1 bg-sky-100 text-blue-800">{{ $release->release_branch_name }}</span>
+                <i class="ml-1 fa-regular fa-copy text-gray-800 cursor-pointer" onclick="Clipboard.writeToClipboard('{{ $release->release_branch_name }}')"></i>
 
                 <span class="ml-4 px-2 py-1 text-xs border bg-green-200 text-gray-600 rounded">
                     active
@@ -117,13 +117,23 @@
                 <a href="#" class="btn" onclick="">Create git tag NI</a>
             </div>
             <div class="mt-4 inline-block">
-                <a href="#" class="btn">Push release branch to repository NI</a>
+                <a href="/releases/{{ $release->id }}/push-release-branch" class="btn">Push release branch to repositories NI</a>
             </div>
-{{--            <div class="mt-4 inline-block">--}}
-{{--                <a href="#" class="btn">Delete release NI</a>--}}
-{{--            </div>--}}
             <div class="mt-4 inline-block">
                 <a href="#" class="btn btn-warning">Fork release NI</a>
+            </div>
+
+            <br>
+            <div class="mt-4 inline-block">
+                <form method="POST" action="/releases/{{ $release->id }}">
+                    @csrf
+                    @method('DELETE')
+                    <input type="submit"
+                           onclick="return confirm('Are you really want to delete \'{{ $release->name }}\' release?')"
+                           class="btn btn-danger"
+                           value="Delete release NI"
+                    >
+                </form>
             </div>
         </div>
 {{--    @endif--}}

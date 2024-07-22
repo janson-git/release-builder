@@ -35,6 +35,11 @@ class ServicesController extends Controller
         // HTTPS url like: https://github.com/janson-git/release-builder.git
 
         $repoPath = $request->getRepositoryPath();
+        if (str_starts_with($repoPath, 'git@github') && !auth()->user()->hasSshKey()) {
+            return back()->withErrors([
+                'repository_url' => 'You should add SSH key in your profile to use SSH repository links',
+            ]);
+        }
 
         // Check service already exists
         $service = Service::where('repository_url', $repoPath)->first();
@@ -43,14 +48,6 @@ class ServicesController extends Controller
                 'repository_url' => 'This repository URL already exists'
             ]);
         }
-
-//        if (str_starts_with($repoPath, 'git@github') && !$this->app->getAuth()->isSshKeyExists()) {
-//            return $this->app->json([
-//                'error' => 'You should add SSH key in your profile to use SSH repository links',
-//            ],
-//                StatusCode::HTTP_UNPROCESSABLE_ENTITY
-//            );
-//        }
 
         if (!$service) {
             $service = Service::create([

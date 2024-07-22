@@ -160,39 +160,71 @@
 
 
     <script type="text/javascript">
+        var aFilter = {
+            items: $('.branches-item'),
+            input: {},
+            version: 1,
 
-//        const admin = {
-//            addRepository: function (btn) {
-//                let $repositoryPath = $('#repository_path');
-//                let repoPath = $repositoryPath.val();
-//
-//                if (repoPath.length === 0) {
-//                    return false;
-//                }
-//
-//                let _this = this;
-//                spinnerOn(btn)
-//                $.post(
-//                    '/git/add-repository',
-//                    { repository_path: repoPath },
-//                    function (res) {
-//                        window.location.href = '/git';
-//                    },
-//                    'json',
-//                )
-//                    .fail(function (jqxhr, textStatus, error) {
-//                        console.log(jqxhr, textStatus, error)
-//                        _this.log(
-//                            jqxhr && jqxhr.responseJSON && jqxhr.responseJSON.error
-//                                ? jqxhr.responseJSON.error
-//                                : (textStatus + ' ' + error)
-//                        );
-//                        spinnerOff(btn)
-//                    });
-//            },
-//            log: function (data, el) {
-//                $('#doneLog').html('<span class="text-error">' + data + '</span>');
-//            }
-//        }
+            filter: function () {
+                var self = this;
+
+                var search = this.input.val().trim();
+
+                localStorage.setItem('search', search);
+
+                var curVersion = ++self.version;
+
+                var searchArray = search.split(' ').map(function (val) {
+                    return new RegExp(val.trim(), 'ig');
+                });
+
+                var text;
+                var line;
+                var matched = false;
+
+                this.items.each(function (idx, obj) {
+                    if (curVersion !== self.version) {
+                        return;
+                    }
+                    line = $(obj);
+                    text = line.text();
+                    matched = false;
+                    var lineMatched = false;
+
+                    for (var id in searchArray) {
+                        lineMatched = (text.match(searchArray[id]) || line.find('.checkbox-item:checked').length);
+                        matched = matched || lineMatched;
+                    }
+
+                    if (matched) {
+                        line.removeClass('hidden');
+                    } else {
+                        line.addClass('hidden');
+                    }
+                })
+            },
+            checkForm: function (form) {
+                var formObj = $(form);
+                if (formObj.find('#pack-name').length && !formObj.find('#pack-name').val()) {
+                    alert("Enter pack name, please");
+                    return false;
+                }
+
+                return true;
+            },
+            init: function () {
+                var self = this;
+                self.input = $('#mainInput');
+                self.input.val(localStorage.getItem('search'));
+                self.filter();
+            },
+            checkAll: function () {
+                this.items.not('.closedTab').each(function (idx, obj) {
+                    obj.attr('checked', true);
+                });
+            }
+        }
+
+        aFilter.init();
     </script>
 @endsection

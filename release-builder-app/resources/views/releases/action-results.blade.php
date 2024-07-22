@@ -16,7 +16,7 @@
         <div class="mb-4 flex justify-between items-center">
             <div>
                 <span class="font-bold text-xl mr-2">Build</span>
-                <span class="p-1 bg-sky-100 text-blue-800">PLACEHOLDER</span>
+                <span class="p-1 bg-sky-100 text-blue-800">{{ $release->release_branch_name }}</span>
                 <i class="ml-1 fa-regular fa-copy text-gray-800 cursor-pointer" onclick="Clipboard.writeToClipboard('PLACEHOLDER')"></i>
 
                 <span class="ml-4 px-2 py-1 text-xs border bg-green-200 text-gray-600 rounded">

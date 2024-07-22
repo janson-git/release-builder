@@ -162,7 +162,8 @@ class GitRepositoryService
         }
 
         $repository = app(GitRepository::class, [
-            'repository' => $item->getRepositoryPath()
+            'repository' => $item->getRepositoryPath(),
+            'user' => app()->auth->getUser(),
         ]);
 
         $this->initializedRepos[$item->getRepositoryUrl()] = $repository;

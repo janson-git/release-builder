@@ -7,14 +7,9 @@ namespace App\Actions;
 use App\Models\Release;
 use App\Services\GitRepositoryService;
 
-class GitCreateTagAction extends AbstractAction
+class PushReleaseBranchAction extends AbstractAction
 {
-    protected const ACTION_NAME = 'git-create-tag';
-
-    public function __construct(
-        protected string $tag
-    ){
-    }
+    protected const ACTION_NAME = 'push-release-branch';
 
     public function execute(Release $release): void
     {
@@ -27,8 +22,7 @@ class GitCreateTagAction extends AbstractAction
 
             $sandboxRepo->fetch();
             $sandboxRepo->checkout($releaseBranch);
-            $sandboxRepo->createTag($this->tag);
-            $sandboxRepo->pushTags();
+            $sandboxRepo->push([$releaseBranch]);
 
             $this->log($sandboxRepo->getLastOutput(), $sandboxRepo->getPath());
         }

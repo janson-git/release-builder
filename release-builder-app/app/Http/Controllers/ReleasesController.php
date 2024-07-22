@@ -14,7 +14,8 @@ class ReleasesController extends Controller
 {
     public function index()
     {
-        $releases = Release::all();
+        $releases = Release::orderBy('id', 'desc')->get();
+
         return response()->view('releases.index', [
             'header' => 'Releases',
             'subheader' => "{$releases->count()} releases on this page",
@@ -121,5 +122,12 @@ class ReleasesController extends Controller
         }
 
         return redirect("/releases/{$release->id}");
+    }
+
+    public function destroy(int $id)
+    {
+        $release = Release::find($id);
+
+        dd($release->id);
     }
 }

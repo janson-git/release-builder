@@ -22,6 +22,9 @@ class Service extends Model implements GitRepositoryLinkable
     public const STATUS_FAILED = 'failed';
     public const STATUS_CLONED = 'cloned';
 
+    public const TYPE_SSH = 'ssh';
+    public const TYPE_HTTPS = 'https';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -46,6 +49,13 @@ class Service extends Model implements GitRepositoryLinkable
         );
     }
 
+    protected function directory(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->repoType() . '/' . $this->attributes['directory'],
+        );
+    }
+
     public function releases(): BelongsToMany
     {
         return $this->belongsToMany(Release::class);
@@ -59,6 +69,14 @@ class Service extends Model implements GitRepositoryLinkable
     public function getRepositoryDirectoryName(): string
     {
         return $this->directory;
+    }
+
+    private function repoType(): string
+    {
+        if (str_starts_with($this->repository_url, 'git@')) {
+            return self::TYPE_SSH;
+        }
+        return self::TYPE_HTTPS;
     }
 
     public function getRepositoryPath(): string

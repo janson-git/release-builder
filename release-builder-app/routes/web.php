@@ -44,11 +44,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/releases/{id}', [ReleasesController::class, 'show']);
     Route::get('/releases/{id}/edit', [ReleasesController::class, 'edit']);
     Route::post('/releases/{id}', [ReleasesController::class, 'update']);
+    Route::delete('/releases/{id}', [ReleasesController::class, 'destroy']);
 
     Route::get('/releases/{id}/merge-branches', Release\MergeBranchesController::class);
     Route::get('/releases/{id}/search-conflicts', Release\SearchConflictBranchesController::class);
     Route::get('/releases/{id}/reset-release-branch', Release\ResetReleaseBranchController::class);
     Route::get('/releases/{id}/fetch-repositories', Release\FetchSandboxesController::class);
+    Route::get('/releases/{id}/push-release-branch', Release\PushReleaseBranchController::class);
     Route::post('/releases/{id}/git-create-tag', Release\GitCreateTagController::class);
 
     Route::get('/services', [ServicesController::class, 'index'])
