@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    <span class="mr-4 btn btn-muted-outline font-bold">STATUS BADGE</span>
+    <span class="mr-4 p-1 px-2 text-gray-600 border border-gray-400 rounded-full font-bold">STATUS BADGE</span>
 
     <div class="card border-t-2 border-gray-200">
         <div class="mb-4 flex justify-between items-center">
@@ -117,7 +117,7 @@
                 <a href="#" class="btn" onclick="">Create git tag NI</a>
             </div>
             <div class="mt-4 inline-block">
-                <a href="/releases/{{ $release->id }}/push-release-branch" class="btn">Push release branch to repositories NI</a>
+                <a href="/releases/{{ $release->id }}/push-release-branch" class="btn">Push release branch to repositories</a>
             </div>
             <div class="mt-4 inline-block">
                 <a href="#" class="btn btn-warning">Fork release NI</a>
@@ -131,7 +131,7 @@
                     <input type="submit"
                            onclick="return confirm('Are you really want to delete \'{{ $release->name }}\' release?')"
                            class="btn btn-danger"
-                           value="Delete release NI"
+                           value="Delete release"
                     >
                 </form>
             </div>

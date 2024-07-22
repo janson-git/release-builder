@@ -23,8 +23,13 @@
     }
 </style>
 <div class="card">
-    <div class="font-bold">Committer info</div>
-    <p class="description">These name and email will be used in merge commits created in this app</p>
+    <h4>Email</h4>
+    <div>
+        <p>{{ $user->email }}</p>
+    </div>
+
+    <h4 class="mt-8">Committer info</h4>
+    <p class="text-gray-600 my-2">These name and email will be used in merge commits created in this app</p>
     <div>
         @if ($user->committer?->name)
             <i class="fa-solid fa-check is-ok"></i> <span>{{ $user->committer->name }}</span>
@@ -44,8 +49,8 @@
         Add Committer Info NI
     </a>
 
-    <div class="mt-8 font-bold">GitHub Personal Access Token</div>
-    <p class="mt-2">GitHub fine-granted personal access token. Used to work with repositories via HTTPS protocol</p>
+    <h4 class="mt-8">GitHub Personal Access Token</h4>
+    <p class="text-gray-600 my-2">GitHub fine-granted personal access token. Used to work with repositories via HTTPS protocol</p>
     <div class="mt-2">
         @if ($user->getAccessToken())
             <i class="fa-solid fa-check is-ok"></i> <span>Already uploaded ( expired {{ $user->getAccessTokenExpirationDate() }} )</span>
@@ -58,8 +63,8 @@
         {{ $user->getAccessToken() ? 'Replace GitHub PAT' : 'Add GitHub PAT' }} NI
     </a>
 
-    <div class="mt-8 font-bold">SSH Key</div>
-    <p class="mt-2">Ssh key used to commit your branches to repositories. Also, ssh key allowed to work with repositories via ssh.</p>
+    <h4 class="mt-8">SSH Key</h4>
+    <p class="text-gray-600 my-2">Ssh key used to commit your branches to repositories. Also, ssh key allowed to work with repositories via ssh.</p>
     <div>
         @if ($user->hasSshKey())
             <i class="fa-solid fa-check is-ok"></i> <span>Already uploaded</span>
