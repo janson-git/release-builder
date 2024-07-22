@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NewReleaseRequest;
 use App\Http\Requests\UpdateReleaseRequest;
+use App\Lib\Git\GitRepository;
 use App\Models\Release;
 use App\Models\Service;
 use App\Services\GitRepositoryService;
@@ -25,7 +26,7 @@ class ReleasesController extends Controller
 
     public function show(int $id)
     {
-        $release = Release::find($id);
+        $release = Release::findOrFail($id);
 
         $gitRepoService = app(GitRepositoryService::class);
 
@@ -79,7 +80,7 @@ class ReleasesController extends Controller
 
     public function edit(int $id)
     {
-        $release = Release::find($id);
+        $release = Release::findOrFail($id);
 
         $gitRepoService = app(GitRepositoryService::class);
 
@@ -99,7 +100,7 @@ class ReleasesController extends Controller
 
     public function update(int $id, UpdateReleaseRequest $request)
     {
-        $release = Release::find($id);
+        $release = Release::findOrFail($id);
 
         $release->name = $request->getReleaseName();
         $release->branches = $request->getBranches();
@@ -126,8 +127,48 @@ class ReleasesController extends Controller
 
     public function destroy(int $id)
     {
-        $release = Release::find($id);
+        /** @var Release $release */
+        $release = Release::findOrFail($id);
 
-        dd($release->id);
+        $releaseBranch = $release->release_branch_name;
+
+        $services = Service::all();
+        $sandboxesStorage = \Storage::disk('sandboxes');
+
+        $user = auth()->user();
+        //  1. remove release branches in ALL sandbox repositories!
+        foreach ($services as $service) {
+            if ($service->directory !== 'ssh/docker-dev-template') {
+                continue;
+            }
+            if ($sandboxesStorage->has($service->directory)) {
+
+                $repository = app(GitRepository::class, [
+                    'repository' => $sandboxesStorage->path($service->directory),
+                    'user' => $user,
+                ]);
+
+                $repository->fetch();
+                $repository->checkoutToMainBranch();
+
+                $branchExists = $repository->isBranchExists($releaseBranch);
+                $remoteBranchExists = $repository->isRemoteBranchExists($releaseBranch);
+
+                // ! DANGER ZONE ! Deletion from remote repository!
+                if ($branchExists) {
+                    $repository->deleteBranch($releaseBranch);
+                }
+                if ($remoteBranchExists) {
+                    $repository->deleteRemoteBranch($releaseBranch);
+                }
+            }
+        }
+
+        // 2. remove related sandboxes records from DB
+        $release->services()->sync([]);
+        // 3. remove release
+        $release->delete();
+
+        return redirect()->route('releases');
     }
 }

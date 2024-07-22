@@ -935,4 +935,30 @@ class GitRepository
         $branches = $this->getBranches();
         return in_array($name, $branches);
     }
+
+    public function isRemoteBranchExists(string $name): bool
+    {
+        $branches = $this->getRemoteBranches();
+        return $branches && in_array($name, $branches);
+    }
+
+    public function deleteBranch(string $name): self
+    {
+        // Denied to delete main branch
+        if ($name === $this->mainBranch) {
+            $this->exception('Deletion of main branch is denied!');
+        }
+
+        return $this->begin()->run("git branch -D {$name}")->end();
+    }
+
+    public function deleteRemoteBranch(string $name): self
+    {
+        // Denied to delete main branch
+        if ($name === $this->mainBranch) {
+            $this->exception('Deletion of main branch is denied!');
+        }
+
+        return $this->begin()->run("git push -d origin {$name}")->end();
+    }
 }
