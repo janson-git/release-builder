@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Release;
 
-use App\Actions\FetchReleaseSandboxesAction;
+use App\Actions\FetchReleaseRepositoriesAction;
 use App\Models\Release;
 
-class FetchSandboxesController
+class FetchRepositoriesController
 {
     public function __invoke(int $id)
     {
         $release = Release::find($id);
 
-        $action = new FetchReleaseSandboxesAction();
+        $action = new FetchReleaseRepositoriesAction();
         $action->execute($release);
 
         return response()->view('releases.action-results', [

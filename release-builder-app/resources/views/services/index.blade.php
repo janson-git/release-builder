@@ -65,9 +65,9 @@
                     @endforeach
 
                     <div class="mt-6 flex justify-start">
-                        <button class="px-4 py-1 btn btn-success" onclick='admin.update("{{ $service->name }}", this)'>update</button>
-                        <button class="ml-4 px-4 py-1 btn btn-muted" onclick='admin.fixGit("{{ $service->name }}", this)'>reset branch</button>
-                        <button class="ml-4 px-2 py-1 btn btn-danger" onclick='admin.fixGit("{{ $service->name }}", this, 1)'>reset and delete files</button>
+                        <a href="/services/{{ $service->id }}/fetch" class="px-4 py-1 btn btn-success">Update</a>
+                        <button class="ml-4 px-4 py-1 btn btn-muted" onclick='admin.fixGit("{{ $service->name }}", this)'>Reset branch NI</button>
+                        <button class="ml-4 px-2 py-1 btn btn-danger" onclick='admin.fixGit("{{ $service->name }}", this, 1)'>Reset and delete files NI</button>
                     </div>
 
                 </div>

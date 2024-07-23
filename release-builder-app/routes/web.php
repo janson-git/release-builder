@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/releases/{id}/merge-branches', Release\MergeBranchesController::class);
     Route::get('/releases/{id}/search-conflicts', Release\SearchConflictBranchesController::class);
     Route::get('/releases/{id}/reset-release-branch', Release\ResetReleaseBranchController::class);
-    Route::get('/releases/{id}/fetch-repositories', Release\FetchSandboxesController::class);
+    Route::get('/releases/{id}/fetch-repositories', Release\FetchRepositoriesController::class);
     Route::get('/releases/{id}/push-release-branch', Release\PushReleaseBranchController::class);
     Route::post('/releases/{id}/git-create-tag', Release\GitCreateTagController::class);
 
@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/services/add', [ServicesController::class, 'create']);
     Route::get('/services/{id}/retry', [ServicesController::class, 'retryCloneRepository']);
     Route::post('/services', [ServicesController::class, 'store']);
+    Route::get('/services/{id}/fetch', [ServicesController::class, 'fetchRepository']);
 
     Route::get('/user', [UsersController::class, 'show']);
     Route::get('/user/add-key', [Users\UserSshKeyController::class, 'edit']);

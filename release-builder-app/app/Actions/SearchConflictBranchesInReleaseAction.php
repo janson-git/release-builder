@@ -32,6 +32,7 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
                 array_unshift($testBranches, 'master', 'main');
 
                 foreach ($conflict as $conflictBranch) {
+                    // FIXME: TROUBLES LOG IS NOT OBVIOUS FOR MULTY REPO OPERATION
                     $this->_findConflictPairs($sandboxRepo, $conflictBranch, $testBranches);
                 }
 
@@ -115,6 +116,7 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
                 $this->troubles++;
 
                 $troubles['#'.$this->troubles] = [
+                    'REPO' => $repo->getPath(),
                     'TROUBLE' => $conflictBranch.' TO '.$testBranch,
                     'MERGE_BRANCH' => 'merge-'.date('md').'-'.$conflictBranch.'-to-'.$testBranch,
                     'DESC' => $e->getOutput(),

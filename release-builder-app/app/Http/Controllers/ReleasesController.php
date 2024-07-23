@@ -45,6 +45,11 @@ class ReleasesController extends Controller
         $gitRepoService = app(GitRepositoryService::class);
 
         $allServices = Service::all();
+        foreach ($allServices as $service) {
+            $serviceRepo = $gitRepoService->getServiceRepository($service);
+            $serviceRepo->fetch();
+        }
+
         $branches = $gitRepoService->getBranchesWithServices($allServices);
 
         return response()->view('releases.create', [

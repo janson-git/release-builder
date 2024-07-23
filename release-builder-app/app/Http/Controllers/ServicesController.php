@@ -89,4 +89,15 @@ class ServicesController extends Controller
 
         return redirect()->route('services');
     }
+
+    public function fetchRepository(string $serviceId)
+    {
+        /** @var Service $service */
+        $service = Service::find($serviceId);
+        $serviceRepo = app(GitRepositoryService::class)->getServiceRepository($service);
+
+        $serviceRepo->fetch();
+
+        return redirect()->route('services');
+    }
 }
