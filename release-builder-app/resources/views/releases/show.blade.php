@@ -37,8 +37,8 @@
                 @foreach($release->services as $service)
                     <div class="text-sm">
                         <i class="text-xs fa-solid fa-external-link"></i>
-                        <a href="{{ $service->repository_url }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
-                            {{ $service->directory }}
+                        <a href="https://github.com/{{ $service->repository_name }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
+                            {{ $service->repository_name }}
                         </a>
                     </div>
                 @endforeach

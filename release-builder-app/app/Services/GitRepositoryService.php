@@ -98,7 +98,7 @@ class GitRepositoryService
         $commonBranches = [];
         foreach ($scannedBranches as $serviceId => $dirBranches) {
             foreach ($dirBranches as $branch) {
-                $commonBranches[$branch][$serviceId] = $serviceList->get($serviceId)->directory;
+                $commonBranches[$branch][$serviceId] = $serviceList->get($serviceId)->repository_name;
             }
         }
         $branches = array_keys($commonBranches);
@@ -106,6 +106,11 @@ class GitRepositoryService
         return array_combine($branches, $commonBranches);
     }
 
+    /**
+     * @param array|string[] $branches
+     * @param Collection|Service[] $services
+     * @return array
+     */
     public function getToMasterStatus(array $branches, Collection $services): array
     {
         $branchesToMasterDiffs = [];
@@ -115,7 +120,7 @@ class GitRepositoryService
                 try {
                     $diff = $repo->getBehindStatus('origin/' . $branch);
 
-                    $branchesToMasterDiffs[$branch][$service->directory] = $diff;
+                    $branchesToMasterDiffs[$branch][$service->repository_name] = $diff;
                 } catch (GitException $e) {
                     $output = implode(PHP_EOL, $e->getOutput());
                     if (str_contains($output, 'unknown revision or path not in the working tree')) {

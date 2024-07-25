@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * @property string $directory
+ * @property string $repository_name
  * @property string $repository_url
  * @property string $status
  * @property-read ServiceBoundRepository $repository
@@ -32,6 +33,7 @@ class Service extends Model implements GitRepositoryLinkable
      */
     protected $fillable = [
         'directory',
+        'repository_name',
         'repository_url',
         'status'
     ];

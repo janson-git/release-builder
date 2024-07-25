@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('directory', 255);
+            $table->string('repository_name', 255)->unique('repository_name__unique');
             $table->string('repository_url', 255);
             $table->string('status', 20)->nullable();
             $table->timestamps();

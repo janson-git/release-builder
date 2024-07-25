@@ -38,7 +38,7 @@
                             {{ $checked ? 'checked' : '' }}
                         />
                         <label for="service-{{ $service->id }}" class="ml-2 cursor-pointer">
-                            <span>{{ $service->repository_url }}</span>
+                            <span>{{ $service->repository_name }}</span>
                         </label>
                     </div>
                 @endforeach
@@ -52,7 +52,7 @@
                 @endif
 
                 <input id="mainInput" type="text" placeholder="{{ __('filter_branches') }}" onkeydown="aFilter.filter()"
-                       class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                       class="w-72 mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
                        onkeyup="aFilter.filter()" autofocus/>
 
                 @foreach ($branches as $branch => $repos)
@@ -97,7 +97,6 @@
                         </div>
                     @endif
                 @endforeach
-
 
             </div>
 

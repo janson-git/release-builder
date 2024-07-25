@@ -13,13 +13,13 @@
     @forelse($serviceList as $service)
         <div class="card mb-4">
             <div class="flex justify-start items-center">
-                <p class="font-bold text-lg">{{ $service->directory }}</p>
+                <p class="font-bold text-lg">{{ $service->repository_name }}</p>
             </div>
 
             <div class="text-sm">
                 <i class="text-xs fa-solid fa-external-link"></i>
-                <a href="{{ $service->repository_url }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
-                    {{ $service->repository_url }}
+                <a href="https://github.com/{{ $service->repository_name }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
+                    {{ $service->repository_name }}
                 </a>
             </div>
 

@@ -52,6 +52,7 @@ class ServicesController extends Controller
         if (!$service) {
             $service = Service::create([
                 'directory' => app(GitRepositoryService::class)->getRepositoryDirNameFromUrl($repoPath),
+                'repository_name' => str_replace(['git@github.com:', 'https://github.com/'], '', $repoPath),
                 'repository_url' => $repoPath,
             ]);
         }

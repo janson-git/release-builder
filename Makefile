@@ -13,7 +13,7 @@ up:
 down:
 	docker-compose down
 
-shell:
+sh:
 	docker-compose exec app bash
 
 install:
