@@ -36,6 +36,12 @@ class MergeReleaseBranchesAction extends AbstractAction
                 $sandboxRepo->checkout($releaseBranchName);
             }
             $this->_mergeBranches($sandboxRepo, $branches);
+
+            if (count($this->errorLog) === 0) {
+                $sandbox->markAsGood();
+            } else {
+                $sandbox->markAsHasErrors();
+            }
         }
     }
 
@@ -51,11 +57,19 @@ class MergeReleaseBranchesAction extends AbstractAction
                 if ($result !== false) {
                     $results[$branch] = $result;
                     $mergedCount++;
+                } else {
+                    $results[$branch] = 'Not exists';
                 }
                 // omit for not exists branches
             } catch (GitException $e) {
                 $exceptionOutput = $e->getOutput();
-                $results[$branch] = 'Error: ' . $e->getMessage() . ". Trace: \n" . implode("\n", $exceptionOutput);
+                $message = 'Error: ' . $e->getMessage() . ". Trace: \n" . implode("\n", $exceptionOutput);
+                $results[$branch] = 'Failed to merge (see error log)';
+                $this->logError([
+                        $branch => $message,
+                    ],
+                    $repo->getPath(),
+                );
                 $repo->fullReset();
                 $unmerged[] = $branch;
             }
@@ -63,7 +77,7 @@ class MergeReleaseBranchesAction extends AbstractAction
 
         $this->log($results, $repo->getPath());
 
-        // private const MERGE_RETRIES_LIMIT = 5;
+        // Do not retry to merge if we didn't merge anything
         if ($mergedCount && count($unmerged) > 0 && $loop < self::MERGE_RETRIES_LIMIT) {
             $this->_mergeBranches($repo, $unmerged, ++$loop);
         }

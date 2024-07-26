@@ -22,6 +22,7 @@ class MergeBranchesController
             'release' => $release,
             'action' => 'Merge Branches',
             'actionLog' => $action->getActionLog(),
+            'errorLog' => $action->getActionErrorLog(),
         ]);
     }
 }

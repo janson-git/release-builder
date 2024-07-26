@@ -13,10 +13,21 @@ use Illuminate\Support\Facades\Storage;
  * Sandbox model just needed to link release and service
  * All sandbox jobs are manipulations with repository cloned directory
  * Each release has own sandboxes
+ *
+ * @property string $status
  */
 class Sandbox extends Model implements GitRepositoryLinkable
 {
     use HasFactory;
+
+    public const STATUS_NEW = 'new';
+    public const STATUS_OK = 'ok';
+    public const STATUS_HAS_ERRORS = 'errors';
+    public const STATUS_CONFLICT = 'conflict';
+
+    public $fillable = [
+        'status'
+    ];
 
     public function release(): BelongsTo
     {
@@ -41,5 +52,20 @@ class Sandbox extends Model implements GitRepositoryLinkable
     public function getRepositoryPath(): string
     {
         return Storage::disk('sandboxes')->path($this->service->directory);
+    }
+
+    public function markAsConflicted(): void
+    {
+        $this->update(['status' => self::STATUS_CONFLICT]);
+    }
+
+    public function markAsHasErrors(): void
+    {
+        $this->update(['status' => self::STATUS_HAS_ERRORS]);
+    }
+
+    public function markAsGood(): void
+    {
+        $this->update(['status' => self::STATUS_OK]);
     }
 }

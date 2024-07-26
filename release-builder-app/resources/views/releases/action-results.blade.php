@@ -45,33 +45,17 @@
             </div>
         @endforeach
 
-{{--        @if ($exceptionsBySection = $runtime->getExceptions())--}}
-{{--            @foreach ($exceptionsBySection as $sectionId => $exceptions)--}}
-{{--                <div class="text-red-800">--}}
-{{--                    <h1>Exceptions at {{ $runtime->getSectionName($sectionId) }}:</h1>--}}
-{{--                    @foreach ($exceptions as $exception)--}}
-{{--                            <?php /* @var $exception \Exception */ ?>--}}
-{{--                        <div class="separator">--}}
-{{--                            <div>{{ $exception->getMessage() }}</div>--}}
-{{--                            <b>File:</b> {{ $exception->getFile() }}:{{ $exception->getLine() }}<br>--}}
-{{--                        </div>--}}
-{{--                    @endforeach--}}
-{{--                </div>--}}
-{{--            @endforeach--}}
-{{--        @endif--}}
-
-{{--        @if ($errorsBySection = $runtime->getErrors())--}}
-{{--            @foreach ($errorsBySection as $sectionId => $errors)--}}
-{{--                <div class="text-red-800">--}}
-{{--                    <h1>Errors in {{ $runtime->getSectionName($sectionId) }}:</h1>--}}
-{{--                    @foreach ($errors as $error)--}}
-{{--                        <div class="mt-1">--}}
-{{--                            {{ \Admin\View::parse($error) }}--}}
-{{--                        </div>--}}
-{{--                    @endforeach--}}
-{{--                </div>--}}
-{{--            @endforeach--}}
-{{--        @endif--}}
+        @foreach (($errorLog ?? []) as $sectionId => $errors)
+            <div class="text-red-800">
+                <h1>Errors in {{ $errors['command'] ?? $sectionId }}:</h1>
+                @foreach ($errors as $key => $error)
+                    <div class="mt-2 font-bold">{{ $key }}</div>
+                    <div class="mt-2 pl-4 overflow-x-auto text-gray-600">
+                        <pre>{!! parseActionLog($error) !!}</pre>
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
     </div>
 
 @endsection

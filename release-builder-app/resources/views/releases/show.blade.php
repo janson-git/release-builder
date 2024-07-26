@@ -10,8 +10,6 @@
 @endsection
 
 @section('content')
-    <span class="mr-4 p-1 px-2 text-gray-600 border border-gray-400 rounded-full font-bold">STATUS BADGE</span>
-
     <div class="card border-t-2 border-gray-200">
         <div class="mb-4 flex justify-between items-center">
             <div>
@@ -19,9 +17,9 @@
                 <span class="p-1 bg-sky-100 text-blue-800">{{ $release->release_branch_name }}</span>
                 <i class="ml-1 fa-regular fa-copy text-gray-800 cursor-pointer" onclick="Clipboard.writeToClipboard('{{ $release->release_branch_name }}')"></i>
 
-                <span class="ml-4 px-2 py-1 text-xs border bg-green-200 text-gray-600 rounded">
-                    active
-                </span>
+{{--                <span class="ml-4 px-2 py-1 text-xs border bg-green-200 text-gray-600 rounded">--}}
+{{--                    active--}}
+{{--                </span>--}}
             </div>
 
             <div class="build-relative-date">
@@ -34,14 +32,31 @@
             <h3>Services in release</h3>
 
             <div class="mb-4">
+                @php
+                $sandboxes = $release->sandboxes->keyBy('service_id');
+                @endphp
+
+                <table>
                 @foreach($release->services as $service)
-                    <div class="text-sm">
-                        <i class="text-xs fa-solid fa-external-link"></i>
-                        <a href="https://github.com/{{ $service->repository_name }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
-                            {{ $service->repository_name }}
-                        </a>
-                    </div>
+                    <tr>
+                        <td>
+                            <i class="text-xs fa-solid fa-external-link"></i>
+                            <a href="https://github.com/{{ $service->repository_name }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
+                                {{ $service->repository_name }}
+                            </a>
+                        </td>
+                        <td>
+                            @php($status = $sandboxes->get($service->id)->status)
+                            @if($status === 'ok')
+                                <i class="fa-solid fa-check-circle text-green-600"></i>
+                            @else
+                                <i class="fa-solid fa-circle-exclamation text-red-600" title="Sandbox has errors"></i>
+                            @endif
+                        </td>
+                    </tr>
+
                 @endforeach
+                </table>
             </div>
         </div>
 

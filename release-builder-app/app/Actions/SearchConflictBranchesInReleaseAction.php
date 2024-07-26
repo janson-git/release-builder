@@ -28,16 +28,17 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
             $conflict = $this->_findConflictBranches($sandboxRepo, $branches);
 
             if ($conflict) {
+                $sandbox->markAsConflicted();
+                $this->log($conflict, 'CONFLICTED');
+
                 $testBranches = $branches;
                 array_unshift($testBranches, 'master', 'main');
 
                 foreach ($conflict as $conflictBranch) {
-                    // FIXME: TROUBLES LOG IS NOT OBVIOUS FOR MULTY REPO OPERATION
                     $this->_findConflictPairs($sandboxRepo, $conflictBranch, $testBranches);
                 }
-
-                // TODO: check log structure
-                $this->log['CONFLICTED'] = $conflict;
+            } else {
+                $sandbox->markAsGood();
             }
         }
     }
@@ -76,10 +77,7 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
             }
         }
 
-        $this->log([
-            'results' => $results,
-            'repoPath' => $repoPath
-        ], $repo->getPath());
+        $this->log($results, $repo->getPath());
 
         $repo->checkoutToMainBranch();
         $repo->removeBranch($mergeTestBranch);
@@ -96,6 +94,7 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
     {
         $repo->fullReset();
         $troubles = [];
+
         foreach ($testBranches as $testBranch) {
             if ($testBranch === $conflictBranch) {
                 continue;
@@ -106,10 +105,7 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
             $repo->checkoutToNewBranch('origin/'.$conflictBranch, $mergeTestBranch);
 
             try {
-                $result = $repo->mergeRemoteIfHas($testBranch);
-                if ($result !== false) {
-//                    $this->results[$repo->getPath()][$conflictBranch.' TO '.$testBranch] = ['ok'];
-                }
+                $repo->mergeRemoteIfHas($testBranch);
             } catch (GitException $e) {
                 $this->knownPairs[$testBranch][$conflictBranch] = 1;
                 $this->knownPairs[$conflictBranch][$testBranch] = 1;
@@ -120,7 +116,7 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
                     'TROUBLE' => $conflictBranch.' TO '.$testBranch,
                     'MERGE_BRANCH' => 'merge-'.date('md').'-'.$conflictBranch.'-to-'.$testBranch,
                     'DESC' => $e->getOutput(),
-                    'DIFF' => $repo->diff(),
+                    'DIFF' => $repo->diff() . "\n",
                 ];
                 $repo->fullReset();
             }
@@ -129,10 +125,7 @@ class SearchConflictBranchesInReleaseAction extends AbstractAction
             $repo->removeBranch($mergeTestBranch);
         }
 
-        $this->log([
-            'troubles' => $troubles,
-            'repoPath' => $repo->getPath()
-        ], 'TROUBLES');
+        $this->log($troubles, 'TROUBLES');
     }
 
 }
