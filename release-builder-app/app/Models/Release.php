@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\ReleaseBranchesCast;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id
  * @property string $name
- * @property array $branches
+ * @property ReleaseBranches $branches
  * @property Carbon $delivery_date
  * @property int $created_by
  *
@@ -45,7 +46,7 @@ class Release extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'branches' => 'array',
+        'branches' => ReleaseBranchesCast::class,
         'delivery_date' => 'date',
     ];
 

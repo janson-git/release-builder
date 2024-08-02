@@ -56,7 +56,7 @@
                        onkeyup="aFilter.filter()" autofocus/>
 
                 @foreach ($branches as $branch => $repos)
-                    @php($checked = in_array($branch, old('branches', $release->branches)))
+                    @php($checked = in_array($branch, old('branches', $release->branches->getCommonBranches())))
                     @if (!$selected || ($selected && isset($selected[$branch])))
                         <div class="mt-2 flex justify-start items-start branches-item hover:bg-gray-100">
                             <div class="w-2/3">

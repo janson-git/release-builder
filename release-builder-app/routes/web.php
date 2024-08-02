@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\Release;
 use App\Http\Controllers\ReleasesController;
+use App\Http\Controllers\SandboxController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\UsersController;
@@ -59,6 +60,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/services/{id}/retry', [ServicesController::class, 'retryCloneRepository']);
     Route::post('/services', [ServicesController::class, 'store']);
     Route::get('/services/{id}/fetch', [ServicesController::class, 'fetchRepository']);
+
+    Route::get('/sandboxes/{id}', [SandboxController::class, 'show']);
+    Route::post('/sandboxes/{id}', [SandboxController::class, 'update']);
+    Route::get('/sandboxes/{id}/edit', [SandboxController::class, 'edit']);
 
     Route::get('/user', [UsersController::class, 'show']);
     Route::get('/user/add-key', [Users\UserSshKeyController::class, 'edit']);

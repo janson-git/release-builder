@@ -30,8 +30,10 @@ class ReleasesController extends Controller
 
         $gitRepoService = app(GitRepositoryService::class);
 
-//        $branches = $gitRepoService->getBranchesWithServices($allServices);
-        $branchesDiffs = $gitRepoService->getToMasterStatus($release->branches, $release->services);
+        $branchesDiffs = $gitRepoService->getToMasterStatus(
+            $release->branches->getCommonBranches(),
+            $release->services
+        );
 
         return response()->view('releases.show', [
             'header' => $release->name,
@@ -64,7 +66,7 @@ class ReleasesController extends Controller
     {
         $release = new Release();
         $release->name = $request->getReleaseName();
-        $release->branches = $request->getBranches();
+        $release->branches->setCommonBranches($request->getBranches());
         $release->save();
 
         $release->services()->sync($request->getServiceIds(), false);
@@ -91,7 +93,10 @@ class ReleasesController extends Controller
 
         $allServices = Service::all();
         $branches = $gitRepoService->getBranchesWithServices($allServices);
-        $branchesDiffs = $gitRepoService->getToMasterStatus($release->branches, $release->services);
+        $branchesDiffs = $gitRepoService->getToMasterStatus(
+            $release->branches->getCommonBranches(),
+            $release->services
+        );
 
         return response()->view('releases.edit', [
             'header' => 'Releases',
@@ -108,7 +113,7 @@ class ReleasesController extends Controller
         $release = Release::findOrFail($id);
 
         $release->name = $request->getReleaseName();
-        $release->branches = $request->getBranches();
+        $release->branches->setCommonBranches($request->getBranches());
         $release->save();
 
         $release->services()->sync($request->getServiceIds());
