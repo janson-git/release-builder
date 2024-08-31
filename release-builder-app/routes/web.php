@@ -4,6 +4,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\Release;
 use App\Http\Controllers\ReleasesController;
+use App\Http\Controllers\Sandbox\FetchSandboxRepositoryController;
+use App\Http\Controllers\Sandbox\MergeSandboxBranchesController;
 use App\Http\Controllers\SandboxController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\SignupController;
@@ -64,6 +66,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/sandboxes/{id}', [SandboxController::class, 'show']);
     Route::post('/sandboxes/{id}', [SandboxController::class, 'update']);
     Route::get('/sandboxes/{id}/edit', [SandboxController::class, 'edit']);
+    Route::get('/sandboxes/{id}/fetch-repository', FetchSandboxRepositoryController::class);
+    Route::get('/sandboxes/{id}/merge-branches', MergeSandboxBranchesController::class);
+    Route::get('/sandboxes/{id}/search-conflicts', \App\Http\Controllers\Sandbox\SearchSandboxConflictBranchesController::class);
 
     Route::get('/user', [UsersController::class, 'show']);
     Route::get('/user/add-key', [Users\UserSshKeyController::class, 'edit']);

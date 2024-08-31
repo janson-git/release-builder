@@ -6,7 +6,7 @@
 @extends('layout')
 
 @section('pageActions')
-    <x-secondary-page-action href="/releases/{{ $sandbox->release_id }}">Back to release</x-secondary-page-action>
+    <x-secondary-page-action href="/sandboxes/{{ $sandbox->id }}">Back to sandbox</x-secondary-page-action>
 @endsection
 
 @section('content')
@@ -101,5 +101,73 @@
         </form>
     </div>
 
+    <script type="text/javascript">
+        var aFilter = {
+            items: $('.branches-item'),
+            input: {},
+            version: 1,
+            searchName: '{{ $sandbox->service->repository_name }}',
 
+            filter: function () {
+                var self = this;
+
+                var search = this.input.val().trim();
+
+                localStorage.setItem(this.searchName, search);
+
+                var curVersion = ++self.version;
+
+                var searchArray = search.split(' ').map(function (val) {
+                    return new RegExp(val.trim(), 'ig');
+                });
+
+                var text;
+                var line;
+                var matched = false;
+
+                this.items.each(function (idx, obj) {
+                    if (curVersion !== self.version) {
+                        return;
+                    }
+                    line = $(obj);
+                    text = line.text();
+                    matched = false;
+                    var lineMatched = false;
+
+                    for (var id in searchArray) {
+                        lineMatched = (text.match(searchArray[id]) || line.find('.checkbox-item:checked').length);
+                        matched = matched || lineMatched;
+                    }
+
+                    if (matched) {
+                        line.removeClass('hidden');
+                    } else {
+                        line.addClass('hidden');
+                    }
+                })
+            },
+            checkForm: function (form) {
+                var formObj = $(form);
+                if (formObj.find('#pack-name').length && !formObj.find('#pack-name').val()) {
+                    alert("Enter pack name, please");
+                    return false;
+                }
+
+                return true;
+            },
+            init: function () {
+                var self = this;
+                self.input = $('#mainInput');
+                self.input.val(localStorage.getItem(this.searchName));
+                self.filter();
+            },
+            checkAll: function () {
+                this.items.not('.closedTab').each(function (idx, obj) {
+                    obj.attr('checked', true);
+                });
+            }
+        }
+
+        aFilter.init();
+    </script>
 @endsection

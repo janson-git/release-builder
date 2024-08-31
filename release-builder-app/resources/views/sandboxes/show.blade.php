@@ -45,8 +45,8 @@
 {{--        @endif--}}
 
         <div class="mt-4 inline-block">
-            <a href="/sandboxes/{{ $sandbox->id }}/merge-branches" class="btn btn-primary">Merge branches NI</a>
-            <a href="/sandboxes/{{ $sandbox->id }}/search-conflicts" class="btn btn-secondary">Search conflicts branches NI</a>
+            <a href="/sandboxes/{{ $sandbox->id }}/merge-branches" class="btn btn-primary">Merge branches</a>
+            <a href="/sandboxes/{{ $sandbox->id }}/search-conflicts" class="btn btn-secondary">Search conflicts branches</a>
             <a href="/sandboxes/{{ $sandbox->id }}/reset-release-branch" class="btn btn-secondary">Reset release branch NI</a>
         </div>
     </div>
@@ -103,7 +103,7 @@
             </div>
 
             <div class="mt-4 inline-block">
-                <a href="/sandboxes/{{ $sandbox->id }}/fetch-repositories" class="btn">Fetch repositories</a>
+                <a href="/sandboxes/{{ $sandbox->id }}/fetch-repository" class="btn">Fetch repository</a>
             </div>
         </div>
 {{--    @endif--}}

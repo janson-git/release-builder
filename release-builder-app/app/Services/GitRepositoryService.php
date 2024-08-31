@@ -162,16 +162,15 @@ class GitRepositoryService
 
     public function getServiceRepository(GitRepositoryLinkable $item): GitRepository
     {
-        if (array_key_exists($item->getRepositoryUrl(), $this->initializedRepos)) {
-            return $this->initializedRepos[$item->getRepositoryUrl()];
+        if (array_key_exists($item->getRepositoryPath(), $this->initializedRepos)) {
+            return $this->initializedRepos[$item->getRepositoryPath()];
         }
-
         $repository = app(GitRepository::class, [
             'repository' => $item->getRepositoryPath(),
             'user' => app()->auth->getUser(),
         ]);
 
-        $this->initializedRepos[$item->getRepositoryUrl()] = $repository;
+        $this->initializedRepos[$item->getRepositoryPath()] = $repository;
 
         return $repository;
     }

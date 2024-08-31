@@ -6,42 +6,38 @@ namespace App\Actions;
 
 use App\Lib\Git\GitException;
 use App\Lib\Git\GitRepository;
-use App\Models\Release;
+use App\Models\Sandbox;
 use App\Services\GitRepositoryService;
 
-class SearchConflictBranchesInReleaseAction extends AbstractAction
+class SearchSandboxConflictBranchesAction extends AbstractAction
 {
-    protected const ACTION_NAME = 'search-conflict-branches-in-release';
+    protected const ACTION_NAME = 'search-sandbox-conflict-branches';
 
     private array $knownPairs = [];
     private int $troubles = 0;
 
-    public function execute(Release $release): void
+    public function execute(Sandbox $sandbox): void
     {
-        $branches = $release->branches->getCommonBranches();
+        $branchesList = $sandbox->branches;
 
         $gitRepoService = app(GitRepositoryService::class);
 
-        foreach ($release->sandboxes as $sandbox) {
-            $sandboxRepo = $gitRepoService->getServiceRepository($sandbox);
-            $serviceBranches = $release->branches->getServiceBranches($sandbox->service_id);
+        $sandboxRepo = $gitRepoService->getServiceRepository($sandbox);
 
-            $branchesList = array_merge($branches, $serviceBranches);
-            $conflict = $this->_findConflictBranches($sandboxRepo, $branchesList);
+        $conflict = $this->_findConflictBranches($sandboxRepo, $branchesList);
 
-            if ($conflict) {
-                $sandbox->markAsConflicted();
-                $this->log($conflict, 'CONFLICTED');
+        if ($conflict) {
+            $sandbox->markAsConflicted();
+            $this->log($conflict, 'CONFLICTED');
 
-                $testBranches = $branches;
-                array_unshift($testBranches, 'master', 'main');
+            $testBranches = $branchesList;
+            array_unshift($testBranches, 'master', 'main');
 
-                foreach ($conflict as $conflictBranch) {
-                    $this->_findConflictPairs($sandboxRepo, $conflictBranch, $testBranches);
-                }
-            } else {
-                $sandbox->markAsGood();
+            foreach ($conflict as $conflictBranch) {
+                $this->_findConflictPairs($sandboxRepo, $conflictBranch, $testBranches);
             }
+        } else {
+            $sandbox->markAsGood();
         }
     }
 

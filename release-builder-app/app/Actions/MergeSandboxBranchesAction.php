@@ -6,43 +6,44 @@ namespace App\Actions;
 
 use App\Lib\Git\GitException;
 use App\Lib\Git\GitRepository;
-use App\Models\Release;
+use App\Models\Sandbox;
 use App\Services\GitRepositoryService;
 
-class MergeReleaseBranchesAction extends AbstractAction
+class MergeSandboxBranchesAction extends AbstractAction
 {
-    protected const ACTION_NAME = 'merge-release-branches';
+    protected const ACTION_NAME = 'merge-sandbox-branches';
 
     private const MERGE_RETRIES_LIMIT = 5;
 
-    public function execute(Release $release): void
+    public function execute(Sandbox $sandbox): void
     {
-        $branches = $release->branches->getCommonBranches();
+        $release = $sandbox->release;
+        $branches = array_unique(array_merge(
+            $release->branches->getCommonBranches(),
+            $sandbox->branches
+        ));
+
         // always get latest master, main branches
         array_unshift($branches, 'master', 'main');
 
         $gitRepoService = app(GitRepositoryService::class);
-        $releaseBranchName = $release->release_branch_name;
+        $releaseBranchName = $sandbox->release->release_branch_name;
 
-        foreach ($release->sandboxes as $sandbox) {
-            $errorLogOnStart = count($this->errorLog);
-            $sandboxRepo = $gitRepoService->getServiceRepository($sandbox);
+        $sandboxRepo = $gitRepoService->getServiceRepository($sandbox);
+        $sandboxRepo->fetch();
+        $sandboxRepo->fullReset();
 
-            $sandboxRepo->fetch();
-            $sandboxRepo->fullReset();
+        if (!$sandboxRepo->isBranchExists($releaseBranchName)) {
+            $sandboxRepo->checkoutToNewBranchFromOriginMain($releaseBranchName);
+        } else {
+            $sandboxRepo->checkout($releaseBranchName);
+        }
+        $this->_mergeBranches($sandboxRepo, $branches);
 
-            if (!$sandboxRepo->isBranchExists($releaseBranchName)) {
-                $sandboxRepo->checkoutToNewBranchFromOriginMain($releaseBranchName);
-            } else {
-                $sandboxRepo->checkout($releaseBranchName);
-            }
-            $this->_mergeBranches($sandboxRepo, $branches);
-
-            if ($errorLogOnStart === count($this->errorLog)) {
-                $sandbox->markAsGood();
-            } else {
-                $sandbox->markAsHasErrors();
-            }
+        if (count($this->errorLog) === 0) {
+            $sandbox->markAsGood();
+        } else {
+            $sandbox->markAsHasErrors();
         }
     }
 

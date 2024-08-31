@@ -20,7 +20,7 @@ class ReleaseBranchesCast implements CastsAttributes
     {
         $obj = new ReleaseBranches();
 
-        $array = json_decode($value, true);
+        $array = $value ? json_decode($value, true) : [];
 
         // if we don't have 'common' key in array - just use this as common
         // otherwise fill ReleaseBranches with Common and Service branches
