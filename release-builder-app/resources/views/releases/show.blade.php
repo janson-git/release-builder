@@ -49,9 +49,9 @@
                             @php($status = $sandboxes->get($service->id)->status)
                             @if($status === 'ok')
                                 <i class="fa-solid fa-check-circle text-green-600"></i>
+                                <a href="/sandboxes/{{ $sandboxes->get($service->id)->id }}" class="ml-4 btn btn btn-s">Go to sandbox</a>
                             @else
                                 <i class="fa-solid fa-circle-exclamation text-red-600" title="Sandbox has errors"></i>
-
                                 <a href="/sandboxes/{{ $sandboxes->get($service->id)->id }}" class="ml-4 btn btn-warning btn-s">Go to sandbox</a>
                             @endif
                         </td>

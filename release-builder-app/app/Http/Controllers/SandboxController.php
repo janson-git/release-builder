@@ -30,7 +30,8 @@ class SandboxController extends Controller
 
 
         return response()->view('sandboxes/show', [
-            'header' => 'Sandbox',
+            'header' => "Sandbox #{$sandbox->id}",
+            'subheader' => $sandbox->release->name,
             'sandbox' => $sandbox,
             'branchesDiffs' => $branchesDiffs,
         ]);
@@ -53,7 +54,8 @@ class SandboxController extends Controller
 
 
         return response()->view('sandboxes/edit', [
-            'header' => 'Edit Sandbox',
+            'header' => "Edit Sandbox #{$sandbox->id}",
+            'subheader' => $sandbox->release->name,
             'sandbox' => $sandbox,
             'branches' => $branches,
             'branchesDiffs' => $branchesDiffs,

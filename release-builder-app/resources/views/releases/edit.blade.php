@@ -51,9 +51,11 @@
                     <div class="text-error">{{ $errors->first('branches') }}</div>
                 @endif
 
-                <input id="mainInput" type="text" placeholder="{{ __('filter_branches') }}" onkeydown="aFilter.filter()"
-                       class="w-72 mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
-                       onkeyup="aFilter.filter()" autofocus/>
+                <input id="mainInput"
+                       type="text"
+                       placeholder="{{ __('filter_branches') }}"
+                       class="w-full mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                       onkeyup="branchesFilter.filter()" autofocus/>
 
                 @foreach ($branches as $branch => $repos)
                     @php($checked = in_array($branch, old('branches', $release->branches->getCommonBranches())))
@@ -163,71 +165,73 @@
 
 
     <script type="text/javascript">
-        var aFilter = {
-            items: $('.branches-item'),
-            input: {},
-            version: 1,
-
-            filter: function () {
-                var self = this;
-
-                var search = this.input.val().trim();
-
-                localStorage.setItem('search', search);
-
-                var curVersion = ++self.version;
-
-                var searchArray = search.split(' ').map(function (val) {
-                    return new RegExp(val.trim(), 'ig');
-                });
-
-                var text;
-                var line;
-                var matched = false;
-
-                this.items.each(function (idx, obj) {
-                    if (curVersion !== self.version) {
-                        return;
-                    }
-                    line = $(obj);
-                    text = line.text();
-                    matched = false;
-                    var lineMatched = false;
-
-                    for (var id in searchArray) {
-                        lineMatched = (text.match(searchArray[id]) || line.find('.checkbox-item:checked').length);
-                        matched = matched || lineMatched;
-                    }
-
-                    if (matched) {
-                        line.removeClass('hidden');
-                    } else {
-                        line.addClass('hidden');
-                    }
-                })
-            },
-            checkForm: function (form) {
-                var formObj = $(form);
-                if (formObj.find('#pack-name').length && !formObj.find('#pack-name').val()) {
-                    alert("Enter pack name, please");
-                    return false;
-                }
-
-                return true;
-            },
-            init: function () {
-                var self = this;
-                self.input = $('#mainInput');
-                self.input.val(localStorage.getItem('search'));
-                self.filter();
-            },
-            checkAll: function () {
-                this.items.not('.closedTab').each(function (idx, obj) {
-                    obj.attr('checked', true);
-                });
-            }
-        }
-
-        aFilter.init();
+        const branchesFilter = BranchesFilter.init('release_{{ $release->id }}');
+        //
+        // var aFilter = {
+        //     items: $('.branches-item'),
+        //     input: {},
+        //     version: 1,
+        //
+        //     filter: function () {
+        //         var self = this;
+        //
+        //         var search = this.input.val().trim();
+        //
+        //         localStorage.setItem('search', search);
+        //
+        //         var curVersion = ++self.version;
+        //
+        //         var searchArray = search.split(' ').map(function (val) {
+        //             return new RegExp(val.trim(), 'ig');
+        //         });
+        //
+        //         var text;
+        //         var line;
+        //         var matched = false;
+        //
+        //         this.items.each(function (idx, obj) {
+        //             if (curVersion !== self.version) {
+        //                 return;
+        //             }
+        //             line = $(obj);
+        //             text = line.text();
+        //             matched = false;
+        //             var lineMatched = false;
+        //
+        //             for (var id in searchArray) {
+        //                 lineMatched = (text.match(searchArray[id]) || line.find('.checkbox-item:checked').length);
+        //                 matched = matched || lineMatched;
+        //             }
+        //
+        //             if (matched) {
+        //                 line.removeClass('hidden');
+        //             } else {
+        //                 line.addClass('hidden');
+        //             }
+        //         })
+        //     },
+        //     checkForm: function (form) {
+        //         var formObj = $(form);
+        //         if (formObj.find('#pack-name').length && !formObj.find('#pack-name').val()) {
+        //             alert("Enter pack name, please");
+        //             return false;
+        //         }
+        //
+        //         return true;
+        //     },
+        //     init: function () {
+        //         var self = this;
+        //         self.input = $('#mainInput');
+        //         self.input.val(localStorage.getItem('search'));
+        //         self.filter();
+        //     },
+        //     checkAll: function () {
+        //         this.items.not('.closedTab').each(function (idx, obj) {
+        //             obj.attr('checked', true);
+        //         });
+        //     }
+        // }
+        //
+        // aFilter.init();
     </script>
 @endsection

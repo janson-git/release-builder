@@ -21,6 +21,9 @@
     <link rel="manifest" href="/site.webmanifest">
 
     <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/clipboard.js"></script>
+    <script src="/js/BranchesFilter.js"></script>
 </head>
 
 <body class="bg-gray-50 mb-6">
@@ -61,8 +64,5 @@
             </div>
         </div>
     </div>
-
-<script src="/js/ui.js"></script>
-<script src="/js/clipboard.js"></script>
 </body>
 </html>

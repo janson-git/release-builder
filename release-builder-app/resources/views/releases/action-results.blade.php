@@ -46,15 +46,17 @@
         @endforeach
 
         @foreach (($errorLog ?? []) as $sectionId => $errors)
-            <div class="text-red-800">
-                <h1>Errors in {{ $errors['command'] ?? $sectionId }}:</h1>
-                @foreach ($errors as $key => $error)
-                    <div class="mt-2 font-bold">{{ $key }}</div>
-                    <div class="mt-2 pl-4 overflow-x-auto text-gray-600">
-                        <pre>{!! parseActionLog($error) !!}</pre>
-                    </div>
-                @endforeach
-            </div>
+            @if (!empty($errors))
+                <div class="text-red-800">
+                    <h1>Errors in {{ $errors['command'] ?? $sectionId }}:</h1>
+                    @foreach ($errors as $key => $error)
+                        <div class="mt-2 font-bold">{{ $key }}</div>
+                        <div class="mt-2 pl-4 overflow-x-auto text-gray-600">
+                            <pre>{!! parseActionLog($error) !!}</pre>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
         @endforeach
     </div>
 

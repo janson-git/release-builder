@@ -30,7 +30,10 @@
             <div class="mb-4">
                 <div>
                     <i class="text-xs fa-solid fa-external-link"></i>
-                    <a href="https://github.com/{{ $sandbox->service->repository_name }}" target="_blank" class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline">
+                    <a href="https://github.com/{{ $sandbox->service->repository_name }}"
+                       target="_blank"
+                       class="ml-1 mr-7 text-blue-400 hover:text-blue-600 hover:underline"
+                    >
                         {{ $sandbox->service->repository_name }}
                     </a>
                 </div>
@@ -39,15 +42,17 @@
     </div>
 
 
-    <div class="mb-6">
+    <div class="mb-6 p-2">
         <h4 class="mb-2">Branches to sandbox:</h4>
         @if($errors->has('branches'))
             <div class="text-error">{{ $errors->first('branches') }}</div>
         @endif
 
-        <input id="mainInput" type="text" placeholder="{{ __('filter_branches') }}" onkeydown="aFilter.filter()"
-               class="w-72 mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
-               onkeyup="aFilter.filter()" autofocus/>
+        <input id="mainInput"
+               type="text"
+               placeholder="{{ __('filter_branches') }}"
+               class="w-full mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+               onkeyup="branchesFilter.filter()" autofocus/>
 
         <form method="POST" action="/sandboxes/{{ $sandbox->id }}">
 
@@ -74,7 +79,9 @@
                     <div class="w-1/3 text-xs text-gray-600">
                         @if (isset($branchesDiffs[$branch]))
                             @foreach ($branchesDiffs[$branch] as $repo => $toMasterStatus)
-                                <a class="cursor-pointer text-black" onclick="$(this).parent().find('div').toggle()">
+                                <a class="cursor-pointer text-black"
+                                   onclick="$(this).parent().find('div').toggle()"
+                                >
                                     {{ $repo }},
                                 </a>
                             @endforeach
@@ -102,72 +109,6 @@
     </div>
 
     <script type="text/javascript">
-        var aFilter = {
-            items: $('.branches-item'),
-            input: {},
-            version: 1,
-            searchName: '{{ $sandbox->service->repository_name }}',
-
-            filter: function () {
-                var self = this;
-
-                var search = this.input.val().trim();
-
-                localStorage.setItem(this.searchName, search);
-
-                var curVersion = ++self.version;
-
-                var searchArray = search.split(' ').map(function (val) {
-                    return new RegExp(val.trim(), 'ig');
-                });
-
-                var text;
-                var line;
-                var matched = false;
-
-                this.items.each(function (idx, obj) {
-                    if (curVersion !== self.version) {
-                        return;
-                    }
-                    line = $(obj);
-                    text = line.text();
-                    matched = false;
-                    var lineMatched = false;
-
-                    for (var id in searchArray) {
-                        lineMatched = (text.match(searchArray[id]) || line.find('.checkbox-item:checked').length);
-                        matched = matched || lineMatched;
-                    }
-
-                    if (matched) {
-                        line.removeClass('hidden');
-                    } else {
-                        line.addClass('hidden');
-                    }
-                })
-            },
-            checkForm: function (form) {
-                var formObj = $(form);
-                if (formObj.find('#pack-name').length && !formObj.find('#pack-name').val()) {
-                    alert("Enter pack name, please");
-                    return false;
-                }
-
-                return true;
-            },
-            init: function () {
-                var self = this;
-                self.input = $('#mainInput');
-                self.input.val(localStorage.getItem(this.searchName));
-                self.filter();
-            },
-            checkAll: function () {
-                this.items.not('.closedTab').each(function (idx, obj) {
-                    obj.attr('checked', true);
-                });
-            }
-        }
-
-        aFilter.init();
+        const branchesFilter = BranchesFilter.init('sandbox_{{ $sandbox->id }}');
     </script>
 @endsection
