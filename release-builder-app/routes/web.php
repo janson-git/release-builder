@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/sandboxes/{id}/fetch-repository', FetchSandboxRepositoryController::class);
     Route::get('/sandboxes/{id}/merge-branches', MergeSandboxBranchesController::class);
     Route::get('/sandboxes/{id}/search-conflicts', \App\Http\Controllers\Sandbox\SearchSandboxConflictBranchesController::class);
+    Route::get('/sandboxes/{id}/reset-release-branch', \App\Http\Controllers\Sandbox\ResetSandboxReleaseBranchController::class);
 
     Route::get('/user', [UsersController::class, 'show']);
     Route::get('/user/add-key', [Users\UserSshKeyController::class, 'edit']);

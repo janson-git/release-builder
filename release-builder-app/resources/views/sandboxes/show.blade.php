@@ -47,7 +47,7 @@
         <div class="mt-4 inline-block">
             <a href="/sandboxes/{{ $sandbox->id }}/merge-branches" class="btn btn-primary">Merge branches</a>
             <a href="/sandboxes/{{ $sandbox->id }}/search-conflicts" class="btn btn-secondary">Search conflicts branches</a>
-            <a href="/sandboxes/{{ $sandbox->id }}/reset-release-branch" class="btn btn-secondary">Reset release branch NI</a>
+            <a href="/sandboxes/{{ $sandbox->id }}/reset-release-branch" class="btn btn-secondary">Reset release branch</a>
         </div>
     </div>
 
