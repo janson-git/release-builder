@@ -125,8 +125,6 @@
 
             <div class="mt-4 inline-block">
                 <a href="/releases/{{ $release->id }}/edit" class="btn btn-success">Edit release</a>
-            </div>
-            <div class="mt-4 inline-block">
                 <a href="/releases/{{ $release->id }}/fetch-repositories" class="btn">Fetch repositories</a>
             </div>
             <div class="mt-4 inline-block">

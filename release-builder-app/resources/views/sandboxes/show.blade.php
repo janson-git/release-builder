@@ -95,15 +95,10 @@
         <div class="mt-8 mb-4 card border-t-2 border-gray-200">
             <h3 class="font-bold">Sandbox actions</h3>
 
-            {{-- TODO: Looks like we need branch management on sandbox level too.--}}
-            {{-- TODO: It should be able to add merge branches ONLY for certain sandbox. --}}
-            {{-- TODO: Or ignore some branches for sandbox? --}}
             <div class="mt-4 inline-block">
                 <a href="/sandboxes/{{ $sandbox->id }}/edit" class="btn btn-warning">Manage sandbox branches</a>
-            </div>
-
-            <div class="mt-4 inline-block">
                 <a href="/sandboxes/{{ $sandbox->id }}/fetch-repository" class="btn">Fetch repository</a>
+                <a href="/sandboxes/{{ $sandbox->id }}/push-release-branch" class="btn">Push release branch</a>
             </div>
         </div>
 {{--    @endif--}}

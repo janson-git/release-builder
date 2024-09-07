@@ -6,6 +6,9 @@ use App\Http\Controllers\Release;
 use App\Http\Controllers\ReleasesController;
 use App\Http\Controllers\Sandbox\FetchSandboxRepositoryController;
 use App\Http\Controllers\Sandbox\MergeSandboxBranchesController;
+use App\Http\Controllers\Sandbox\PushSandboxReleaseBranchController;
+use App\Http\Controllers\Sandbox\ResetSandboxReleaseBranchController;
+use App\Http\Controllers\Sandbox\SearchSandboxConflictBranchesController;
 use App\Http\Controllers\SandboxController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\SignupController;
@@ -68,8 +71,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/sandboxes/{id}/edit', [SandboxController::class, 'edit']);
     Route::get('/sandboxes/{id}/fetch-repository', FetchSandboxRepositoryController::class);
     Route::get('/sandboxes/{id}/merge-branches', MergeSandboxBranchesController::class);
-    Route::get('/sandboxes/{id}/search-conflicts', \App\Http\Controllers\Sandbox\SearchSandboxConflictBranchesController::class);
-    Route::get('/sandboxes/{id}/reset-release-branch', \App\Http\Controllers\Sandbox\ResetSandboxReleaseBranchController::class);
+    Route::get('/sandboxes/{id}/search-conflicts', SearchSandboxConflictBranchesController::class);
+    Route::get('/sandboxes/{id}/reset-release-branch', ResetSandboxReleaseBranchController::class);
+    Route::get('/sandboxes/{id}/push-release-branch', PushSandboxReleaseBranchController::class);
 
     Route::get('/user', [UsersController::class, 'show']);
     Route::get('/user/add-key', [Users\UserSshKeyController::class, 'edit']);
