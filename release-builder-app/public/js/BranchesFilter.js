@@ -1,6 +1,6 @@
 const BranchesFilter = {
-    inputFieldId: '#mainInput',
-    itemsClassName: '.branches-item',
+    inputFieldId: 'branches-list-filter',
+    itemsClassName: 'branches-item',
 
     init (filterName) {
         if (!filterName) {
@@ -9,9 +9,9 @@ const BranchesFilter = {
 
         const filter = {
             filterName: filterName,
-            $input: $(this.inputFieldId),
+            $input: $('#' + this.inputFieldId),
             value: '',
-            items: $(this.itemsClassName),
+            items: $('.' + this.itemsClassName),
             version: 0,
 
             filter: function () {
@@ -33,7 +33,7 @@ const BranchesFilter = {
                         return;
                     }
                     line = $(obj);
-                    text = line.text();
+                    text = line.find('label').text().trim();
                     matched = false;
                     let lineMatched = false;
 

@@ -48,11 +48,12 @@
             <div class="text-error">{{ $errors->first('branches') }}</div>
         @endif
 
-        <input id="mainInput"
+        <input id="branches-list-filter"
                type="text"
                placeholder="{{ __('filter_branches') }}"
                class="w-full mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
-               onkeyup="branchesFilter.filter()" autofocus/>
+               onkeyup="branchesFilter.filter()"
+               autofocus/>
 
         <form method="POST" action="/sandboxes/{{ $sandbox->id }}">
 

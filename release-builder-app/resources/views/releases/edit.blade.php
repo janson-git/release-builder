@@ -51,7 +51,7 @@
                     <div class="text-error">{{ $errors->first('branches') }}</div>
                 @endif
 
-                <input id="mainInput"
+                <input id="branches-list-filter"
                        type="text"
                        placeholder="{{ __('filter_branches') }}"
                        class="w-full mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
@@ -116,37 +116,6 @@
         if no branches found
     </div>
 
-    {{-- FIXME: it is just example of form fields --}}
-{{--    <form method="POST" action="/releases">--}}
-{{--        @csrf--}}
-{{--        <div class="card">--}}
-{{--            <div class="mt-4 flex justify-start items-center">--}}
-{{--                <div class="w-40">Repository Path </div>--}}
-{{--                <input type="text" id="repository_path" name="repository_path" required autocomplete="off"--}}
-{{--                       class="ml-4 w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"--}}
-{{--                       placeholder="git@github.com:janson-git/release-builder.git"--}}
-{{--                />--}}
-{{--            </div>--}}
-{{--            @if($errors->has('repository_url'))--}}
-{{--            <div class="mt-1">--}}
-{{--                <span class="ml-40 text-danger">{{ $errors->first('repository_url') }}</span>--}}
-{{--            </div>--}}
-{{--            @endif--}}
-
-{{--            @if($errors->has('exception'))--}}
-{{--            <div class="mt-4">--}}
-{{--                <span class="ml-40 text-danger">{{ $errors->first('exception') }}</span>--}}
-{{--            </div>--}}
-{{--            @endif--}}
-
-{{--            <button--}}
-{{--                type="submit"--}}
-{{--    --}}{{--            onclick="admin.addRepository(this);"--}}
-{{--                class="ml-40 mt-4 block px-4 py-2 rounded border bg-green-400 text-white hover:bg-green-600 hover:text-white"--}}
-{{--            >Save</button>--}}
-{{--        </div>--}}
-{{--    </form>--}}
-
     <div class="font-mono text-xs">
         <p id="doneLog"></p>
     </div>
@@ -163,75 +132,7 @@
         </table>
     @endif
 
-
     <script type="text/javascript">
         const branchesFilter = BranchesFilter.init('release_{{ $release->id }}');
-        //
-        // var aFilter = {
-        //     items: $('.branches-item'),
-        //     input: {},
-        //     version: 1,
-        //
-        //     filter: function () {
-        //         var self = this;
-        //
-        //         var search = this.input.val().trim();
-        //
-        //         localStorage.setItem('search', search);
-        //
-        //         var curVersion = ++self.version;
-        //
-        //         var searchArray = search.split(' ').map(function (val) {
-        //             return new RegExp(val.trim(), 'ig');
-        //         });
-        //
-        //         var text;
-        //         var line;
-        //         var matched = false;
-        //
-        //         this.items.each(function (idx, obj) {
-        //             if (curVersion !== self.version) {
-        //                 return;
-        //             }
-        //             line = $(obj);
-        //             text = line.text();
-        //             matched = false;
-        //             var lineMatched = false;
-        //
-        //             for (var id in searchArray) {
-        //                 lineMatched = (text.match(searchArray[id]) || line.find('.checkbox-item:checked').length);
-        //                 matched = matched || lineMatched;
-        //             }
-        //
-        //             if (matched) {
-        //                 line.removeClass('hidden');
-        //             } else {
-        //                 line.addClass('hidden');
-        //             }
-        //         })
-        //     },
-        //     checkForm: function (form) {
-        //         var formObj = $(form);
-        //         if (formObj.find('#pack-name').length && !formObj.find('#pack-name').val()) {
-        //             alert("Enter pack name, please");
-        //             return false;
-        //         }
-        //
-        //         return true;
-        //     },
-        //     init: function () {
-        //         var self = this;
-        //         self.input = $('#mainInput');
-        //         self.input.val(localStorage.getItem('search'));
-        //         self.filter();
-        //     },
-        //     checkAll: function () {
-        //         this.items.not('.closedTab').each(function (idx, obj) {
-        //             obj.attr('checked', true);
-        //         });
-        //     }
-        // }
-        //
-        // aFilter.init();
     </script>
 @endsection
