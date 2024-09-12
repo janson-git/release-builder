@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\View\Breadcrumbs;
 use App\View\Composers\NavigationComposer;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(Breadcrumbs::class, function() {
+            return new Breadcrumbs();
+        });
     }
 
     /**
