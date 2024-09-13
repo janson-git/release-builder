@@ -65,9 +65,9 @@
 {{--        @endif--}}
 
         <div class="mt-4 inline-block">
-            <a href="/releases/{{ $release->id }}/merge-branches" class="btn btn-primary">Merge branches</a>
-            <a href="/releases/{{ $release->id }}/search-conflicts" class="btn btn-secondary">Search conflicts branches</a>
-            <a href="/releases/{{ $release->id }}/reset-release-branch" class="btn btn-secondary">Reset release branch</a>
+            <a href="/releases/{{ $release->id }}/merge-branches" class="btn btn-primary action-button">Merge branches</a>
+            <a href="/releases/{{ $release->id }}/search-conflicts" class="btn btn-secondary action-button">Search conflicts branches</a>
+            <a href="/releases/{{ $release->id }}/reset-release-branch" class="btn btn-secondary action-button">Reset release branch</a>
         </div>
     </div>
 {{--        --}}
@@ -119,14 +119,14 @@
 
             <div class="mt-4 inline-block">
                 <a href="/releases/{{ $release->id }}/edit" class="btn btn-success">Edit release</a>
-                <a href="/releases/{{ $release->id }}/fetch-repositories" class="btn">Fetch repositories</a>
+                <a href="/releases/{{ $release->id }}/fetch-repositories" class="btn action-button">Fetch repositories</a>
             </div>
 {{--            <div class="mt-4 inline-block">--}}
 {{--                <!-- TODO: need implement popup for getting tags for repositories in release -->--}}
 {{--                <a href="#" class="btn" onclick="">Create git tag NI</a>--}}
 {{--            </div>--}}
             <div class="mt-4 inline-block">
-                <a href="/releases/{{ $release->id }}/push-release-branch" class="btn">Push release branch to repositories</a>
+                <a href="/releases/{{ $release->id }}/push-release-branch" class="btn action-button">Push release branch to repositories</a>
             </div>
 {{--            <div class="mt-4 inline-block">--}}
 {{--                <a href="#" class="btn btn-warning">Fork release NI</a>--}}

@@ -1,15 +1,22 @@
 const BranchesFilter = {
     inputFieldId: 'branches-list-filter',
     itemsClassName: 'branches-item',
+    chargedFilter: null,
 
-    init (filterName) {
-        if (!filterName) {
-            throw new Error('Filter name required!')
+    init () {
+        const $filterInput = $('#' + this.inputFieldId);
+        if ($filterInput.length === 0) {
+            return;
         }
 
-        const filter = {
+        const filterName = $filterInput.data('search-id');
+        if (!filterName) {
+            throw new Error('You should set \'data-search-id\' for branch filter input!')
+        }
+
+        this.chargedFilter = {
             filterName: filterName,
-            $input: $('#' + this.inputFieldId),
+            $input: $filterInput,
             value: '',
             items: $('.' + this.itemsClassName),
             version: 0,
@@ -28,7 +35,7 @@ const BranchesFilter = {
                 let line;
                 let matched = false;
 
-                filter.items.each(function (idx, obj) {
+                self.items.each(function (idx, obj) {
                     if (curVersion !== self.version) {
                         return;
                     }
@@ -51,10 +58,18 @@ const BranchesFilter = {
             }
         }
 
-        filter.$input.val(localStorage.getItem(filterName));
-        filter.filter()
-
-        return filter
+        this.chargedFilter.$input.val(localStorage.getItem(filterName));
     },
-}
 
+    filter() {
+        if (this.chargedFilter === null) {
+            this.init()
+        }
+
+        this.chargedFilter && this.chargedFilter.filter()
+    }
+};
+
+(function () {
+    BranchesFilter.filter()
+})()

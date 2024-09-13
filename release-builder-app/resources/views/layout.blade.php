@@ -19,11 +19,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-
-    <script src="/js/jquery-2.1.1.min.js"></script>
-    <script src="/js/ui.js"></script>
-    <script src="/js/clipboard.js"></script>
-    <script src="/js/BranchesFilter.js"></script>
 </head>
 
 <body class="bg-gray-50 mb-6">
@@ -63,5 +58,10 @@
             </div>
         </div>
     </div>
+
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/clipboard.js"></script>
+    <script src="/js/BranchesFilter.js"></script>
 </body>
 </html>

@@ -45,9 +45,9 @@
 {{--        @endif--}}
 
         <div class="mt-4 inline-block">
-            <a href="/sandboxes/{{ $sandbox->id }}/merge-branches" class="btn btn-primary">Merge branches</a>
-            <a href="/sandboxes/{{ $sandbox->id }}/search-conflicts" class="btn btn-secondary">Search conflicts branches</a>
-            <a href="/sandboxes/{{ $sandbox->id }}/reset-release-branch" class="btn btn-secondary">Reset release branch</a>
+            <a href="/sandboxes/{{ $sandbox->id }}/merge-branches" class="btn btn-primary action-button">Merge branches</a>
+            <a href="/sandboxes/{{ $sandbox->id }}/search-conflicts" class="btn btn-secondary action-button">Search conflicts branches</a>
+            <a href="/sandboxes/{{ $sandbox->id }}/reset-release-branch" class="btn btn-secondary action-button">Reset release branch</a>
         </div>
     </div>
 
@@ -96,9 +96,9 @@
             <h3 class="font-bold">Sandbox actions</h3>
 
             <div class="mt-4 inline-block">
-                <a href="/sandboxes/{{ $sandbox->id }}/edit" class="btn btn-warning">Manage sandbox branches</a>
-                <a href="/sandboxes/{{ $sandbox->id }}/fetch-repository" class="btn">Fetch repository</a>
-                <a href="/sandboxes/{{ $sandbox->id }}/push-release-branch" class="btn">Push release branch</a>
+                <a href="/sandboxes/{{ $sandbox->id }}/edit" class="btn btn-warning action-button">Manage sandbox branches</a>
+                <a href="/sandboxes/{{ $sandbox->id }}/fetch-repository" class="btn action-button">Fetch repository</a>
+                <a href="/sandboxes/{{ $sandbox->id }}/push-release-branch" class="btn action-button">Push release branch</a>
             </div>
         </div>
 {{--    @endif--}}

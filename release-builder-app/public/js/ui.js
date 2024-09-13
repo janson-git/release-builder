@@ -62,4 +62,8 @@
         window.spinnerOn(el.target);
     });
 
+    window.$('.action-button').on('click', function(el) {
+        $('#loader').show();
+    });
+
 }(this, this.document));

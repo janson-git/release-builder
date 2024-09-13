@@ -49,10 +49,11 @@
         @endif
 
         <input id="branches-list-filter"
+               data-search-id="sandbox_{{ $sandbox->id }}"
                type="text"
                placeholder="{{ __('filter_branches') }}"
                class="w-full mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
-               onkeyup="branchesFilter.filter()"
+               onkeyup="BranchesFilter.filter()"
                autofocus/>
 
         <form method="POST" action="/sandboxes/{{ $sandbox->id }}">
@@ -103,13 +104,9 @@
         @endforeach
 
             <div class="mb-4 mt-10">
-                <input type="submit" value="Save changes" class="btn btn-primary cursor-pointer"/>
+                <input type="submit" value="Save changes" class="btn btn-primary cursor-pointer action-button"/>
                 <span class="btn-action-holder-for-input"></span>
             </div>
         </form>
     </div>
-
-    <script type="text/javascript">
-        const branchesFilter = BranchesFilter.init('sandbox_{{ $sandbox->id }}');
-    </script>
 @endsection
