@@ -30,13 +30,18 @@
 
     <div class="w-full pt-4 border-b-2">
         <div class="lg:w-1/2 lg:px-0 lg:min-w-[800px] px-4 w-full mx-auto">
+            <div id="loader-wrapper">
+                <div id="loader-holder">
+                    <div id="loader"></div>
+                </div>
+            </div>
+
             @include('layout.navigation')
         </div>
     </div>
 
     <div class="w-full mt-6">
         <div class="lg:w-1/2 lg:px-0 lg:min-w-[800px] px-4 w-full mx-auto">
-{{--            @include('layout.heading', ['header' => $header, 'title' => $title, 'action' => $action ?? null])--}}
             @include('layout.heading')
 
             <div class="mt-8">
@@ -55,12 +60,6 @@
                         @endforeach
                     </div>
                 @endif
-            </div>
-
-            <div id="loader" class="hidden fixed bottom-10" style="left: 70%;">
-                <div class="mx-auto">
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                </div>
             </div>
         </div>
     </div>

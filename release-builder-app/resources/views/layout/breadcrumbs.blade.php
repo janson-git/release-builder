@@ -16,6 +16,4 @@
     @else
         &nbsp;
     @endif
-
-    <div id="loader"></div>
 </div>

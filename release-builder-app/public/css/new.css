@@ -457,3 +457,32 @@ h1 i,
 input.error {
     border-color: #f00 !important;
 }
+
+/***********************************************/
+/**** ANIMATED LOADER **************************/
+
+@keyframes loader-animation {
+    to {transform: rotate(360deg);}
+}
+
+#loader-wrapper {
+    position: relative;
+}
+#loader-holder {
+    position: absolute;
+    right: 0;
+    width: 40px;
+}
+#loader {
+    display: none;
+    content: '';
+    box-sizing: border-box;
+    position: fixed;
+    align-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border-top: 2px solid #07d;
+    border-right: 2px solid transparent;
+    animation: loader-animation .6s linear infinite;
+}
