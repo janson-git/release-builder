@@ -13,7 +13,7 @@
     <div class="card border-t-2 border-gray-200">
         <div class="mb-4 flex justify-between items-center">
             <div>
-                <span class="font-bold text-xl mr-2">Build</span>
+                <span class="font-bold text-xl mr-2">Branch:</span>
                 <span class="p-1 bg-sky-100 text-blue-800">{{ $release->release_branch_name }}</span>
                 <i class="ml-1 fa-regular fa-copy text-gray-800 cursor-pointer" onclick="Clipboard.writeToClipboard('{{ $release->release_branch_name }}')"></i>
             </div>
@@ -121,16 +121,16 @@
                 <a href="/releases/{{ $release->id }}/edit" class="btn btn-success">Edit release</a>
                 <a href="/releases/{{ $release->id }}/fetch-repositories" class="btn">Fetch repositories</a>
             </div>
-            <div class="mt-4 inline-block">
-                <!-- TODO: need implement popup for getting tags for repositories in release -->
-                <a href="#" class="btn" onclick="">Create git tag NI</a>
-            </div>
+{{--            <div class="mt-4 inline-block">--}}
+{{--                <!-- TODO: need implement popup for getting tags for repositories in release -->--}}
+{{--                <a href="#" class="btn" onclick="">Create git tag NI</a>--}}
+{{--            </div>--}}
             <div class="mt-4 inline-block">
                 <a href="/releases/{{ $release->id }}/push-release-branch" class="btn">Push release branch to repositories</a>
             </div>
-            <div class="mt-4 inline-block">
-                <a href="#" class="btn btn-warning">Fork release NI</a>
-            </div>
+{{--            <div class="mt-4 inline-block">--}}
+{{--                <a href="#" class="btn btn-warning">Fork release NI</a>--}}
+{{--            </div>--}}
 
             <br>
             <div class="mt-4 inline-block">

@@ -22,6 +22,8 @@ class GitCreateTagAction extends AbstractAction
 
         $releaseBranch = $release->release_branch_name;
 
+        // TODO: перед созданием тега нужно проверить, что во всех
+        // TODO:  репозиториях это возможно. Что тег уникальный для всех.
         foreach ($release->sandboxes as $sandbox) {
             $sandboxRepo = $gitRepoService->getServiceRepository($sandbox);
 
