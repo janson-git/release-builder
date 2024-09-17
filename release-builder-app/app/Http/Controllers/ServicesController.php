@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddServiceRequest;
 use App\Models\Service;
+use App\Models\Setting;
 use App\Services\GitRepositoryService;
 use App\Services\SandboxRepositoryService;
 
@@ -13,7 +14,12 @@ class ServicesController extends Controller
 {
     public function index()
     {
-        $services = Service::all();
+        $isHttpsEnabled = Setting::getValueByName('is_https_enabled');
+        if (!$isHttpsEnabled) {
+            $services = Service::notHttps()->get();
+        } else {
+            $services = Service::all();
+        }
 
         return response()->view('services.index', [
             'header' => 'Services',
@@ -38,6 +44,13 @@ class ServicesController extends Controller
         if (str_starts_with($repoPath, 'git@github') && !auth()->user()->hasSshKey()) {
             return back()->withErrors([
                 'repository_url' => 'You should add SSH key in your profile to use SSH repository links',
+            ]);
+        }
+
+        $isHttpsEnabled = Setting::getValueByName('is_https_enabled');
+        if (!$isHttpsEnabled && str_starts_with($repoPath, 'https')) {
+            return back()->withErrors([
+                'repositiry_url' => 'It is not able to use HTTPS repository URL! Use SSH repository links instead',
             ]);
         }
 

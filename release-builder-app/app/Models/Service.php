@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Builder ;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -15,6 +16,9 @@ use Illuminate\Support\Facades\Storage;
  * @property string $repository_url
  * @property string $status
  * @property-read ServiceBoundRepository $repository
+ * @property-read string $repo_type
+ *
+ * @method Builder notHttps Scope to filter services by 'https%' repository_url
  */
 class Service extends Model implements GitRepositoryLinkable
 {
@@ -54,7 +58,14 @@ class Service extends Model implements GitRepositoryLinkable
     protected function directory(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->repoType() . '/' . $this->attributes['directory'],
+            get: fn() => $this->getRepoType() . '/' . $this->attributes['directory'],
+        );
+    }
+
+    protected function repoType(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->getRepoType(),
         );
     }
 
@@ -73,7 +84,7 @@ class Service extends Model implements GitRepositoryLinkable
         return $this->directory;
     }
 
-    private function repoType(): string
+    private function getRepoType(): string
     {
         if (str_starts_with($this->repository_url, 'git@')) {
             return self::TYPE_SSH;
@@ -84,5 +95,10 @@ class Service extends Model implements GitRepositoryLinkable
     public function getRepositoryPath(): string
     {
         return Storage::disk('repositories')->path($this->directory);
+    }
+
+    public function scopeNotHttps(Builder $q)
+    {
+        return $q->whereNot('repository_url', 'LIKE', 'http%');
     }
 }

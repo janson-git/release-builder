@@ -13,6 +13,12 @@
     @forelse($serviceList as $service)
         <div class="card mb-4">
             <div class="flex justify-start items-center">
+                @if($service->repo_type === \App\Models\Service::TYPE_SSH)
+                    <span class="px-2 mr-2 text-black bg-blue-400 rounded">SSH</span>
+                @else
+                    <span class="px-2 mr-2 text-black bg-pink-400 rounded">HTTPS</span>
+                @endif
+
                 <p class="font-bold text-lg">{{ $service->repository_name }}</p>
             </div>
 

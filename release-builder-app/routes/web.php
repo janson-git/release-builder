@@ -78,6 +78,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/user', [UsersController::class, 'show']);
     Route::get('/user/add-key', [Users\UserSshKeyController::class, 'edit']);
     Route::post('/user/add-key', [Users\UserSshKeyController::class, 'update']);
+
+    Route::get('/settings', [\App\Http\Controllers\SettingsController::class, 'index']);
+    Route::post('/settings', [\App\Http\Controllers\SettingsController::class, 'store']);
 });
 
 Route::get('/', function () {

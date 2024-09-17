@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateReleaseRequest;
 use App\Lib\Git\GitRepository;
 use App\Models\Release;
 use App\Models\Service;
+use App\Models\Setting;
 use App\Services\GitRepositoryService;
 
 class ReleasesController extends Controller
@@ -46,7 +47,13 @@ class ReleasesController extends Controller
     {
         $gitRepoService = app(GitRepositoryService::class);
 
-        $allServices = Service::all();
+        $isHttpsEnabled = Setting::getValueByName('is_https_enabled');
+        if (!$isHttpsEnabled) {
+            $allServices = Service::notHttps()->get();
+        } else {
+            $allServices = Service::all();
+        }
+
         foreach ($allServices as $service) {
             $serviceRepo = $gitRepoService->getServiceRepository($service);
             $serviceRepo->fetch();
@@ -91,7 +98,19 @@ class ReleasesController extends Controller
 
         $gitRepoService = app(GitRepositoryService::class);
 
-        $allServices = Service::all();
+        $isHttpsEnabled = Setting::getValueByName('is_https_enabled');
+        if (!$isHttpsEnabled) {
+            $allServices = Service::notHttps()->get();
+            // If current release already has HTTPS services, add it to list
+            foreach ($release->services as $service) {
+                if ($service->repo_type === Service::TYPE_HTTPS) {
+                    $allServices[] = $service;
+                }
+            }
+        } else {
+            $allServices = Service::all();
+        }
+
         $branches = $gitRepoService->getBranchesWithServices($allServices);
         $branchesDiffs = $gitRepoService->getToMasterStatus(
             $release->branches->getCommonBranches(),

@@ -45,6 +45,12 @@ class NavigationComposer
             ]);
             $itemProfile->setIconClass('fa-solid fa-user');
             $menu[] = $itemProfile;
+
+            $itemSettings = new MenuItem('Settings', '/settings', [
+                '/settings'
+            ]);
+            $itemSettings->setIconClass('fa-solid fa-gear');
+            $menu[] = $itemSettings;
         } else {
             $itemLogin = new MenuItem('Log In', '/login');
             $itemLogin->setIconClass('fa-solid fa-right-to-bracket');
@@ -92,6 +98,10 @@ class NavigationComposer
 
             case 'services':
                 $breadcrumbs->push('Services');
+                return $breadcrumbs;
+
+            case 'settings':
+                $breadcrumbs->push('Settings');
                 return $breadcrumbs;
 
             case 'sandboxes':

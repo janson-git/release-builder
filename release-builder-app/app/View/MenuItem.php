@@ -9,7 +9,7 @@ class MenuItem
     public string $route;
     public string $title;
     public array $matchPatterns;
-    public string $iconClass;
+    public string $iconClass = '';
 
     public function __construct(string $title, string $route, array $matchPatterns = [])
     {
