@@ -12,7 +12,8 @@ class MainPageAction extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public string $href
+        public string $href,
+        public ?string $class = null,
     )
     {
         //

@@ -6,7 +6,7 @@
 @extends('layout')
 
 @section('pageActions')
-    <x-main-page-action href="/releases/create">New release</x-main-page-action>
+    <x-main-page-action href="/releases/create" class="action-button">New release</x-main-page-action>
 @endsection
 
 @section('content')

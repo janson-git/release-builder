@@ -54,11 +54,6 @@ class ReleasesController extends Controller
             $allServices = Service::all();
         }
 
-        foreach ($allServices as $service) {
-            $serviceRepo = $gitRepoService->getServiceRepository($service);
-            $serviceRepo->fetch();
-        }
-
         $branches = $gitRepoService->getBranchesWithServices($allServices);
 
         return response()->view('releases.create', [
@@ -89,7 +84,7 @@ class ReleasesController extends Controller
             $sandboxRepo->checkoutToNewBranchFromOriginMain($release->release_branch_name);
         }
 
-        return redirect()->route('releases');
+        return redirect()->to("/releases/{$release->id}");
     }
 
     public function edit(int $id)

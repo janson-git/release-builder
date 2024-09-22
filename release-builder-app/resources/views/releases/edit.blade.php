@@ -54,9 +54,10 @@
                 <input id="branches-list-filter"
                        data-search-id="release_{{ $release->id }}"
                        type="text"
-                       placeholder="{{ __('filter_branches') }}"
+                       placeholder="Filter branches"
                        class="w-full mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
-                       onkeyup="BranchesFilter.filter()" autofocus/>
+                       onkeyup="BranchesFilter.filter()"
+                       autofocus/>
 
                 @foreach ($branches as $branch => $repos)
                     @php($checked = in_array($branch, old('branches', $release->branches->getCommonBranches())))
