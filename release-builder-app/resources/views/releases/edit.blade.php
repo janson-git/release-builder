@@ -112,7 +112,9 @@
     </div>
 
     <div  class="mb-4">
-        <a href="#" class="mr-4 text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">
+        <a href="/releases/{{ $release->id }}/fetch-repositories?return=1"
+           class="action-button mr-4 text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded"
+        >
             Fetch repositories and return
         </a>
         if no branches found
