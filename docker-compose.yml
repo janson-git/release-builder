@@ -9,7 +9,7 @@ services:
     links:
       - app
     ports:
-      - "9090:80" # FIXME: in old branch used 9088, here 9090 to avoid interfere in development
+      - "9090:80"
 
   app:
     tty: true
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./release-builder-app:/app
       - .docker/php/.bashrc:/var/www/.bashrc
-      - .docker/php/php.ini:/usr/local/etc/php/php.ini
+#      - .docker/php/php.ini:/usr/local/etc/php/php.ini
     links:
       - db
     extra_hosts:
