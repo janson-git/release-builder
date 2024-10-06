@@ -18,7 +18,7 @@
         <button type="submit" class="block px-4 py-2 rounded border border-green-400 text-green-400 hover:bg-green-400 hover:text-white">Login</button>
 
         <div class="ml-4">or
-            <a href="/register" class="ml-1 cursor-pointer text-blue-400">register</a>
+            <a href="/sign-up" class="ml-1 cursor-pointer text-blue-400">Sign up</a>
         </div>
     </div>
 </form>

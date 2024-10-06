@@ -40,7 +40,7 @@
         <button type="submit" class="block px-4 py-2 rounded border border-green-400 text-green-400 hover:bg-green-400 hover:text-white">Register</button>
 
         <div class="ml-4">or
-            <a href="/login" class="ml-2 cursor-pointer text-blue-400">login</a>
+            <a href="/login" class="ml-2 cursor-pointer text-blue-400">Login</a>
         </div>
     </div>
 </form>

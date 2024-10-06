@@ -79,7 +79,7 @@
 
     <br>
 
-    <a href="/auth/logout" class="mt-8 inline-block px-4 py-2 rounded border border-orange-400 text-white bg-orange-400 hover:bg-orange-600">
+    <a href="/logout" class="mt-8 inline-block px-4 py-2 rounded border border-orange-400 text-white bg-orange-400 hover:bg-orange-600">
         Log out
     </a>
 </div>
