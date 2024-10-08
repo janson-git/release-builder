@@ -1,6 +1,13 @@
 @extends('layout')
 
 @section('content')
+
+    @if($firstUser)
+    <div class="p-4 border border-gray-400 bg-blue-100">
+        You need to create a first user! Then you can move on next step!
+    </div>
+    @endif
+
 <form class="mt-6 card bg-white p-8" method="post">
     @csrf
     <div class="flex justify-left">

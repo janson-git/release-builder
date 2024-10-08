@@ -1,23 +1,22 @@
 FROM mirror.gcr.io/php:8.2-fpm
 
-# ARG context
-#RUN if [ "x$context" = "x" ] ; then echo Argument not provided ; else echo Argument is $arg ; fi
-
 # Performance optimization - see https://gist.github.com/jpetazzo/6127116
 # this forces dpkg not to call sync() after package extraction and speeds up install
 RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup
 # we don't need an apt cache in a container
 RUN echo "Acquire::http {No-Cache=True;};" > /etc/apt/apt.conf.d/no-cache
 
+RUN apt-get update && apt-get install -y \
+        libssl-dev tcl-dev gettext libpq-dev libicu-dev libzip-dev libxml2-dev libpng-dev \
+        libjpeg-dev xvfb libfontconfig wkhtmltopdf default-mysql-client
+
+RUN docker-php-ext-install mysqli pdo_mysql \
+    && docker-php-ext-install zip intl exif pcntl bcmath gettext dom
+
 RUN apt-get update && apt-get install -y --allow-unauthenticated \
-        bash vim nano git ssh zip unzip wget curl libssl-dev \
-        tcl-dev gettext libpq-dev libicu-dev libzip-dev libxml2-dev libpng-dev \
-        php8.2-mysql libjpeg-dev xvfb libfontconfig wkhtmltopdf default-mysql-client \
-    && docker-php-ext-install zip intl exif pcntl bcmath gettext dom \
+        bash vim nano git ssh zip unzip wget curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; exit 0
-
-RUN docker-php-ext-install mysqli pdo_mysql
 
 RUN usermod -u 1000 www-data && \
      mkdir /home/www-data && \

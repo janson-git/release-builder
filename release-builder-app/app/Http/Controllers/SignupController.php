@@ -13,6 +13,7 @@ class SignupController extends Controller
     {
         return response()->view('auth/signup', [
             'header' => 'Sign Up',
+            'firstUser' => User::count() === 0,
         ]);
     }
 

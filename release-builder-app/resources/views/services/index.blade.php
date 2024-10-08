@@ -10,6 +10,19 @@
 @endsection
 
 @section('content')
+    @if($firstService)
+        <div class="p-4 border border-gray-400 bg-blue-100">
+            You need to add a first service! After this you can start a release!
+        </div>
+    @elseif($firstRelease)
+        <div class="p-4 border border-gray-400 bg-green-100">
+            Perfect! Now you can
+            <a href="/releases" class="text-blue-400 hover:text-blue-600 hover:underline">
+                create a first Release
+            </a>!
+        </div>
+    @endif
+
     @forelse($serviceList as $service)
         <div class="card mb-4">
             <div class="flex justify-start items-center">

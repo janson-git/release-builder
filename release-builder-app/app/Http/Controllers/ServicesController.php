@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddServiceRequest;
+use App\Models\Release;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Services\GitRepositoryService;
@@ -25,6 +26,8 @@ class ServicesController extends Controller
             'header' => 'Services',
             'subheader' => "{$services->count()} services on this page",
             'serviceList' => $services,
+            'firstService' => Service::count() === 0,
+            'firstRelease' => Release::count() === 0,
         ]);
     }
 

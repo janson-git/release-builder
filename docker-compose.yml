@@ -15,8 +15,6 @@ services:
     tty: true
     build:
       context: .docker/php
-      args:
-        context: dev
     user: www-data
     volumes:
       - ./release-builder-app:/app
