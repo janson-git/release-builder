@@ -58,7 +58,9 @@ const BranchesFilter = {
             }
         }
 
-        this.chargedFilter.$input.val(localStorage.getItem(filterName));
+        // still keep sandboxes branches in localstorage
+        let filterVal = localStorage.getItem(filterName) || $filterInput.val()
+        this.chargedFilter.$input.val(filterVal);
     },
 
     filter() {

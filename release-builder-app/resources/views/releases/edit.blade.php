@@ -52,7 +52,9 @@
                 @endif
 
                 <input id="branches-list-filter"
+                       name="filter"
                        data-search-id="release_{{ $release->id }}"
+                       value="{{ old('filter', $release->filter) }}"
                        type="text"
                        placeholder="Filter branches"
                        class="w-full mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"

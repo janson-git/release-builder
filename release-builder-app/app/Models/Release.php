@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property ReleaseBranches $branches
  * @property Carbon $delivery_date
  * @property int $created_by
+ * @property string $filter
  *
  * @property-read array|Service[] $services
  * @property-read array|Sandbox[] $sandboxes
@@ -38,6 +39,7 @@ class Release extends Model
         'name',
         'branches',
         'delivery_date',
+        'filter',
     ];
 
     /**

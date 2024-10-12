@@ -69,6 +69,7 @@ class ReleasesController extends Controller
         $release = new Release();
         $release->name = $request->getReleaseName();
         $release->branches->setCommonBranches($request->getBranches());
+        $release->filter = $request->getFilter();
         $release->save();
 
         $release->services()->sync($request->getServiceIds(), false);
@@ -128,6 +129,7 @@ class ReleasesController extends Controller
 
         $release->name = $request->getReleaseName();
         $release->branches->setCommonBranches($request->getBranches());
+        $release->filter = $request->getFilter();
         $release->save();
 
         $release->services()->sync($request->getServiceIds());

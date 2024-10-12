@@ -12,6 +12,7 @@ class NewReleaseRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+            'filter' => 'string|nullable',
             // services - int[]
             'service_ids' => 'required|array',
             'service_ids.*' => 'exists:services,id',
@@ -40,5 +41,10 @@ class NewReleaseRequest extends FormRequest
     public function getBranches(): array
     {
         return $this->validated('branches');
+    }
+
+    public function getFilter(): ?string
+    {
+        return $this->validated('filter');
     }
 }

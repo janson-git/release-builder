@@ -54,7 +54,9 @@
                 @endif
 
                 <input id="branches-list-filter"
+                       name="filter"
                        data-search-id="new_release"
+                       value="{{ old('filter') }}"
                        type="text"
                        placeholder="Filter branches"
                        onkeyup="BranchesFilter.filter()"
