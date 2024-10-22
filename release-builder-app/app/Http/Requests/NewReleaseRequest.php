@@ -19,6 +19,7 @@ class NewReleaseRequest extends FormRequest
             // branches - string[]
             'branches' => 'required|array',
             'branches.*' => 'string',
+            'task_list' => 'string|nullable',
         ];
     }
 
@@ -46,5 +47,13 @@ class NewReleaseRequest extends FormRequest
     public function getFilter(): ?string
     {
         return $this->validated('filter');
+    }
+
+    public function getTaskList(): array
+    {
+        $value = trim( $this->validated('task_list', '') );
+        $value = str_replace("\r", '', $value);
+
+        return empty($value) ? [] : explode("\n", $value);
     }
 }

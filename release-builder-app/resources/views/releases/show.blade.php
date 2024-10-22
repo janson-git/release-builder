@@ -131,7 +131,11 @@
 {{--            <div class="mt-4 inline-block">--}}
 {{--                <a href="#" class="btn btn-warning">Fork release NI</a>--}}
 {{--            </div>--}}
-
+            @if(config('tasktracker.default'))
+            <div class="mt-4 inline-block">
+                <a href="/releases/{{ $release->id }}/show-release-info" class="btn">Show release info</a>
+            </div>
+            @endif
             <br>
             <div class="mt-4 inline-block">
                 <form method="POST" action="/releases/{{ $release->id }}">

@@ -63,5 +63,6 @@
     <script src="/js/ui.js"></script>
     <script src="/js/clipboard.js"></script>
     <script src="/js/BranchesFilter.js"></script>
+    <script src="/js/task-list.js"></script>
 </body>
 </html>

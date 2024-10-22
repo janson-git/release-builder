@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\TaskTracker\Api\Mayven;
+use App\Services\TaskTracker\TaskTrackerInterface;
 use App\View\Breadcrumbs;
 use App\View\Composers\NavigationComposer;
 use Illuminate\Support\Facades;
@@ -17,6 +19,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(Breadcrumbs::class, function() {
             return new Breadcrumbs();
         });
+
+        $taskTracker = match(config('tasktracker.default')) {
+            // TODO: it is possible to extend list of available TaskTrackers API
+            'mayven' => Mayven::class,
+            default => null
+        };
+        $this->app->bind(TaskTrackerInterface::class, $taskTracker);
     }
 
     /**

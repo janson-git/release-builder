@@ -10,6 +10,27 @@
     <div class="card">
         <form method="POST" action="/releases/{{ $release->id }}">
 
+            @php
+            $taskList = $release->task_list ? join("\n", $release->task_list) : null;
+            @endphp
+
+            <div id="task-list-wrapper" class="{{ old('task_list', $taskList) ? '' : 'hidden' }} h-100 w-full mb-5">
+                <textarea id="task-list-textarea"
+                          name="task_list"
+                          class="w-full border p-2"
+                          placeholder="Put task list here..."
+                          spellcheck="false"
+                          rows="5">{{ old('task_list', $taskList) }}</textarea>
+                <div>
+                    <span id="task-list-parse-button" class="btn btn-success-outline cursor-pointer">Parse links</span>
+                </div>
+            </div>
+            <div class="relative">
+                <span id="set-task-list-button" class="btn cursor-pointer right absolute right-0">
+                    Toggle task list
+                </span>
+            </div>
+
             <div class="mb-6 mt-4">
                 <div class="flex justify-start items-center">
                     <input type="text" value="{{ old('name', $release->name) }}" name="name" placeholder="Release name" id="release-name"

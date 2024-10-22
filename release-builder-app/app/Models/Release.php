@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Carbon $delivery_date
  * @property int $created_by
  * @property string $filter
+ * @property array $task_list
  *
  * @property-read array|Service[] $services
  * @property-read array|Sandbox[] $sandboxes
@@ -40,6 +41,7 @@ class Release extends Model
         'branches',
         'delivery_date',
         'filter',
+        'task_list',
     ];
 
     /**
@@ -50,6 +52,7 @@ class Release extends Model
     protected $casts = [
         'branches' => ReleaseBranchesCast::class,
         'delivery_date' => 'date',
+        'task_list' => 'array',
     ];
 
     public function sandboxes(): HasMany

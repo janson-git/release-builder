@@ -59,6 +59,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/releases/{id}/push-release-branch', Release\PushReleaseBranchController::class);
     Route::post('/releases/{id}/git-create-tag', Release\GitCreateTagController::class);
 
+    Route::get('/releases/{id}/show-release-info', Release\ShowReleaseInfoController::class);
+
     Route::get('/services', [ServicesController::class, 'index'])
         ->name('services');
     Route::get('/services/add', [ServicesController::class, 'create']);

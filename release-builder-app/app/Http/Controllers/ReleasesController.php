@@ -70,6 +70,7 @@ class ReleasesController extends Controller
         $release->name = $request->getReleaseName();
         $release->branches->setCommonBranches($request->getBranches());
         $release->filter = $request->getFilter();
+        $release->task_list = $request->getTaskList();
         $release->save();
 
         $release->services()->sync($request->getServiceIds(), false);
@@ -125,11 +126,13 @@ class ReleasesController extends Controller
 
     public function update(int $id, UpdateReleaseRequest $request)
     {
+        /** @var Release $release */
         $release = Release::findOrFail($id);
 
         $release->name = $request->getReleaseName();
         $release->branches->setCommonBranches($request->getBranches());
         $release->filter = $request->getFilter();
+        $release->task_list = $request->getTaskList();
         $release->save();
 
         $release->services()->sync($request->getServiceIds());
