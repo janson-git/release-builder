@@ -13,7 +13,7 @@
     <div class="card border-t-2 border-gray-200">
         <div class="mt-50 mb-50">
 <textarea class="w-full mb-2 border border-gray-400 p-1 overflow-x-scroll text-nowrap" rows="20">
-{{ $releaseInfo }}
+{!! $releaseInfo !!}
 </textarea>
         </div>
 

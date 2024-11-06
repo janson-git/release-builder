@@ -16,12 +16,14 @@ class ShowReleaseInfoController
 
         /** @var TaskTrackerInterface $taskTracker */
         $taskTracker = app()->get(TaskTrackerInterface::class);
+
         $tasks = $taskTracker->getTaskListInfoByUrls($release->task_list);
 
         $releaseInfo = view('releases.release-info-template', [
             'release' => $release,
             'tasks' => $tasks
         ]);
+
         return response()->view('releases.release-info', [
             'header' => $release->name,
             'subheader' => "Release brief",

@@ -11,6 +11,8 @@ class Mayven extends Rest implements TaskTrackerInterface
 {
     protected Client $client;
 
+    private array $projectsCache = [];
+
     protected function baseUri(): string
     {
         return config('tasktracker.services.mayven.api_url');
@@ -35,7 +37,7 @@ class Mayven extends Rest implements TaskTrackerInterface
 
     public function getTaskInfoByUrl(string $url, ?int $projectId = null): Task
     {
-        [$projectSlug, $idInProject] = $this->extractProjectSlugAndTaskId($url);
+        [$link, $projectSlug, $idInProject] = $this->extractLinkAndProjectSlugAndTaskId($url);
 
         if ($projectId === null) {
             $projectId = $this->getProjectIdBySlug($projectSlug);
@@ -49,7 +51,7 @@ class Mayven extends Rest implements TaskTrackerInterface
         return new Task(
             $idInProject,
             $info['title'],
-            $url
+            $link
         );
     }
 
@@ -61,10 +63,10 @@ class Mayven extends Rest implements TaskTrackerInterface
     {
         $groupedByProjects = [];
         foreach ($urls as $url) {
-            [$projectSlug, $idInProject] = $this->extractProjectSlugAndTaskId($url);
+            [$link, $projectSlug, $idInProject] = $this->extractLinkAndProjectSlugAndTaskId($url);
 
             $groupedByProjects[$projectSlug][] = [
-                'url' => $url,
+                'link' => $link,
                 'id' => $idInProject
             ];
         }
@@ -76,7 +78,7 @@ class Mayven extends Rest implements TaskTrackerInterface
             // TODO: ok, right now we don't have filter for id_in_project array
             // TODO: let get it iteratively step by step
             foreach ($items as $item) {
-                $tasks[$item['url']] = $this->getTaskInfoByUrl($item['url'], $projectId);
+                $tasks[$item['link']] = $this->getTaskInfoByUrl($item['link'], $projectId);
             }
         }
 
@@ -86,22 +88,27 @@ class Mayven extends Rest implements TaskTrackerInterface
     /**
      * @param string $url
      * @return array
-     * [ <PROJECT_SLUG>, <TASK_ID_IN_PROJECT> ]
+     * [ <LINK>, <PROJECT_SLUG>, <TASK_ID_IN_PROJECT> ]
      */
-    private function extractProjectSlugAndTaskId(string $url)
+    private function extractLinkAndProjectSlugAndTaskId(string $url): array
     {
         $matches = [];
-        preg_match('|.*/p/([^/]*)/tasks[^#]*?#task-(\d+).*|', $url, $matches);
+        preg_match('|https?.*/p/([^/]*)/tasks[^#]*?#task-(\d+)-\w+|', $url, $matches);
 
-        return [$matches[1], $matches[2]];
+        return [$matches[0], $matches[1], $matches[2]];
     }
 
     private function getProjectIdBySlug(string $slug): ?int
     {
-        // TODO: add internal class cache for project IDs
+        if (array_key_exists($slug, $this->projectsCache)) {
+            return $this->projectsCache[$slug];
+        }
+
         $res = $this->get('/api/projects', ['query' => ['slug' => $slug]]);
 
         $data = json_decode($res->getBody()->getContents(), true);
-        return $data['data'][0]['id'];
+        $this->projectsCache[$slug] = $data['data'][0]['id'];
+
+        return $this->projectsCache[$slug];
     }
 }
