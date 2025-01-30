@@ -51,7 +51,7 @@ class NewReleaseRequest extends FormRequest
 
     public function getTaskList(): array
     {
-        $value = trim( $this->validated('task_list', '') );
+        $value = trim( $this->validated('task_list') ?? '' );
         $value = str_replace("\r", '', $value);
 
         return empty($value) ? [] : explode("\n", $value);
