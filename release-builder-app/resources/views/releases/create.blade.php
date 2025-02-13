@@ -1,0 +1,153 @@
+@extends('layout')
+
+@section('pageActions')
+    <x-secondary-page-action href="/releases">Back</x-secondary-page-action>
+@endsection
+
+@section('content')
+    <h2>Create new release</h2>
+
+    <div class="card">
+        <form method="POST" action="/releases">
+
+            <div id="task-list-wrapper" class="{{ old('task_list') ? '' : 'hidden' }} h-100 w-full mb-5">
+                <textarea id="task-list-textarea"
+                          name="task_list"
+                          class="w-full border p-2"
+                          placeholder="Put task list here..."
+                          spellcheck="false"
+                          rows="5">{{ old('task_list') }}</textarea>
+                <div>
+                    <span id="task-list-parse-button" class="btn btn-success-outline cursor-pointer">Parse links</span>
+                </div>
+            </div>
+            <div class="relative">
+                <span id="set-task-list-button" class="btn cursor-pointer right absolute right-0">
+                    Toggle task list
+                </span>
+            </div>
+
+            <div class="mb-6 mt-4">
+                <div class="flex justify-start items-center">
+                    <input type="text" value="{{ old('name') }}" name="name" placeholder="Release name" id="release-name"
+                           class="w-72 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                    />
+                </div>
+                @if($errors->has('name'))
+                    <div class="text-error">{{ $errors->first('name') }}</div>
+                @endif
+            </div>
+
+            <div class="mb-6">
+                <h4 class="mb-2">Services to release:</h4>
+                @if($errors->has('service_ids'))
+                    <div class="text-error">{{ $errors->first('service_ids') }}</div>
+                @endif
+
+
+
+                @foreach($servicesList as $service)
+                    <div class="flex justify-start">
+                        @php($checked = in_array($service->id, old('service_ids', [])))
+                        <input
+                            type="checkbox"
+                            id="service-{{ $service->id }}"
+                            name="service_ids[]"
+                            value="{{ $service->id }}"
+                            {{ $checked ? 'checked' : '' }}
+                        />
+                        <label for="service-{{ $service->id }}" class="ml-2 cursor-pointer">
+                            <span>{{ $service->repository_url }}</span>
+                        </label>
+                    </div>
+                @endforeach
+
+            </div>
+
+            <div class="mb-6">
+                <h4 class="mb-2">Branches to release:</h4>
+                @if($errors->has('branches'))
+                    <div class="text-error">{{ $errors->first('branches') }}</div>
+                @endif
+
+                <input id="branches-list-filter"
+                       name="filter"
+                       data-search-id="new_release"
+                       value="{{ old('filter') }}"
+                       type="text"
+                       placeholder="Filter branches"
+                       onkeyup="BranchesFilter.filter()"
+                       class="w-full mb-2 border-b border-b-gray-400 focus:border-b-black focus:outline-none"
+                       autofocus/>
+
+                @foreach ($branches as $branch => $repos)
+                    @php($checked = in_array($branch, old('branches', [])))
+                    @if (!$selected || ($selected && isset($selected[$branch])))
+                        <div class="mt-2 flex justify-start items-center branches-item">
+                            <input type="checkbox" name="branches[]" id="br_{{ $branch }}" value="{{ $branch }}"
+                                   class="checkbox-item"
+                                   title=""
+                                {{ $checked ? 'checked' : '' }}
+                            />
+
+                            <label class="ml-2" for="br_{{ $branch }}" class="branch-name">{{ $branch }}</label>
+
+                            @if (isset($branchesData[$branch]))
+                                <b class="ml-2">{{ array_sum(array_column($branchesData[$branch], 1)) }}</b>
+                            @endif
+
+                            @if (isset($branchesData[$branch]))
+                                @foreach ($branchesData[$branch] as $repo => $toMasterStatus)
+                                    <a onclick="$(this).parent().find('div').toggle()">
+                                        {{ $repo }},
+                                    </a>
+                                @endforeach
+
+                                <div style="display: none; background: #cccccc; padding: 0.2em">
+                                    @foreach ($branchesData[$branch] as $repo => $toMasterStatus)
+                                        {{ $toMasterStatus[0] }} < <b>{{ $repo}}</b> > {{ $toMasterStatus[1] }} <br>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="ml-auto repos text-sm">
+                                    {!! implode(', ', $repos) !!}
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+                @endforeach
+
+
+            </div>
+
+            <div class="mb-4 mt-10">
+                <input type="submit" value="Save draft release" class="btn btn-primary cursor-pointer"/>
+                <span class="btn-action-holder-for-input"></span>
+            </div>
+        </form>
+    </div>
+
+    <div  class="mb-4">
+        <a href="#" class="mr-4 text-orange-400 border border-orange-400 hover:bg-orange-400 hover:text-white px-4 py-1 rounded">
+            Fetch repositories and return
+        </a>
+        if no branches found
+    </div>
+
+    <div class="font-mono text-xs">
+        <p id="doneLog"></p>
+    </div>
+
+    @if (isset($result))
+        <h2>Result</h2>
+        <table class="pure-table">
+            @foreach ($result as $command)
+                <tr>
+                    <td>{{ $command['com'] }}</td>
+                    <td>{{ $command['res'] }}</td>
+                </tr>
+            @endforeach
+        </table>
+    @endif
+
+@endsection

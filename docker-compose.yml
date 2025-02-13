@@ -1,16 +1,43 @@
-version: '2'
+version: '3'
 
-services:    
-    app:
-        build:
-            context: .docker/app
-            args:
-                # override your user identity for assignment of access rights
-                PUID: "1000"
-        ports:
-            - 9088:80
-        env_file:
-            - .env
-        volumes:
-            - ./:/var/www
-            - ./.docker/app/50-custom.ini:/usr/local/etc/php/conf.d/50-custom.ini
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./release-builder-app:/app
+      - .docker/nginx:/etc/nginx/conf.d
+    links:
+      - app
+    ports:
+      - "9090:80"
+
+  app:
+    tty: true
+    build:
+      context: .docker/php
+    user: www-data
+    volumes:
+      - ./release-builder-app:/app
+      - .docker/php/.bashrc:/var/www/.bashrc
+#      - .docker/php/php.ini:/usr/local/etc/php/php.ini
+    links:
+      - db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  db:
+    image: mysql:5.7 # 10.3.31
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: release_builder
+      MYSQL_USER: localuser
+      MYSQL_PASSWORD: localuserpass
+    volumes:
+      - .docker/mysql:/tools
+      - db-data:/var/lib/mysql
+    ports:
+      - "30306:3306"
+
+volumes:
+  db-data:
+

@@ -4,16 +4,27 @@ help:
 
 .DEFAULT_GOAL := help
 
-up: ## Up docker containers with app
+up:
 	docker-compose up -d
-	@echo "\n>>> Open http://localhost:9088 in your browser <<<\n"
+	docker-compose exec app composer install
+	docker-compose exec app php artisan migrate
+	docker-compose exec app php artisan ide-helper:generate
 
-down: ## Down containers
+down:
 	docker-compose down
 
-install: ## Setup app before use it
-	if [ ! -f .env ] ; then \
-		cp .env.example .env \
+sh:
+	docker-compose exec app bash
+
+install:
+	if [ ! -f ./release-builder-app/.env ] ; then \
+		cp ./release-builder-app/.env.example ./release-builder-app/.env \
 	; fi
+	@echo "\n.env file created"
+	docker-compose run app composer install
+	docker-compose run app php artisan ide-helper:generate
+	docker-compose run app php artisan key:generate
+	@echo "Project is ready to start. Type 'make up' to start use."
+
+build:
 	docker-compose build
-	@echo "\n.env file created.\nProject ready to start. Type 'make up' to build and start use."
