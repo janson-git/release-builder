@@ -31,6 +31,8 @@ class Release extends Model
 {
     use HasFactory;
 
+    public const DEFAULT_RELEASE_BRANCH_PATTERN = 'release_{DATE}_{TIME}_{ID}';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -77,7 +79,29 @@ class Release extends Model
     protected function releaseBranchName(): Attribute
     {
         return Attribute::make(
-            get: fn() => "release_{$this->id}_" . $this->created_at->format('Ymd_His'),
+            get: function() {
+                $pattern = config('gitsettings.branch.pattern');
+
+                $hasId = str_contains($pattern, '{ID}');
+                $hasTime = str_contains($pattern, '{TIME}');
+                if (empty($pattern)) {
+                    $pattern = self::DEFAULT_RELEASE_BRANCH_PATTERN;
+                }
+                elseif (!$hasId && !$hasTime) {
+                    $pattern .= '{TIME}';
+                }
+
+                return str_replace(
+                    ['{ID}', '{NAME}', '{DATE}', '{TIME}'],
+                    [
+                        $this->id,
+                        \Str::slug($this->name),
+                        $this->created_at->format('Ymd'),
+                        $this->created_at->format('His')
+                    ],
+                    $pattern
+                );
+            },
         );
     }
 }
