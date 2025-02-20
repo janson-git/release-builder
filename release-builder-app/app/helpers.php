@@ -4,6 +4,7 @@
 function parseActionLog($data)
 {
     if (is_string($data) || is_numeric($data)) {
+        $data = str_replace('http-equiv', "http&dash;equiv", $data);
         return $data;
     }
 

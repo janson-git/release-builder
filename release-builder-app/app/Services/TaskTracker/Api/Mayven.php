@@ -5,6 +5,7 @@ namespace App\Services\TaskTracker\Api;
 use App\Services\TaskTracker\Task;
 use App\Services\TaskTracker\TaskTrackerInterface;
 use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 class Mayven extends Rest implements TaskTrackerInterface
@@ -63,9 +64,13 @@ class Mayven extends Rest implements TaskTrackerInterface
     {
         $groupedByProjects = [];
         foreach ($urls as $url) {
+            // skip wrong url strings
+            if (!str_contains($url, $this->baseUri())) {
+                continue;
+            }
             [$link, $projectSlug, $idInProject] = $this->extractLinkAndProjectSlugAndTaskId($url);
 
-            $groupedByProjects[$projectSlug][] = [
+            $groupedByProjects[$projectSlug][(string) $idInProject] = [
                 'link' => $link,
                 'id' => $idInProject
             ];
@@ -75,10 +80,25 @@ class Mayven extends Rest implements TaskTrackerInterface
         foreach ($groupedByProjects as $projectSlug => $items) {
             $projectId = $this->getProjectIdBySlug($projectSlug);
 
-            // TODO: ok, right now we don't have filter for id_in_project array
-            // TODO: let get it iteratively step by step
-            foreach ($items as $item) {
-                $tasks[$item['link']] = $this->getTaskInfoByUrl($item['link'], $projectId);
+            $ids = Arr::pluck($items, 'id');
+
+            $idStrings = [];
+            foreach ($ids as $id) {
+                $idStrings[] = "id_in_project[]={$id}";
+            }
+            $res = $this->get("/api/projects/{$projectId}/todos/?" . implode('&', $idStrings));
+
+            $data = json_decode($res->getBody()->getContents(), true);
+            $info = $data['data'];
+
+            foreach ($info as $item) {
+                $itemLink = $items[(string) $item['id_in_project']]['link'];
+
+                $tasks[] =  new Task(
+                    $item['id_in_project'],
+                    $item['title'],
+                    $itemLink,
+                );
             }
         }
 
