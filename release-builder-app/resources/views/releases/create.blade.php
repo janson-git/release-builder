@@ -83,7 +83,7 @@
                 @foreach ($branches as $branch => $repos)
                     @php($checked = in_array($branch, old('branches', [])))
                     @if (!$selected || ($selected && isset($selected[$branch])))
-                        <div class="mt-2 flex justify-start items-center branches-item">
+                        <div class="py-1 flex justify-start items-center branches-item hover:bg-gray-100">
                             <input type="checkbox" name="branches[]" id="br_{{ $branch }}" value="{{ $branch }}"
                                    class="checkbox-item"
                                    title=""
@@ -109,8 +109,8 @@
                                     @endforeach
                                 </div>
                             @else
-                                <div class="ml-auto repos text-sm">
-                                    {!! implode(', ', $repos) !!}
+                                <div class="ml-auto repos text-sm text-gray-500 text-right">
+                                    {!! implode('<br />', $repos) !!}
                                 </div>
                             @endif
                         </div>

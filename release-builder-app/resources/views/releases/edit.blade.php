@@ -106,7 +106,7 @@
                                 @if (isset($branchesDiffs[$branch]))
                                     @foreach ($branchesDiffs[$branch] as $repo => $toMasterStatus)
                                         <a class="cursor-pointer text-black" onclick="$(this).parent().find('div').toggle()">
-                                            {{ $repo }},
+                                            {{ $repo }}
                                         </a>
                                     @endforeach
 
@@ -117,7 +117,7 @@
                                     </div>
                                 @else
                                     <div class="ml-auto repos">
-                                        {!! implode(', ', $repos) !!}
+                                        {!! implode('<br />', $repos) !!}
                                     </div>
                                 @endif
                             </div>
